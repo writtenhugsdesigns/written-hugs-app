@@ -10,15 +10,24 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
-
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
+// Unprotected Routes
 import AboutPage from '../AboutPage/AboutPage';
-import UserPage from '../UserPage/UserPage';
-import InfoPage from '../InfoPage/InfoPage';
-import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
-import RegisterPage from '../RegisterPage/RegisterPage';
+
+// Protected Routes
+import AdminHome from '../AdminHome/AdminHome';
+import InfoPage from '../InfoPage/InfoPage';
+import PitchPage from '../PitchPage/PitchPage';
+import CreatePitchPage from '../CreatePitchPage/CreatePitchPage';
+import ReviewPitch from '../ReviewPitch/ReviewPitch';
+import CardPage from '../CardPage/CardPage';
+import CreateCard from '../CreateCard/CreateCard';
+import WholesalersPage from '../WholesalersPage/WholesalersPage';
+import CreateWholesaler from '../CreateWholesaler/CreateWholesaler';
+import CategoriesPage from '../CategoriesPage/CategoriesPage';
+import CreateCategory from '../CreateCategory/CreateCategory';
 
 import './App.css';
 
@@ -39,39 +48,12 @@ function App() {
           {/* Visiting localhost:5173 will redirect to localhost:5173/home */}
           <Redirect exact from="/" to="/home" />
 
-          {/* Visiting localhost:5173/about will show the about page. */}
-          <Route
-            // shows AboutPage at all times (logged in or not)
-            exact
-            path="/about"
-          >
+          {/* Routes for authenticated and unauthenticated users */}
+          <Route exact path="/about">
             <AboutPage />
           </Route>
 
-          {/* For protected routes, the view could show one of several things on the same route.
-            Visiting localhost:5173/user will show the UserPage if the user is logged in.
-            If the user is not logged in, the ProtectedRoute will show the LoginPage (component).
-            Even though it seems like they are different pages, the user is always on localhost:5173/user */}
-          <ProtectedRoute
-            // logged in shows UserPage else shows LoginPage
-            exact
-            path="/user"
-          >
-            <UserPage />
-          </ProtectedRoute>
-
-          <ProtectedRoute
-            // logged in shows InfoPage else shows LoginPage
-            exact
-            path="/info"
-          >
-            <InfoPage />
-          </ProtectedRoute>
-
-          <Route
-            exact
-            path="/login"
-          >
+          <Route exact path="/login">
             {user.id ?
               // If the user is already logged in, 
               // redirect to the /user page
@@ -82,38 +64,66 @@ function App() {
             }
           </Route>
 
-          <Route
-            exact
-            path="/registration"
-          >
+          <Route exact path="/home">
             {user.id ?
               // If the user is already logged in, 
               // redirect them to the /user page
-              <Redirect to="/user" />
+              <Redirect to="/admin" />
               :
-              // Otherwise, show the registration page
-              <RegisterPage />
+              // Otherwise, show the Login page
+              <LoginPage />
             }
           </Route>
 
-          <Route
-            exact
-            path="/home"
-          >
-            {user.id ?
-              // If the user is already logged in, 
-              // redirect them to the /user page
-              <Redirect to="/user" />
-              :
-              // Otherwise, show the Landing page
-              <LandingPage />
-            }
-          </Route>
+          {/* For protected routes, the view could show one of several things on the same route.
+            Visiting localhost:5173/user will show the UserPage if the user is logged in.
+            If the user is not logged in, the ProtectedRoute will show the LoginPage (component).
+            Even though it seems like they are different pages, the user is always on localhost:5173/user */}
+          <ProtectedRoute exact path="/admin">
+            <AdminHome />
+          </ProtectedRoute>
+          
+          <ProtectedRoute exact path="/cards">
+            <CardPage/>
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/createCard">
+            <CreateCard/>
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/pitches">
+            <PitchPage/>
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/createPitch">
+            <CreatePitchPage/>
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/reviewPitch">
+            <ReviewPitch/>
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/wholesalers">
+            <WholesalersPage/>
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/createWholesaler">
+            <CreateWholesaler/>
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/categories">
+            <CategoriesPage/>
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/createCategory">
+            <CreateCategory/>
+          </ProtectedRoute>
 
           {/* If none of the other routes matched, we will show a 404. */}
           <Route>
             <h1>404</h1>
           </Route>
+
         </Switch>
         <Footer />
       </div>

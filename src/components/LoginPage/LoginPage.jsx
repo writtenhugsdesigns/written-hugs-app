@@ -13,11 +13,8 @@ function LoginPage() {
         <button
           type="button"
           className="btn btn_asLink"
-          onClick={() => {
-            history.push('/registration');
-          }}
         >
-          Register
+          Forgot Password?
         </button>
       </center>
     </div>
