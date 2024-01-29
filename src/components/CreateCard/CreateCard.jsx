@@ -36,6 +36,13 @@ export default function CreateCard() {
           placeholder="Vendor Style"
           onChange={() => setVendorStyle(event.target.value)}
         />
+        <p>Select your favorite colors:</p>
+        <input type="checkbox" name="color" value="red" id="c1" />
+        <input type="checkbox" name="color" value="green" id="c2" />
+        <input type="checkbox" name="color" value="blue" id="c3" />
+        <p>
+          <button id="btn">Get Selected Colors</button>
+        </p>
         Create Card
         <button onClick={handleSubmit}>Submit</button>
       </form>
