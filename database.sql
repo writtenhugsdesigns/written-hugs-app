@@ -21,7 +21,7 @@ create table "stickers" (
 create table "cards" (
 	"id" serial primary key,
 	"name" varchar,
-	"category" varchar, --Do we still need this?
+	"category" varchar, --This is her "Vendor Style"
 	"UPC" integer,
 	"SKU" integer,
 	"barcode" varchar,
@@ -142,12 +142,12 @@ VALUES
 INSERT INTO "stickers"
 ("name", "sticker_jpeg", "sticker_pdf")
 VALUES
-('goat', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Goat.jpeg/1599px-Goat.jpeg', 'https://www.gov.mb.ca/agriculture/livestock/goat/pubs/goats-and-their-nutrition.pdf');
+('goat', 'https://drive.google.com/file/d/1Oq0VCUGznClS7ohgu2r_xP-4BuqygzHn/view?usp=sharing', 'https://drive.google.com/file/d/1tJ3DhRV25aUASp_SwC5b2HfnxJAIwQT4/view?usp=sharing');
 
 INSERT INTO "cards"
 ("name", "category", "UPC", "SKU", "barcode", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "raw_art", "sticker_id")
 VALUES
-('more goat', 'goats', 111, 1111, 11111, 'https://png.pngtree.com/png-vector/20230321/ourmid/pngtree-goat-animal-realistic-white-transparent-png-image_6655726.png', 'https://drive.google.com/file/d/17vyBDwDjY4fm04aVCyCCIWsH7WCU-v3C/view?usp=sharing', 'inner image?', 'insert image?', 'https://drive.google.com/file/d/1GCZSp9DGHO5aaFzePDq73Uog1Xa5XE7z/view?usp=sharing', 'RAW ART GOES HERE', 1);
+('more goat', 'goats', 111, 1111, 11111, 'https://drive.google.com/file/d/1w82PH57o43XCZt87nxZS3OHikUzkfkBV/view?usp=sharing', 'https://drive.google.com/file/d/1dwMYyhnjNdhXUu30PmmHKN1be243VDlZ/view?usp=sharing', 'inner image?', 'insert image?', 'https://drive.google.com/file/d/1OgZMW-bqU2igOazlL6vhQ6r1qOBrysQ4/view?usp=sharing', 'RAW ART GOES HERE', 1);
 
 INSERT INTO "wholesalers"
 ("company_name", "user_id")
