@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "writtenhugsdb",
+  "private_key_id": "9fb68d446be7489eddaf10358767cce0785299af",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDVL51bqE0Px5c3\nAm76xIx/uOMIQFxkyNQZ5esjfeEPNLdPlOMItqGTnM+T4QNdwbIh73GSUreniTqQ\n4SoCLpUTiuidBYF89IbRiwoUB946bK5ponK82MQcnYLpqO81mb0LfQRYUmDLUyD4\nqMwR8GJe9K70ZNlbHuC+aMfCYa3ggWSrnEbokN1IKIJ/cqPA890TbJgt3UN9ewHh\nkRfTHxh4+XMIPK/rVSDKjqI4fVw9DSeXrIMljjKvlBj3WUzy4sfSvLQvKvfxgYvC\nKa8EHuKaE0IVR3xHUZAy8rcnbfCOjyw9aOuVPNe4SHGksvGbe4V6qcATknwlXxOM\nYqrgJNhzAgMBAAECggEAL7jJal+p5Hri5DsEudjutJagJ9Q0epEkPanksZy3mS5N\nTKDBE83CLKeBJhLMLJwz8nnFvCINH5FODWmB/FwOHgJN4Px/CIg6d8S+nE5Ill6G\nynnFYnXJrLgrun+JEMAZ++zf4J+MMGeq7U7n46oicywlz+qVZ1rpp2YQNXilMiiM\nR//IgUGoB3ZwPxxhqAllRxW9jTyGC+tMp7hno4PydmhjP6gBwCv/OqW8XFI6l+en\nIQAbp0/4RX+W2M2eXpBbvzYTmVq8BACjQmKdOR2yGcsXm/XnI9rSBnjNJ4cIE/0h\nyHAh1ZG2MyLDlt/tcufNdgffQS0GvvUrHOcMzjUmhQKBgQDxwy/tu0mIELYfGkvZ\nV7fOj6eK4IwBNLbyePTNZEl3448f/uzNn3HAljyRqySkthSamSY6WoX4+oGHfpwT\n6Vql7OGDpRsnPWcpgs6P4w9KUVwTqQvbIUrpRNz9WpA+LNSY9ThebOf9yDe7Y4Yp\nfMuzX4sb2cobsvAnkhEuIIX57QKBgQDhvZvLdwCEDxpgKEQr+bGBzp8CNEi6y3pH\nxZDGto+nOdTqNG9q73f/wXuarS63Xislem7JBpP7GyYNyYZC1QwFz5fWAo6MS6LU\nUVBufNcs3vBpBxM9X65xyirG6H6ry0V48uDPFrt6jNGyNCppXo7eZwD9L1WBPpl/\nnvKFVpBP3wKBgB6j8EUfAXi/NXXHrWlEVsVVK5TMVLIqbi1Y6x3E4hLRwmf5tSVy\nWcZgxBhqKmC9uurFEjU/F8+wYA4+G6XiY1y4IvS+Tiyw+YwnSequileO7C6JtDj3\nhTj/Q0rQ2Ysnv2ILYjOFdfmSEI4tVOmZKW/4YfcLqTPNf+Zj+s1vzcsZAoGBAM15\nLgcMQb7ylFp0LGEuvUDfVuLFvnGwZpRPo1EMuUNIo6Guqr/WSw7UCXMoMb6ci39o\nqtB2GVpWQtQH3BqXG4NqitU0rJXM/uBtR13aam2gW4nt87hIkFto3nkBBNPQiWLn\nCHPXSDzrUq/3Rad1d2u+rCrI2/ZxiXydrDhsK51XAoGAQzhLHI7F5vdaqqKXNewE\nU6yQGBxg7fmardxbFhm+mtxzy3LtA0Wz3ELeJuBQzzmUapU8jo/KVCuGJa7opJ4U\no9JJrB1vVrnlKbe/it9IsqUi7RLA/GkEbt0SaKI+FTWvpnL/bnwsYmhFgiAiU3UX\nZk1od1SLedJgRTup/TbLw3E=\n-----END PRIVATE KEY-----\n",
+  "client_email": "accessfilesfolders@writtenhugsdb.iam.gserviceaccount.com",
+  "client_id": "113758662864223542658",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/accessfilesfolders%40writtenhugsdb.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
