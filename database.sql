@@ -1,6 +1,6 @@
 -- Database Name: written-hugs
 
-create table "users" (
+create table "user" (
 	"id" serial primary key,
 	"username" varchar,
 	"password" varchar,
