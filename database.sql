@@ -25,6 +25,7 @@ create table "cards" (
 	"UPC" integer,
 	"SKU" integer,
 	"barcode" varchar,
+	"vendor_style" varchar,
 	"front_img" varchar,
 	"front_tiff" varchar,
 	"inner_img" varchar,
