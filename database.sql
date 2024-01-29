@@ -1,4 +1,4 @@
--- DATABASE NAME: written_hugs
+-- DATABASE NAME: written-hugs
 
 create table "users" (
 	"id" serial primary key,
