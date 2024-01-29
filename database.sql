@@ -1,6 +1,6 @@
 -- Database Name: written-hugs
 
-create table "users" (
+create table "user" (
 	"id" serial primary key,
 	"username" varchar,
 	"password" varchar,
@@ -39,7 +39,7 @@ create table "cards" (
 create table "wholesalers" (
 	"id" serial primary key,
 	"company_name" varchar,
-	"user_id" integer references "users",
+	"user_id" integer references "user",
     "inserted_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -93,7 +93,7 @@ $$ LANGUAGE plpgsql;
 -- Aka keeps updated_at always correct without us doing
 -- anything, yay!
 CREATE TRIGGER on_user_update
-BEFORE UPDATE ON "users"
+BEFORE UPDATE ON "user"
 FOR EACH ROW
 EXECUTE PROCEDURE set_updated_at_to_now();
 
@@ -134,7 +134,7 @@ EXECUTE PROCEDURE set_updated_at_to_now();
 
 
 -- DUMMY DATA INSERTS!
-INSERT INTO "users"
+INSERT INTO "user"
 ("username", "password", "user_role")
 VALUES
 ('Test1', 'password', 'ADMIN'); -- this password is not hashed, so don't attempt to log in like this
