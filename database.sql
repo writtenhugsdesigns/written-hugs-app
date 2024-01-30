@@ -21,10 +21,10 @@ create table "stickers" (
 create table "cards" (
 	"id" serial primary key,
 	"name" varchar,
-	"category" varchar, --This is her "Vendor Style"
+	"vendor_style" varchar,
     "description" varchar, -- this is new! added for description.
-	"UPC" integer,
-	"SKU" integer,
+	"upc" integer,
+	"sku" integer,
 	"barcode" varchar,
 	"front_img" varchar,
 	"front_tiff" varchar,
