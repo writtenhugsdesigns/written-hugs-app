@@ -1,7 +1,6 @@
 .nav {
   /* flex box layout */
   display: flex;
-  justify-content: space-between;
   align-items: center;
   height: 7.5vh;
   margin: 0 0 30px;
@@ -13,12 +12,19 @@
   text-decoration: none;
 }
 
+.nav-icon{
+  margin: 1em;
+  width: 4em;
+  justify-self: flex-start;
+}
+
 .nav-title {
   font-size: 24px;
   font-weight: 700;
   color: #f2f2f2;
   padding-left: 10px;
   margin: 0;
+  justify-self: flex-start;
 }
 
 .navLink {
@@ -30,7 +36,7 @@
   text-decoration: none;
   font-size: 15px;
   
-
+  
   /* these last two make the logout button in
   the nav bar look like another link */
   border: none;
@@ -42,7 +48,12 @@
   background-color: #0c2943;
 }
 
+
 .navBurger {
   width: 35vw;
-  
+}
+
+.burger{
+  margin-right: 1em;
+  margin-left: auto;
 }

@@ -73,6 +73,7 @@ function Nav() {
 
   return (
     <div className="nav">
+      <img className = 'nav-icon' src={'whd_icon.png'}/>
       <Link to="/home">
         <h2 className="nav-title">Written Hugs</h2>
       </Link>
@@ -83,8 +84,10 @@ function Nav() {
             Login
           </Link>
         )}
+      </div>
 
-        {/* If a user is logged in, show the hamburger menu */}
+      {/* If a user is logged in, show the hamburger menu */}
+      <div className = 'burger'>
         {user.id && (
           // MUI Drawer component enclosed in a fragment
           <React.Fragment key = {'right'}>
