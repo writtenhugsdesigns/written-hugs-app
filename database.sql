@@ -148,7 +148,7 @@ VALUES
 INSERT INTO "cards"
 ("name", "category", "description", "UPC", "SKU", "barcode", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "raw_art", "sticker_id")
 VALUES
-('more goat', 'goats', "dam thats a lot of goats", 111, 1111, 11111, 'https://drive.google.com/file/d/1w82PH57o43XCZt87nxZS3OHikUzkfkBV/view?usp=sharing', 'https://drive.google.com/file/d/1dwMYyhnjNdhXUu30PmmHKN1be243VDlZ/view?usp=sharing', 'inner image?', 'insert image?', 'https://drive.google.com/file/d/1OgZMW-bqU2igOazlL6vhQ6r1qOBrysQ4/view?usp=sharing', 'RAW ART GOES HERE', 1);
+('more goat', 'goats', 'dam thats a lot of goats', 111, 1111, 11111, 'https://drive.google.com/file/d/1w82PH57o43XCZt87nxZS3OHikUzkfkBV/view?usp=sharing', 'https://drive.google.com/file/d/1dwMYyhnjNdhXUu30PmmHKN1be243VDlZ/view?usp=sharing', 'inner image?', 'insert image?', 'https://drive.google.com/file/d/1OgZMW-bqU2igOazlL6vhQ6r1qOBrysQ4/view?usp=sharing', 'RAW ART GOES HERE', 1);
 
 INSERT INTO "wholesalers"
 ("company_name", "user_id")
