@@ -60,7 +60,8 @@ router.post('/', (req, res) => {
         req.body.insert_img,
         req.body.insert_ai,
         req.body.raw_art,
-        req.body.sticker_id
+        req.body.sticker_jpeg,
+        req.body.sticker_pdf
     ];
     pool.query(queryText, queryValues)
         .then(result => {
@@ -83,26 +84,77 @@ router.post('/', (req, res) => {
         })
 })
 
-// router.post('/', (req, res) => {
-//     const queryText = `
-//     INSERT INTO "clothes" 
-//       ("name", "description", "user_id", "categories_id")
-//     VALUES 
-//       ($1, $2, $4, $3);
-//     `;
-//     const queryValues = [
-//         req.body.item,
-//         req.body.description,
-//         req.body.categories_id,
-//         req.user.id
-//     ];
-//     pool.query(queryText, queryValues)
-//       .then((result) => { res.sendStatus(201); })
-//       .catch((err) => {
-//         console.log('Error in POST /api/clothes', err);
-//         res.sendStatus(500);
-//       });
-//   });
+router.put('/:id', (req, res) => {
+    const queryText = `
+      UPDATE "cards"
+        SET 
+          "name"=$1, 
+          "category"=$2, 
+          "description"=$3,
+          "upc"=$4,
+          "sku"=$5,
+          "barcode"=$6,
+          "front_img"=$7,
+          "front_tiff"=$8,
+          "inner_img"=$9,
+          "insert_img"=$10,
+          "insert_ai"=$11,
+          "raw_art"=$12,
+          "sticker_jpeg"=$13,
+          "sticker_pdf"=$14
+        WHERE
+          id=$15;
+    `;
+    console.log('req.body:', req.body);
+    const queryValues = [
+        req.body.card.name,
+        req.body.card.category,
+        req.body.card.description,
+        req.body.card.upc,
+        req.body.card.sku,
+        req.body.card.barcode,
+        req.body.card.front_img,
+        req.body.card.front_tiff,
+        req.body.card.inner_img,
+        req.body.card.insert_img,
+        req.body.card.insert_ai,
+        req.body.card.raw_art,
+        req.body.card.sticker_jpeg,
+        req.body.card.sticker_pdf,
+        req.params.id
+    ];
+    pool.query(queryText, queryValues)
+        .then(result => {
+            const queryDeleteText = `
+      DELETE FROM cards_categories
+        WHERE cards_id=${req.params.id};
+    `;
+        // second QUERY removes categories FOR THAT card
+        pool.query(queryDeleteText)
+            .then(result => {
+                const categoriesArray = req.body.categoriesArrayForQuery
+                const editCardsCategoriesQuery = editCardsCategoriesQuery(categoriesArray, req.params.id);
+                // Third QUERY ADDS categories FOR THAT card
+                pool.query(editCardsCategoriesQuery)
+                    .then(result => {
+                        res.sendStatus(201);
+                    }).catch(err => {
+                        // catch for third query
+                        console.log(err);
+                        res.sendStatus(500)
+                    })
+            }).catch(err => {
+                // catch for second query
+                console.log(err);
+                res.sendStatus(500)
+            })
+        }).catch(err => { // 👈 Catch for first query
+            console.log(err);
+            res.sendStatus(500)
+        })
+})
+
+
 
 // router.delete('/:id', (req, res) => {
 //     const queryText = `
@@ -167,7 +219,8 @@ function formatCards(all) {
             insert_img: all[0].insert_img,
             insert_ai: all[0].insert_ai,
             raw_art: all[0].raw_art,
-            sticker_id: all[0].sticker_id,
+            sticker_jpeg: all[0].sticker_jpeg,
+            sticker_pdf: all[0].sticker_pdf,
             categoriesArray: [{
                 clothes_id: all[0].clothes_id,
                 name: all[0].name,
@@ -192,7 +245,8 @@ function formatCards(all) {
                     insert_img: all[i].insert_img,
                     insert_ai: all[i].insert_ai,
                     raw_art: all[i].raw_art,
-                    sticker_id: all[i].sticker_id,
+                    sticker_jpeg: all[i].sticker_jpeg,
+                    sticker_pdf: all[i].sticker_pdf,
                     categoriesArray: []
                 })
             }
@@ -223,7 +277,6 @@ function newCardsCategoriesQuery(categoriesArray, card_id) {
     ("card_id", "category_id")
     VALUES
     `
-    
     for (let i = 0; i < categoriesArray.length; i++) {
         // adds the appropriate ids
         if (i < categoriesArray.length - 1) {
@@ -234,6 +287,33 @@ function newCardsCategoriesQuery(categoriesArray, card_id) {
         } else if (i === categoriesArray.length - 1) {
             cardsCategoriesQuery += `
         (${card_id}, ${categoriesArray[i]});
+        `
+        }
+    }
+    return cardsCategoriesQuery;
+}
+
+/**  
+ * this function takes in an array of categories 
+ * it's goal is to create a query to insert multiple rows in the cards_categories table
+ * since a single card could have multiple categories
+ * */
+function editCardsCategoriesQuery(categoriesArray, card_id) {
+    let cardsCategoriesQuery = `
+    INSERT INTO "cards_categories"
+    ("card_id", "category_id")
+    VALUES
+    `
+    for (let i = 0; i < categoriesArray.length; i++) {
+        // adds the appropriate ids
+        if (i < categoriesArray.length - 1) {
+            cardsCategoriesQuery += `
+        (${card_id}, ${categoriesArray[i].id}),
+      `
+        // adds the appropriate ids and a semi colon
+        } else if (i === categoriesArray.length - 1) {
+            cardsCategoriesQuery += `
+        (${card_id}, ${categoriesArray[i].id});
         `
         }
     }
