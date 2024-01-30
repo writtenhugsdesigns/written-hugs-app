@@ -154,47 +154,6 @@ router.put('/:id', (req, res) => {
         })
 })
 
-
-
-// router.delete('/:id', (req, res) => {
-//     const queryText = `
-//       DELETE FROM clothes
-//       WHERE id=$1;
-//     `;
-//     pool.query(queryText, [req.params.id])
-//         .then(() => { res.sendStatus(200); })
-//         .catch((err) => {
-//         console.log('Error in DELETE /api/clothes/:id', err);
-//         res.sendStatus(500);
-//         });
-// });
-
-// router.put('/:id', (req, res) => {
-//     const queryText = `
-//       UPDATE "clothes"
-//         SET 
-//           "name"=$1, 
-//           "description"=$2, 
-//           "updated_date"=CURRENT_TIMESTAMP
-//         WHERE
-//           id=$3;
-//     `;
-//     const queryValues = [
-//         req.body.name,
-//         req.body.description,
-//         req.params.id
-//     ];
-
-//     pool.query(queryText, queryValues)
-//       .then((result) => { res.sendStatus(200); })
-//       .catch((err) => {
-//         console.log('Error in PUT /api/clothes/:id', err);
-//         res.sendStatus(500);
-//       });
-//   });
-
-
-
 /**  
  * this function takes in an array from the database 
  * it's goal is to bundle card records together with an array of categories
