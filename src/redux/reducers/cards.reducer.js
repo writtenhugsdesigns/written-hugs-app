@@ -29,8 +29,16 @@ const selectedCard = (state = {}, action) => {
   return state;
 };
 
+const currentFolders = (state = [], action) => {
+  if (action.type === 'SET_FOLDERS'){
+    return action.payload
+  } 
+  return state
+}
+
 export default combineReducers({
     categories,
     cardsList,
-    selectedCard
+    selectedCard,
+    currentFolders
 });
