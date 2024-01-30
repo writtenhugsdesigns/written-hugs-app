@@ -1,0 +1,21 @@
+.wholesalerBar {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+.pageButton {
+    border: none;
+    border-radius: 2px;
+    width: 10vw;
+    height: 3rem;
+    background-color: rgb(138, 149, 185);
+    box-shadow: 3px 5px 5px rgb(172, 171, 171);
+    align-self: center;
+}
+
+button:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+}
