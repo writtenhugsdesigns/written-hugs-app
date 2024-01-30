@@ -1,0 +1,24 @@
+.adminMenu {
+    display: flex;
+    flex-direction: column;
+    height: 75vh;
+    justify-content: space-evenly;
+}
+
+.adminMenuItem  {
+    width: 30vw;
+    align-self: center;
+    font-size: xx-large;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 35px;
+    padding-bottom: 35px;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 3px 5px 5px rgb(172, 171, 171);
+}
+
+.adminMenuItem:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}

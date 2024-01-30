@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-
-import LogOutButton from '../LogOutButton/LogOutButton';
-
 import Drawer  from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -27,7 +24,6 @@ function Nav() {
     if (e.type === 'keydown' && (e.key === 'Tab' || e.key === 'Shift')) {
       return;
     }
-    console.log("Time to open")
     setIsOpen(open);
   }
 
@@ -42,24 +38,24 @@ function Nav() {
     >
       {/* List of navigation options */}
       <List>
-        <ListItem disablePadding>
+        <ListItem>
           <ListItemButton onClick = {() => history.push('/cards')}>
-            <ListItemText primary = {'Manage Cards'}/>
+            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Manage Cards'}/>
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem>
           <ListItemButton onClick = {() => history.push('/wholesalers')}>
-            <ListItemText primary = {'Manage Wholesalers'}/>
+            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Manage Wholesalers'}/>
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem>
           <ListItemButton onClick = {() => history.push('/pitches')}>
-            <ListItemText primary = {'Manage Pitches'}/>
+            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Manage Pitches'}/>
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem>
           <ListItemButton onClick={() => dispatch({ type: 'LOGOUT' })}>
-            <ListItemText primary = {'Logout'}/>
+            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Logout'}/>
           </ListItemButton>
         </ListItem>
       </List>
