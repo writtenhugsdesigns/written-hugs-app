@@ -77,15 +77,7 @@ function Nav() {
       <Link to="/home">
         <h2 className="nav-title">Written Hugs</h2>
       </Link>
-      <div>
-        {/* If no user is logged in, show the login link */}
-        {!user.id && (
-          <Link className="navLink" to="/login">
-            Login
-          </Link>
-        )}
-      </div>
-
+      
       {/* If a user is logged in, show the hamburger menu */}
       <div className = 'burger'>
         {user.id && (
