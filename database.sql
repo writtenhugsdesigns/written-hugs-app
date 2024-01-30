@@ -1,4 +1,5 @@
 -- Database Name: written-hugs
+DROP 
 
 create table "user" (
 	"id" serial primary key,
