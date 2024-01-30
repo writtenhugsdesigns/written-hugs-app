@@ -1,25 +1,25 @@
-export default function CardList({ index }) {
-  const viewIndex = () => {
+export default function CardList({ card }) {
+  const viewCard = () => {
     console.log("This will do pop up stuff Ig.");
   };
 
-  const editIndex = () => {
+  const editCard = () => {
     console.log("This will do pop up stuff for edit.");
   };
 
-  const deleteIndex = () => {
-    console.log("BEGONE THINGY WITH INDEX", index.id);
+  const deleteCard = () => {
+    console.log("BEGONE THINGY WITH card", card.id);
   };
 
   return (
     <tr>
-      <td>{index.category}</td>
-      <td>{index.inserted_at}</td>
-      <td>{index.description}</td>
+      <td>{card.category}</td>
+      <td>{card.inserted_at}</td>
+      <td>{card.description}</td>
       <td>
-        <button onClick={viewIndex}>View</button>
-        <button onClick={editIndex}>Edit</button>
-        <button onClick={deleteIndex}>Delete</button>
+        <button onClick={viewCard}>View</button>
+        <button onClick={editCard}>Edit</button>
+        <button onClick={deleteCard}>Delete</button>
       </td>
     </tr>
   );

@@ -37,8 +37,8 @@ export default function CardPage() {
         <th>Description</th>
       </tr>
       {dummyCards[0] &&
-        dummyCards.map((index) => {
-          return <CardList index={index} />;
+        dummyCards.map((card) => {
+          return <CardList card={card} />;
         })}
     </div>
   );
