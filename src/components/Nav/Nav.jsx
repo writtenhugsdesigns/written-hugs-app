@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import LogOutButton from '../LogOutButton/LogOutButton';
-
+import { Link, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Drawer  from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -15,6 +13,8 @@ import './Nav.css';
 
 function Nav() {
   const user = useSelector((store) => store.user);
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   // State for the drawer menu
   const [isOpen, setIsOpen] = useState(false);
@@ -24,27 +24,40 @@ function Nav() {
     if (e.type === 'keydown' && (e.key === 'Tab' || e.key === 'Shift')) {
       return;
     }
-    console.log("Time to open")
     setIsOpen(open);
   }
 
+  // List of hamburger menu options
   const list = () => {
      return (
      <Box
-      sx={250}
+      className = 'navBurger'
       role = "presentation"
       onClick = {(e) => toggleDrawer(e, false)}
       onKeyDown= {(e) => toggleDrawer(e, false)}
     >
       {/* List of navigation options */}
       <List>
-        {['Manage Cards', 'Manage Wholesalers', 'Manage Pitches'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemText primary = {text}/>
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem>
+          <ListItemButton onClick = {() => history.push('/cards')}>
+            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Manage Cards'}/>
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton onClick = {() => history.push('/wholesalers')}>
+            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Manage Wholesalers'}/>
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton onClick = {() => history.push('/pitches')}>
+            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Manage Pitches'}/>
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton onClick={() => dispatch({ type: 'LOGOUT' })}>
+            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Logout'}/>
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
     )
@@ -56,37 +69,26 @@ function Nav() {
         <h2 className="nav-title">Written Hugs</h2>
       </Link>
       <div>
-        <Link className="navLink" to="/about">
-          About
-        </Link>
-        {/* If no user is logged in, show these links */}
+        {/* If no user is logged in, show the login link */}
         {!user.id && (
-          // If there's no user, show login/registration links
           <Link className="navLink" to="/login">
             Login
           </Link>
         )}
 
-        {/* If a user is logged in, show these links */}
+        {/* If a user is logged in, show the hamburger menu */}
         {user.id && (
-          <>
-            <Link className="navLink" to="/admin">
-              Admin Home
-            </Link>
-
-            <LogOutButton className="navLink" />
-          </>
+          <React.Fragment key = {'right'}>
+            <button className = 'navLink' onClick={(e)=>toggleDrawer(e, true)}><MenuIcon></MenuIcon></button>
+            <Drawer
+                  anchor='right'
+                  open={isOpen}
+                  onClose={(e) => toggleDrawer(e, false)}
+                >
+                  {list()}
+            </Drawer>
+          </React.Fragment>
         )}
-        <React.Fragment key = {'right'}>
-          <button className = 'navLink' onClick={(e)=>toggleDrawer(e, true)}><MenuIcon></MenuIcon></button>
-          <Drawer
-                anchor='right'
-                open={isOpen}
-                onClose={(e) => toggleDrawer(e, false)}
-              >
-                {list()}
-          </Drawer>
-        </React.Fragment>
       </div>
     </div>
   );
