@@ -20,7 +20,7 @@ router.get('/categories', (req, res) => {
 
 router.get('/', (req, res) => {
     const queryText = `
-    SELECT cards.id, cards.name, cards.category, cards."UPC", cards."SKU", cards.barcode, cards.front_img, cards.front_tiff, cards.inner_img, cards.insert_img, cards.insert_ai, cards.raw_art, cards.sticker_id, categories.name as category
+    SELECT cards.id, cards.name, cards.vendor_style, cards.upc, cards.sku, cards.barcode, cards.front_img, cards.front_tiff, cards.inner_img, cards.insert_img, cards.insert_ai, cards.raw_art, cards.sticker_id, categories.name as category
     FROM cards
     JOIN cards_categories
     ON cards.id = cards_categories.card_id
@@ -42,14 +42,14 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const queryText = `
     INSERT INTO "cards" 
-    ("name", "category", "description", "UPC", "SKU", "barcode", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "raw_art", "sticker_id")
+    ("name", "vendor_style", "description", "upc", "sku", "barcode", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "raw_art", "sticker_id")
     VALUES 
       ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
       RETURNING "id";
     `;
     const queryValues = [
         req.body.name,
-        req.body.category,
+        req.body.vendor_style,
         req.body.description,
         req.body.upc,
         req.body.sku,
@@ -89,7 +89,7 @@ router.put('/:id', (req, res) => {
       UPDATE "cards"
         SET 
           "name"=$1, 
-          "category"=$2, 
+          "vendor_style"=$2, 
           "description"=$3,
           "upc"=$4,
           "sku"=$5,
@@ -108,7 +108,7 @@ router.put('/:id', (req, res) => {
     console.log('req.body:', req.body);
     const queryValues = [
         req.body.card.name,
-        req.body.card.category,
+        req.body.card.vendor_style,
         req.body.card.description,
         req.body.card.upc,
         req.body.card.sku,
@@ -209,7 +209,7 @@ function formatCards(all) {
         let cardsArray = [{
             card_id: all[0].card_id,
             name: all[0].name,
-            category: all[0].category,
+            vendor_style: all[0].vendor_style,
             upc: all[0].upc,
             sku: all[0].sku,
             barcode: all[0].barcode,
@@ -235,7 +235,7 @@ function formatCards(all) {
                 cardsArray.push({
                     card_id: all[i].card_id,
                     name: all[i].name,
-                    category: all[i].category,
+                    vendor_style: all[i].vendor_style,
                     upc: all[i].upc,
                     sku: all[i].sku,
                     barcode: all[i].barcode,
