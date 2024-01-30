@@ -2,9 +2,7 @@ import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 const fs = require('fs')
 const { google } = require('googleapis')
-
 const apikeys = require('./googleDriveAPI')
-
 const SCOPE = ["https://www.googleapis.com/auth/drive"];
 
 function* fetchCategories() {
@@ -33,15 +31,17 @@ async function authorize() {
 function* getCurrentFolders(authClient) {
   const drive = google.drive({version: 'v3', auth: authClient})
   try {
-    const res = await drive.files.list({
+    const folders = await drive.files.list({
       q: 'mimeType=\'application/vnd.google-apps.folder\'',
       fields: 'nextPageToken, files(id, name)',
       spaces: 'drive',
     });
-    Array.prototype.push.apply(folders, res.data.files);
-    return console.log(folders);
+    Array.prototype.push.apply(folders, folders.data.files);
+    return console.log("these folders were grabbed from drive", folders);
+  } 
   
-    allFolders
+  catch (err){
+    throw err;
   }
 }
 
@@ -104,6 +104,7 @@ function* editCard(action) {
     yield takeLatest('SAGA/FETCH_CARDS', fetchAllCards);
     yield takeLatest('SAGA/DELETE_CARD', deleteCard);
     yield takeLatest('SAGA/EDIT_CARD', editCard);
+    yield takeLatest('SAGA/GET_FOLDERS', getCurrentFolders)
   }
 
 export default cardSaga;
