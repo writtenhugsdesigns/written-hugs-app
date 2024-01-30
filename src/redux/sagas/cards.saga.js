@@ -1,6 +1,6 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-const fs = require('fs')
+// const fs = require('fs')
 const { google } = require('googleapis')
 const apikeys = require('./googleDriveAPI')
 const SCOPE = ["https://www.googleapis.com/auth/drive"];
@@ -31,15 +31,18 @@ async function authorize() {
 function* getCurrentFolders(authClient) {
   const drive = google.drive({version: 'v3', auth: authClient})
   try {
-    const folders = await drive.files.list({
+    const folders = yield drive.files.list({
       q: 'mimeType=\'application/vnd.google-apps.folder\'',
       fields: 'nextPageToken, files(id, name)',
       spaces: 'drive',
     });
     Array.prototype.push.apply(folders, folders.data.files);
+    yield put({
+      type: 'SET_FOLDERS',
+      payload: folders
+    })
     return console.log("these folders were grabbed from drive", folders);
   } 
-  
   catch (err){
     throw err;
   }
