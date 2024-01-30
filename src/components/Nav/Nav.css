@@ -40,3 +40,8 @@
 .navLink:hover {
   background-color: #0c2943;
 }
+
+.navBurger {
+  width: 35vw;
+  
+}
