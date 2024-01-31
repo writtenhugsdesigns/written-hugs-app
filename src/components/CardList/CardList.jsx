@@ -1,32 +1,41 @@
-import * as React from 'react';
-import { useDispatch } from 'react-redux';
+import Reach, {useState, useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow, TableContainer, TablePagination } from "@mui/material";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import ViewCard from '../ViewCard/ViewCard';
 
-export default function CardList({ card }) {
+export default function CardList() {
   const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const cards = useSelector(store => store.cardsReducer.cardsList);
 
+  useEffect(() => {dispatch({type: 'SAGA/FETCH_CARDS'})}, []);
+  const [open, setOpen] = useState(false);
+
+  // Style for MUI box in Modal
   const style = {
     position: 'absolute',
-    overflow: 'scroll',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    overflow: 'auto',
     display: 'block',
-    width: '100%',
-    height: '100%',
+    width: '90vw',
+    height: '90vh',
     bgcolor: 'background.paper',
   };
 
-  const viewCard = () => {
-    console.log("This will do pop up stuff Ig.");
+  // These two functions toggle the modal open and closed
+  const handleOpen = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
+  
+  const viewCard = (x) => {
     handleOpen()
     dispatch({
       type: 'SET_CARD',
-      payload: card
+      payload: x
     })
-
   };
 
   const editCard = () => {
@@ -38,17 +47,51 @@ export default function CardList({ card }) {
   };
 
   return (
-    <>
-      <tr>
-        <td>{card.category}</td>
-        <td>{card.inserted_at}</td>
-        <td>{card.description}</td>
-        <td>
-          <button onClick={viewCard}>View</button>
-          <button onClick={editCard}>Edit</button>
-          <button onClick={deleteCard}>Delete</button>
-        </td>
-      </tr>
+    <div className = 'container'>
+      <Paper sx={{width: '100%', overflow: 'hidden'}}>
+                <TableContainer>
+                    <Table stickyheader aria-label='sticky table'>
+                        <TableHead >
+                            <TableRow>
+                                <TableCell>Card Name</TableCell>
+                                <TableCell>Description</TableCell>
+                                <TableCell>Categories</TableCell>
+                                <TableCell>Preview</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {cards && cards.map((x) => (
+                                <TableRow hover role='checkbox' tabIndex={-1} key = {x.id}>
+                                    <TableCell>
+                                        {x.name}
+                                    </TableCell>
+                                    <TableCell>
+                                        {x.description}
+                                    </TableCell>
+                                    <TableCell>
+                                        {x.categoriesArray.map((y) => {
+                                          return <span key={y.category_id}>{y.category_name}, </span>
+                                        })}
+                                    </TableCell>
+                                    <TableCell>
+                                      <img src={x.front_img}/>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button onClick = {() => viewCard(x)} variant='outlined'>View</Button>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button variant='outlined'>Edit</Button>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button variant='outlined' color='error'>Delete</Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -61,7 +104,7 @@ export default function CardList({ card }) {
           <button onClick={handleClose}>Back</button>
         </Box>
       </Modal>
-    </>
+    </div>
 
   );
 }

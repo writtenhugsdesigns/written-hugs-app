@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     const queryText = `
-    SELECT cards.id, cards.name, cards.vendor_style, cards.upc, cards.sku, cards.barcode, cards.front_img, cards.front_tiff, cards.inner_img, cards.insert_img, cards.insert_ai, cards.raw_art, cards.sticker_jpeg, cards.sticker_pdf, categories.id as category_id, categories.name as category_name
+    SELECT cards.id, cards.name, cards.description, cards.vendor_style, cards.upc, cards.sku, cards.barcode, cards.front_img, cards.front_tiff, cards.inner_img, cards.insert_img, cards.insert_ai, cards.raw_art, cards.sticker_jpeg, cards.sticker_pdf, categories.id as category_id, categories.name as category_name
     FROM cards
     JOIN cards_categories
     ON cards.id = cards_categories.card_id
@@ -167,6 +167,7 @@ function formatCards(all) {
         let cardsArray = [{
             card_id: all[0].card_id,
             name: all[0].name,
+            description: all[0].description,
             vendor_style: all[0].vendor_style,
             upc: all[0].upc,
             sku: all[0].sku,
