@@ -13,13 +13,12 @@ export default function CardPage() {
       SKU: 1111,
       barcode: 11111,
       front_img:
-        "https://drive.google.com/file/d/1w82PH57o43XCZt87nxZS3OHikUzkfkBV/view?usp=sharing",
+        "https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY",
       front_tiff:
-        "https://drive.google.com/file/d/1dwMYyhnjNdhXUu30PmmHKN1be243VDlZ/view?usp=sharing",
-      inner_img: "ee",
-      insert_image: "dummy data",
-      insert_ai:
-        "https://drive.google.com/file/d/1OgZMW-bqU2igOazlL6vhQ6r1qOBrysQ4/view?usp=sharing",
+        "https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY",
+      inner_img: "https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY",
+      insert_image: "https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY",
+      insert_ai: "ai",
       raw_art: "Raw art woo",
       sticker_id: 1,
       inserted_at: "2024-01-29 14:29:04.5343-06",
