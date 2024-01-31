@@ -29,7 +29,7 @@ app.use(passport.session());
 app.use("/api/wholesalers", wholesalersRouter);
 app.use("/api/user", userRouter);
 app.use("/api/cards", cardRouter);
-app.use("/api/categoreis", categoriesRouter);
+app.use("/api/categories", categoriesRouter);
 
 // Listen Server & Port
 app.listen(PORT, () => {

@@ -7,7 +7,7 @@ export default function CategoriesList(){
     
     const history = useHistory();
     const dispatch = useDispatch();
-    const categories = useSelector(store => store.cardsReducer.categories);
+    const categories = useSelector(store => store.categoriesReducer.categories);
     
     useEffect(() => {dispatch({type: 'SAGA/FETCH_CATEGORIES'})}, [])
 
