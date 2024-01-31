@@ -1,4 +1,8 @@
+import { useHistory } from "react-router-dom"
+
 export default function CreateCategory(){
+    const history = useHistory();
+    
     return (
         <div className = 'container'>
             Create Category

@@ -6,7 +6,7 @@ import axios from 'axios';
  */
 function* fetchCategories() {
     try {
-      const Categories = yield axios.get('/api/categories');
+      const Categories = yield axios.get('/api/cards/categories');
       yield put({
         type: 'SET_CATEGORIES',
         payload: Categories.data
