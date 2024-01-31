@@ -154,6 +154,21 @@ router.put('/:id', (req, res) => {
         })
 })
 
+router.get('/:id', (req, res) => {
+    const queryText = `
+    SELECT * FROM "cards";
+    `
+
+    pool.query(queryText)
+        .then(result => {
+            res.send(result.rows);
+        })
+        .catch(error => {
+            console.log("Error in GET /api/cards/:id:", error);
+            res.sendStatus(500);
+        })
+})
+
 /**  
  * this function takes in an array from the database 
  * it's goal is to bundle card records together with an array of categories
