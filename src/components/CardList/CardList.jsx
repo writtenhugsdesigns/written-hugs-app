@@ -4,10 +4,6 @@ import { useDispatch } from "react-redux";
 export default function CardList({ card }) {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch({ type: "SAGA/GETFOLDERS" });
-  }, []);
-
   const viewCard = () => {
     console.log("This will do pop up stuff Ig.");
   };

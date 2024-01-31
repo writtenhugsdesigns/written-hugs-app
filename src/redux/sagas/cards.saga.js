@@ -1,9 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-// const fs = require('fs')
-const { google } = require('googleapis')
-const apikeys = require('./googleDriveAPI')
-const SCOPE = ["https://www.googleapis.com/auth/drive"];
 
 function* fetchCategories() {
     try {
@@ -17,36 +13,6 @@ function* fetchCategories() {
     }
 }
 
-async function authorize() {
-  const jwtClient = new google.auth.JWT(
-      apikeys.client_email,
-      null,
-      apikeys.private_key,
-      SCOPE
-  )
-  await jwtClient.authorize();
-  return jwtClient;
-}
-
-function* getCurrentFolders(authClient) {
-  const drive = google.drive({version: 'v3', auth: authClient})
-  try {
-    const folders = yield drive.files.list({
-      q: 'mimeType=\'application/vnd.google-apps.folder\'',
-      fields: 'nextPageToken, files(id, name)',
-      spaces: 'drive',
-    });
-    Array.prototype.push.apply(folders, folders.data.files);
-    yield put({
-      type: 'SET_FOLDERS',
-      payload: folders
-    })
-    return console.log("these folders were grabbed from drive", folders);
-  } 
-  catch (err){
-    throw err;
-  }
-}
 
 function* fetchAllCards() {
     try {
