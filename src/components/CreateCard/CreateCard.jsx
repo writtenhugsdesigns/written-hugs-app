@@ -6,6 +6,9 @@ export default function CreateCard() {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  //This use effect triggers the saga "getCurrentFolders"
+  //After this is triggered a useSelector will get the current folders array
+  //and save it in a local array
   useEffect(()=> {
     console.log("getting folders of current card variants");
     dispatch({

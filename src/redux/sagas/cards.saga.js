@@ -67,6 +67,9 @@ function* editCard(action) {
     }
 }
 
+/** This saga function sends a get for all current folders in google drive
+ * It returns the folder and puts them in the cards reducer inside currentFolders
+ */
 function* getCurrentFolders() {
   try {
     const folders = yield axios.get('/api/cards/folders');
