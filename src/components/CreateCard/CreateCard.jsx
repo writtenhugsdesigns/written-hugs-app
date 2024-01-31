@@ -1,5 +1,6 @@
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function CreateCard() {
   const history = useHistory();
@@ -15,11 +16,22 @@ export default function CreateCard() {
   let [TIFFFile, setTIFFFile] = useState(null);
   let [AIFile, setAIFile] = useState(null);
 
-  const dummyCategories = [
-    { id: 1, name: "goats" },
-    { id: 2, name: "pikefish" },
-    { id: 3, name: "stuck in placehold data" },
-  ];
+  // const dummyCategories = [
+  //   { id: 1, name: "goats" },
+  //   { id: 2, name: "pikefish" },
+  //   { id: 3, name: "stuck in placehold data" },
+  // ];
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: "SAGA/FETCH_CATEGORIES",
+    });
+  }, []);
+
+  const dummyCategories = useSelector((store) => store.categoriesReducer);
+  console.log(dummyCategories);
 
   const getCategories = () => {
     let checkboxes = document.querySelectorAll(
@@ -78,8 +90,8 @@ export default function CreateCard() {
           id="vendorStyle"
         />
         <p>Categories</p>
-        {dummyCategories[0] &&
-          dummyCategories.map((index) => {
+        {dummyCategories.categories &&
+          dummyCategories.categories.map((index) => {
             return (
               <div>
                 {index.name}
