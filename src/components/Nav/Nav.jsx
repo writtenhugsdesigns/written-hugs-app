@@ -19,7 +19,12 @@ function Nav() {
   // State for the drawer menu
   const [isOpen, setIsOpen] = useState(false);
 
-  // When user clicks the menu icon, open drawer
+  /**
+   * This function will open or close the drawer menu
+   * @param {*} e event that triggers the toggleDrawer function
+   * @param {*} open a boolean value indicating if the drawer should be toggled open or closed
+   * @returns 
+   */
   const toggleDrawer = (e, open) => {
     if (e.type === 'keydown' && (e.key === 'Tab' || e.key === 'Shift')) {
       return;
@@ -27,7 +32,10 @@ function Nav() {
     setIsOpen(open);
   }
 
-  // List of hamburger menu options
+  /**
+   * List of links for admin navigation that is in the MUI drawer menu
+   * @returns an MUI List component of nav links
+   */
   const list = () => {
      return (
      <Box
@@ -65,19 +73,15 @@ function Nav() {
 
   return (
     <div className="nav">
+      <img className = 'nav-icon' src={'whd_icon.png'}/>
       <Link to="/home">
         <h2 className="nav-title">Written Hugs</h2>
       </Link>
-      <div>
-        {/* If no user is logged in, show the login link */}
-        {!user.id && (
-          <Link className="navLink" to="/login">
-            Login
-          </Link>
-        )}
-
-        {/* If a user is logged in, show the hamburger menu */}
+      
+      {/* If a user is logged in, show the hamburger menu */}
+      <div className = 'burger'>
         {user.id && (
+          // MUI Drawer component enclosed in a fragment
           <React.Fragment key = {'right'}>
             <button className = 'navLink' onClick={(e)=>toggleDrawer(e, true)}><MenuIcon></MenuIcon></button>
             <Drawer

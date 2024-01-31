@@ -1,19 +1,9 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
-function* fetchCategories() {
-    try {
-      const Categories = yield axios.get('/api/categories');
-      yield put({
-        type: 'SET_CATEGORIES',
-        payload: Categories.data
-      });
-    } catch (error) {
-      console.log('fetchCategories error:', error);
-    }
-}
-
-
+/**
+ * Send a get request to receive all cards and set the cards reducer
+ */
 function* fetchAllCards() {
     try {
       const AllCards = yield axios.get('/api/cards');
@@ -26,6 +16,10 @@ function* fetchAllCards() {
     }
 }
 
+/**
+ * Send a post request to create a new card and then fetch all cards
+ * @param {*} action action.payload containing new card data is sent to the router
+ */
 function* postCard(action) {
     try {
         const response = yield axios({
@@ -40,6 +34,10 @@ function* postCard(action) {
     }
 }
 
+/**
+ * Send a delete request to delete a card with specific id, then fetch all cards
+ * @param {*} action action.payload containing the card id is sent to the router
+ */
 function* deleteCard(action) {
     try {
         const response = yield axios({
@@ -53,6 +51,10 @@ function* deleteCard(action) {
     }
 }
 
+/**
+ * Send a put request to edit a card with a specific id, then fetch all cards
+ * @param {*} action action.payload contains data and an id property for the card to update
+ */
 function* editCard(action) {
     try {
         const response = yield axios({
@@ -66,6 +68,24 @@ function* editCard(action) {
         console.error('Card EDIT failed:', error)
     }
 }
+
+/**
+ * Send a get request to receive one card by id from the server, and set the card reducer
+ * @param {*} action action.payload contains the id of the desired card
+ */
+function* fetchCard(action) {
+  try {
+    const cardID = action.payload;
+    const card = yield axios.get(`/api/cards/${cardID}`);
+    yield put({
+      type: 'SET_CARD',
+      payload: card.data
+    });
+  } catch (error) {
+    console.log('error in fetchCard:', error);
+  }
+    }
+
 
 /** This saga function sends a get for all current folders in google drive
  * It returns the folder and puts them in the cards reducer inside currentFolders
@@ -82,13 +102,13 @@ function* getCurrentFolders() {
   }
 }
 
-  function* cardSaga() {
-    yield takeLatest('SAGA/FETCH_CATEGORIES', fetchCategories);
-    yield takeLatest('SAGA/POST_CARD', postCard);
-    yield takeLatest('SAGA/FETCH_CARDS', fetchAllCards);
-    yield takeLatest('SAGA/DELETE_CARD', deleteCard);
-    yield takeLatest('SAGA/EDIT_CARD', editCard);
-    yield takeLatest('SAGA/GET_FOLDERS', getCurrentFolders)
-  }
+function* cardSaga() {
+  yield takeLatest('SAGA/POST_CARD', postCard);
+  yield takeLatest('SAGA/FETCH_CARDS', fetchAllCards);
+  yield takeLatest('SAGA/DELETE_CARD', deleteCard);
+  yield takeLatest('SAGA/EDIT_CARD', editCard);
+  yield takeLatest('SAGA/GET_FOLDERS', getCurrentFolders)
+  yield takeLatest('SAGA/FETCH_CARD', fetchCard);
+}
 
 export default cardSaga;
