@@ -4,31 +4,28 @@ const router = express.Router();
 const { google } = require('googleapis')
 const apikeys = require('../../googleDriveAPI.json')
 const SCOPE = ["https://www.googleapis.com/auth/drive"];
+const fs = require('fs')
 // const jwtClient = require('../modules/googleDriveAuth')
 
-router.get('/folders', (req, res) => {
+router.get('/folders', async (req, res) => {
   const jwtClient = new google.auth.JWT(
     apikeys.client_email,
     null,
     apikeys.private_key,
     SCOPE
-    ).authorize()
-  .then(() => {
-    console.log(authClient);
-    const drive = google.drive({version: 'v3', auth: authClient});
+    )
+  console.log("jwtClient before authorize", jwtClient);
+  await jwtClient.authorize()
+  console.log("jwtClient after authorize", jwtClient);
+    const drive = google.drive({version: 'v3', auth: jwtClient});
     const folders = [];
-    const res = drive.files.list({
+    const results = await drive.files.list({
       q: 'mimeType=\'application/vnd.google-apps.folder\'',
       fields: 'nextPageToken, files(id, name)',
       spaces: 'drive',
     });
-    console.log("this is the res of the drive list", res, "and this is the result", result);
-    Array.prototype.push.apply(folders, res.files);
-    res.send(result);
-  }) 
-   . catch (err => {
-    res.send("shit didn't work")
-  })
+    console.log("this is the result", results.data.files);
+    res.send(results.data.files);
 }
 )
 

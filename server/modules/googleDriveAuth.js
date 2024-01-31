@@ -11,5 +11,8 @@ async function authorize()
         apikeys.private_key,
         SCOPE
     )
+      console.log("jwtClient before authorize", jwtClient);
+      await jwtClient.authorize()
+    return jwtClient
 }
 module.exports = authorize;
