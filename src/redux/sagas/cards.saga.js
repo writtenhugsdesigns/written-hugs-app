@@ -67,6 +67,18 @@ function* editCard(action) {
     }
 }
 
+function* getCurrentFolders() {
+  try {
+    const folders = yield axios.get('/api/cards/folders');
+    yield put({
+      type: 'SET_FOLDERS',
+      payload: folders.data
+    });
+  } catch (error) {
+    console.log('fetchCategories error:', error);
+  }
+}
+
   function* cardSaga() {
     yield takeLatest('SAGA/FETCH_CATEGORIES', fetchCategories);
     yield takeLatest('SAGA/POST_CARD', postCard);

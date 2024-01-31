@@ -7,6 +7,11 @@ const SCOPE = ["https://www.googleapis.com/auth/drive"];
 const fs = require('fs')
 // const jwtClient = require('../modules/googleDriveAuth')
 
+/** This function first authorizes to google drive using the JWT api method
+ * Then it makes an api get call to google drive to fetch files of 
+ * the folder mimeType.  
+ * It returns the folders.
+ */
 router.get('/folders', async (req, res) => {
   const jwtClient = new google.auth.JWT(
     apikeys.client_email,
