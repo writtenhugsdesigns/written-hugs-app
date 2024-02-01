@@ -28,18 +28,15 @@ export default function CardPage() {
 
   return (
     <div className="container">
-      <button onClick = {() => history.push("/categories")}>Manage Categories</button>
-      <button onClick={() => history.push("/createCard")}>New Card</button>
-      Card Page
-      <tr>
-        <th>Variation Name</th>
-        <th>Date</th>
-        <th>Description</th>
-      </tr>
-      {dummyCards[0] &&
-        dummyCards.map((card) => {
-          return <CardList card={card} />;
-        })}
+      <div className = 'wholesalerBar'>
+        <h1>Card Variations</h1>
+        <div className = 'buttonGroup'>
+          <button className = 'pageButton' onClick = {() => history.push("/categories")}>Manage Categories</button>
+          <button className = 'pageButton' onClick = {() => history.push("/createCard")}>New Card</button>
+        </div>
+      </div>
+      
+      <CardList/>
     </div>
   );
 }
