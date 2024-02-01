@@ -1,6 +1,38 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { google } = require('googleapis')
+const apikeys = require('../../googleDriveAPI.json')
+const SCOPE = ["https://www.googleapis.com/auth/drive"];
+const fs = require('fs')
+// const jwtClient = require('../modules/googleDriveAuth')
+
+/** This function first authorizes to google drive using the JWT api method
+ * Then it makes an api get call to google drive to fetch files of 
+ * the folder mimeType.  
+ * It returns the folders.
+ */
+router.get('/folders', async (req, res) => {
+  const jwtClient = new google.auth.JWT(
+    apikeys.client_email,
+    null,
+    apikeys.private_key,
+    SCOPE
+    )
+  console.log("jwtClient before authorize", jwtClient);
+  await jwtClient.authorize()
+  console.log("jwtClient after authorize", jwtClient);
+    const drive = google.drive({version: 'v3', auth: jwtClient});
+    const folders = [];
+    const results = await drive.files.list({
+      q: 'mimeType=\'application/vnd.google-apps.folder\'',
+      fields: 'nextPageToken, files(id, name)',
+      spaces: 'drive',
+    });
+    console.log("this is the result", results.data.files);
+    res.send(results.data.files);
+}
+)
 
 router.get('/', (req, res) => {
     const queryText = `

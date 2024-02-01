@@ -20,7 +20,17 @@ const selectedCard = (state = {}, action) => {
   return state;
 };
 
+//This stores the current folders in google drive.
+//This is populated in an onEffect of the create new card page
+const currentFolders = (state = [], action) => {
+  if (action.type === 'SET_FOLDERS'){
+    return action.payload
+  } 
+  return state
+}
+
 export default combineReducers({
     cardsList,
-    selectedCard
+    selectedCard,
+    currentFolders
 });

@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import ViewCard from '../ViewCard/ViewCard';
+import { useEffect } from "react";
+
 
 export default function CardList({ card }) {
   const dispatch = useDispatch();
@@ -18,6 +20,8 @@ export default function CardList({ card }) {
     height: '100%',
     bgcolor: 'background.paper',
   };
+
+  const dispatch = useDispatch();
 
   const viewCard = () => {
     console.log("This will do pop up stuff Ig.");
