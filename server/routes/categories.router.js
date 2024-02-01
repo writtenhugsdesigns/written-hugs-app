@@ -71,7 +71,7 @@ router.delete("/:id", rejectUnauthenticated, (req, res) => {
       res.sendStatus(200);
     })
     .catch((err) => {
-      console.log("Error in categories PUT route,", err);
+      console.log("Error in categories DELETE route,", err);
       res.sendStatus(500);
     });
 });

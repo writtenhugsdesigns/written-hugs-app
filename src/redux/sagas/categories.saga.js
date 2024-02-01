@@ -42,7 +42,7 @@ function* editCategory(action) {
   try {
     const response = yield axios({
       method: "PUT",
-      url: `/api/category/${action.payload.id}`,
+      url: `/api/categories/${action.payload.id}`,
       data: action.payload.data,
     });
     yield fetchCategories();
