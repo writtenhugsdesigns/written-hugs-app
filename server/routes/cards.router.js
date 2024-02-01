@@ -5,6 +5,9 @@ const { google } = require('googleapis')
 const apikeys = require('../../googleDriveAPI.json')
 const SCOPE = ["https://www.googleapis.com/auth/drive"];
 const fs = require('fs')
+const multer = require('multer');
+const uploadHandler = multer();
+const MulterGoogleCloudStorage = require('multer-cloud-storage');
 // const jwtClient = require('../modules/googleDriveAuth')
 
 /** This function first authorizes to google drive using the JWT api method
@@ -19,9 +22,9 @@ router.get('/folders', async (req, res) => {
     apikeys.private_key,
     SCOPE
     )
-  console.log("jwtClient before authorize", jwtClient);
+//   console.log("jwtClient before authorize", jwtClient);
   await jwtClient.authorize()
-  console.log("jwtClient after authorize", jwtClient);
+//   console.log("jwtClient after authorize", jwtClient);
     const drive = google.drive({version: 'v3', auth: jwtClient});
     const folders = [];
     const results = await drive.files.list({
@@ -55,49 +58,91 @@ router.get('/', (req, res) => {
         })
 });
 
-router.post('/', (req, res) => {
-    const queryText = `
-    INSERT INTO "cards" 
-    ("name", "vendor_style", "description", "upc", "sku", "barcode", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "raw_art", "sticker_id")
-    VALUES 
-      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
-      RETURNING "id";
-    `;
-    const queryValues = [
-        req.body.name,
-        req.body.vendor_style,
-        req.body.description,
-        req.body.upc,
-        req.body.sku,
-        req.body.barcode,
-        req.body.front_img,
-        req.body.front_tiff,
-        req.body.inner_img,
-        req.body.insert_img,
-        req.body.insert_ai,
-        req.body.raw_art,
-        req.body.sticker_jpeg,
-        req.body.sticker_pdf
-    ];
-    pool.query(queryText, queryValues)
-        .then(result => {
-            const card_id = result.rows[0].id
-            const categoriesArray = req.body.categoriesArray
-            const insertCardsCategoriesQuery = newCardsCategoriesQuery(categoriesArray, card_id);
-            // SECOND QUERY ADDS categories FOR THAT NEW card
-            pool.query(insertCardsCategoriesQuery)
-                .then(result => {
-                    //Now that both are done, send back success!
-                    res.sendStatus(201);
-                }).catch(err => {
-                    // catch for second query
-                    console.log(err);
-                    res.sendStatus(500)
-                })
-        }).catch(err => { // 👈 Catch for first query
-            console.log(err);
-            res.sendStatus(500)
+router.post('/', uploadHandler.single('front_img'), async (req, res) => {
+    console.log(req);
+    const folderName = req.body.vendor_style + " " + req.body.name;
+   
+    //This creates an authentication token
+    const jwtClient = new google.auth.JWT(
+        apikeys.client_email,
+        null,
+        apikeys.private_key,
+        SCOPE
+        )
+      console.log("jwtClient before authorize", jwtClient);
+      await jwtClient.authorize()
+    const drive = google.drive({version: 'v3', auth: jwtClient});
+    
+    //This is the metadata to setup the card variant folder
+    let fileMetaData = {
+            name: folderName,
+            parents: ["1wG6GeFUgvvh-8GOHw1NhlfRPUUDfP2H_"],
+            mimeType: 'application/vnd.google-apps.folder'
+        }
+
+    //This creates the folder for the card variant    
+    const folderResponse = await drive.files.create({
+            resource:fileMetaData,
+            fields: 'id'
         })
+    const folderID = folderResponse.data.id;
+
+    let frontImgMetaData = {
+        name: folderName + " FRONT Image",
+        parents: [folderID]
+    }
+    const frontImageResponse = await drive.files.create({
+        resource:frontImgMetaData,
+        media:{
+            body: fs.createReadStream(req.file.buffer),
+            mimeType: 'image/jpeg'
+        },
+        fields: 'id'
+    }).data.id
+
+    console.log(frontImageResponse);
+    // const queryText = `
+    // INSERT INTO "cards" 
+    // ("name", "vendor_style", "description", "upc", "sku", "barcode", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "raw_art", "sticker_id")
+    // VALUES 
+    //   ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+    //   RETURNING "id";
+    // `;
+    // const queryValues = [
+    //     req.body.name,
+    //     req.body.vendor_style,
+    //     req.body.description,
+    //     req.body.upc,
+    //     req.body.sku,
+    //     req.body.barcode,
+    //     req.body.front_img,
+    //     req.body.front_tiff,
+    //     req.body.inner_img,
+    //     req.body.insert_img,
+    //     req.body.insert_ai,
+    //     req.body.raw_art,
+    //     req.body.sticker_jpeg,
+    //     req.body.sticker_pdf
+    // ];
+    // pool.query(queryText, queryValues)
+    //     .then(result => {
+    //         const card_id = result.rows[0].id
+    //         const categoriesArray = req.body.categoriesArray
+    //         const insertCardsCategoriesQuery = newCardsCategoriesQuery(categoriesArray, card_id);
+    //         // SECOND QUERY ADDS categories FOR THAT NEW card
+    //         pool.query(insertCardsCategoriesQuery)
+    //             .then(result => {
+    //                 //Now that both are done, send back success!
+    //                 res.sendStatus(201);
+    //             }).catch(err => {
+    //                 // catch for second query
+    //                 console.log(err);
+    //                 res.sendStatus(500)
+    //             })
+    //     }).catch(err => { // 👈 Catch for first query
+    //         console.log(err);
+    //         res.sendStatus(500)
+    //     })
 })
 
 router.put('/:id', (req, res) => {

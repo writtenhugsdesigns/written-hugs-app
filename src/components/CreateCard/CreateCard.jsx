@@ -100,7 +100,7 @@ export default function CreateCard() {
           value={variationName}
           label="Variation Name"
           placeholder="Variation Name"
-          onChange={() => setVariationName(event.target.value)}
+          onChange={(event) => setVariationName(event.target.value)}
           id="variation"
         />
         <br></br>
@@ -109,7 +109,7 @@ export default function CreateCard() {
           value={UPCNumber}
           label="UPC Number"
           placeholder="UPC Number"
-          onChange={() => setUPCNumber(event.target.value)}
+          onChange={(event) => setUPCNumber(event.target.value)}
           id="UPCNumber"
         />
         <br></br>
@@ -118,7 +118,7 @@ export default function CreateCard() {
           value={vendorStyle}
           label="Vendor Style"
           placeholder="Vendor Style"
-          onChange={() => setVendorStyle(event.target.value)}
+          onChange={(event) => setVendorStyle(event.target.value)}
           id="vendorStyle"
         />
         <p>Categories</p>
@@ -140,8 +140,7 @@ export default function CreateCard() {
         <input
           id="barcode"
           type="file"
-          value={barcode}
-          onChange={() => {
+          onChange={(event) => {
             setBarcode(event.target.files);
           }}
         />
@@ -149,8 +148,7 @@ export default function CreateCard() {
         <input
           id="frontImg"
           type="file"
-          value={frontImg}
-          onChange={() => {
+          onChange={(event) => {
             setFrontImg(event.target.files);
           }}
         />
@@ -158,8 +156,7 @@ export default function CreateCard() {
         <input
           id="insideImg"
           type="file"
-          value={insideImg}
-          onChange={() => {
+          onChange={(event) => {
             setInsideImg(event.target.files);
           }}
         />
@@ -167,8 +164,7 @@ export default function CreateCard() {
         <input
           id="insertImg"
           type="file"
-          value={insertImg}
-          onChange={() => {
+          onChange={(event) => {
             setInsertImg(event.target.files);
           }}
         />
@@ -176,8 +172,7 @@ export default function CreateCard() {
         <input
           id="insertAi"
           type="file"
-          value={insertAi}
-          onChange={() => {
+          onChange={(event) => {
             setInsertAi(event.target.files);
           }}
         />
@@ -185,17 +180,15 @@ export default function CreateCard() {
         <input
           id="stickerImg"
           type="file"
-          value={stickerImg}
-          onChange={() => {
-            setSticker(event.target.files);
+          onChange={(event) => {
+            setStickerImg(event.target.files);
           }}
         />
         <label for="stickerPdf">Sticker Pdf: </label>
         <input
           id="stickerPdf"
           type="file"
-          value={stickerPdf}
-          onChange={() => {
+          onChange={(event) => {
             setStickerPdf(event.target.files);
           }}
         />
@@ -203,8 +196,7 @@ export default function CreateCard() {
         <input
           id="tiffFile"
           type="file"
-          value={TIFFFile}
-          onChange={() => {
+          onChange={(event) => {
             setTIFFFile(event.target.files);
           }}
         />
@@ -212,8 +204,7 @@ export default function CreateCard() {
         <input
           id="AIfile"
           type="file"
-          value={AIFile}
-          onChange={() => {
+          onChange={(event) => {
             setAIFile(event.target.files);
           }}
         />
