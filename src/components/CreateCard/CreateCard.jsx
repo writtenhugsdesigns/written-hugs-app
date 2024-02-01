@@ -9,16 +9,19 @@ export default function CreateCard() {
   //This use effect triggers the saga "getCurrentFolders"
   //After this is triggered a useSelector will get the current folders array
   //and save it in a local array
-  useEffect(()=> {
+  useEffect(() => {
     dispatch({
-      type: 'SAGA/GET_FOLDERS'
+      type: "SAGA/GET_FOLDERS",
     });
     dispatch({
       type: "SAGA/FETCH_CATEGORIES",
     });
   }, []);
 
-  const currentFoldersArray = useSelector(store => (store.currentFolders))
+  const currentFoldersArray = useSelector(
+    (store) => store.cardsReducer.currentFolders
+  );
+  const databaseCategories = useSelector((store) => store.categoriesReducer);
 
   let [variationName, setVariationName] = useState(null);
   let [UPCNumber, setUPCNumber] = useState(null);
@@ -30,8 +33,6 @@ export default function CreateCard() {
   let [sticker, setSticker] = useState(null);
   let [TIFFFile, setTIFFFile] = useState(null);
   let [AIFile, setAIFile] = useState(null);
-
-  const dummyCategories = useSelector((store) => store.categoriesReducer);
 
   /**
    * Get  the user selected category ids
@@ -50,17 +51,25 @@ export default function CreateCard() {
 
   // User hits submit button, POSTs a new card, redirects back to /cards
   const handleSubmit = (e) => {
-    console.log("In handleSubmit");
     e.preventDefault();
-    // Do the dispatch
-    // history.push("/cards");
-    console.log(
-      variationName,
-      UPCNumber,
-      vendorStyle,
-      barcode,
-      getCategories()
+    const sameName = currentFoldersArray.find(
+      (index) => index.name === variationName
     );
+
+    if (sameName) {
+      alert("same name!");
+    } else {
+      // Do the dispatch
+      // history.push("/cards");
+      console.log(
+        currentFoldersArray,
+        variationName,
+        UPCNumber,
+        vendorStyle,
+        barcode,
+        getCategories()
+      );
+    }
   };
 
   return (
@@ -93,8 +102,8 @@ export default function CreateCard() {
           id="vendorStyle"
         />
         <p>Categories</p>
-        {dummyCategories.categories &&
-          dummyCategories.categories.map((category) => {
+        {databaseCategories.categories &&
+          databaseCategories.categories.map((category) => {
             return (
               <div>
                 {category.name}
