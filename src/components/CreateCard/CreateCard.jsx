@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 export default function CreateCard() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const newCardToSend = new FormData();
 
   //This use effect triggers the saga "getCurrentFolders"
   //After this is triggered a useSelector will get the current folders array
@@ -26,14 +27,17 @@ export default function CreateCard() {
   let [variationName, setVariationName] = useState(null);
   let [UPCNumber, setUPCNumber] = useState(null);
   let [vendorStyle, setVendorStyle] = useState(null);
-  let [barcode, setBarcode] = useState(null);
-  let [front, setFront] = useState(null);
-  let [insideInsertion, setInsideInsertion] = useState(null);
-  let [insert, setInsert] = useState(null);
-  let [sticker, setSticker] = useState(null);
-  let [TIFFFile, setTIFFFile] = useState(null);
-  let [AIFile, setAIFile] = useState(null);
+  let [barcode, setBarcode] = useState([]);
+  let [frontImg, setFrontImg] = useState([]);
+  let [insideImg, setInsideImg] = useState([]);
+  let [insertImg, setInsertImg] = useState([]);
+  let [insertAi, setInsertAi] = useState([]);
+  let [stickerImg, setStickerImg] = useState([]);
+  let [stickerPdf, setStickerPdf] = useState([]);
+  let [TIFFFile, setTIFFFile] = useState([]);
+  let [AIFile, setAIFile] = useState([]);
 
+  const folderName = vendorStyle + " " + variationName;
   /**
    * Get  the user selected category ids
    * @returns an array of the ids of the checked categories
@@ -49,16 +53,32 @@ export default function CreateCard() {
     return values;
   };
 
-  // User hits submit button, POSTs a new card, redirects back to /cards
+  // User hits submit button, checks if the variant name matches current folders in google drive,
+  //POSTs a new card, redirects back to /cards
   const handleSubmit = (e) => {
     e.preventDefault();
     const sameName = currentFoldersArray.find(
-      (index) => index.name === variationName
+      (index) => index.name === folderName
     );
 
     if (sameName) {
       alert("same name!");
     } else {
+    newCardToSend.append("front_img", frontImg[0]);
+    newCardToSend.append("front_tiff", TIFFFile[0]);
+    newCardToSend.append("inner_img", insideImg[0]);
+    newCardToSend.append("insert_img", insertImg[0]);
+    newCardToSend.append("insert_ai", insertAi[0]);
+    newCardToSend.append("sticker_jpeg", stickerImg[0]);
+    newCardToSend.append("sticker_pdf", stickerPdf[0]);
+    newCardToSend.append("upc", UPCNumber);
+    newCardToSend.append("vendor_style", vendorStyle);
+    newCardToSend.append("name", variationName);
+    dispatch({
+      type: "SAGA/POST_CARD",
+      payload: newCardToSend
+    })
+
       // Do the dispatch
       // history.push("/cards");
       console.log(
@@ -116,49 +136,67 @@ export default function CreateCard() {
               </div>
             );
           })}
-        <label for="barcode">Barcode: </label>
+        <label for="barcode">Barcode Image: </label>
         <input
           id="barcode"
           type="file"
           value={barcode}
           onChange={() => {
-            setBarcode(event.target.value);
+            setBarcode(event.target.files);
           }}
         />
-        <label for="front">Front: </label>
+        <label for="frontImg">Front Image: </label>
         <input
-          id="front"
+          id="frontImg"
           type="file"
-          value={front}
+          value={frontImg}
           onChange={() => {
-            setFront(event.target.value);
+            setFrontImg(event.target.files);
           }}
         />
-        <label for="insideInsertion">Inside Insertion: </label>
+        <label for="insideImg">Inside Image: </label>
         <input
-          id="insideInsertion"
+          id="insideImg"
           type="file"
-          value={insideInsertion}
+          value={insideImg}
           onChange={() => {
-            setInsideInsertion(event.target.value);
+            setInsideImg(event.target.files);
           }}
         />
-        <label for="insert">Insert: </label>
+        <label for="insertImg">Insert Image: </label>
         <input
-          id="insert"
+          id="insertImg"
           type="file"
-          value={insert}
+          value={insertImg}
           onChange={() => {
-            setInsert(event.target.value);
+            setInsertImg(event.target.files);
           }}
         />
-        <label for="sticker">sticker: </label>
+        <label for="insertAi">Insert AI File: </label>
         <input
-          id="sticker"
+          id="insertAi"
           type="file"
-          value={sticker}
+          value={insertAi}
           onChange={() => {
-            setSticker(event.target.value);
+            setInsertAi(event.target.files);
+          }}
+        />
+        <label for="stickerImg">Sticker Image: </label>
+        <input
+          id="stickerImg"
+          type="file"
+          value={stickerImg}
+          onChange={() => {
+            setSticker(event.target.files);
+          }}
+        />
+        <label for="stickerPdf">Sticker Pdf: </label>
+        <input
+          id="stickerPdf"
+          type="file"
+          value={stickerPdf}
+          onChange={() => {
+            setStickerPdf(event.target.files);
           }}
         />
         <label for="tiffFile">TIFF File: </label>
@@ -167,7 +205,7 @@ export default function CreateCard() {
           type="file"
           value={TIFFFile}
           onChange={() => {
-            setTIFFFile(event.target.value);
+            setTIFFFile(event.target.files);
           }}
         />
         <label for="AIfile">AI File: </label>
@@ -176,7 +214,7 @@ export default function CreateCard() {
           type="file"
           value={AIFile}
           onChange={() => {
-            setAIFile(event.target.value);
+            setAIFile(event.target.files);
           }}
         />
         Create Card
