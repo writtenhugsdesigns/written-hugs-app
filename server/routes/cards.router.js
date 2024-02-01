@@ -2,22 +2,6 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
-router.get('/categories', (req, res) => {
-    const queryText = `
-      SELECT * FROM "categories"
-        ORDER BY "name" ASC;
-    `;
-    pool.query(queryText)
-        .then(result => {
-            res.send(result.rows);
-        })
-        .catch(err => {
-            console.log('ERROR: Get all categories', err);
-            res.sendStatus(500)
-        })
-
-});
-
 router.get('/', (req, res) => {
     const queryText = `
     SELECT cards.id, cards.name, cards.vendor_style, cards.upc, cards.sku, cards.barcode, cards.front_img, cards.front_tiff, cards.inner_img, cards.insert_img, cards.insert_ai, cards.raw_art, cards.sticker_jpeg, cards.sticker_pdf, categories.id as category_id, categories.name as category_name

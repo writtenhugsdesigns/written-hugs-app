@@ -28,6 +28,7 @@ export default function CardPage() {
 
   return (
     <div className="container">
+      <button onClick = {() => history.push("/categories")}>Manage Categories</button>
       <button onClick={() => history.push("/createCard")}>New Card</button>
       Card Page
       <tr>

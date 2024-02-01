@@ -8,11 +8,11 @@ export default function WholesalersList(){
     const history = useHistory();
     const dispatch = useDispatch();
     const wholesalers = useSelector(store => store.wholesalersReducer.wholesalers);
+    
     // Local state for the current page in the table, and the amount of data per page
     const [page, setPage] = useState(0);
 
     useEffect(() => {dispatch({type: 'SAGA/FETCH_WHOLESALERS'})}, []);
-    console.log(wholesalers);
 
     return (
         <div className = 'container'>
