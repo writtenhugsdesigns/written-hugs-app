@@ -1,8 +1,22 @@
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function CreateCard() {
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  //This use effect triggers the saga "getCurrentFolders"
+  //After this is triggered a useSelector will get the current folders array
+  //and save it in a local array
+  useEffect(()=> {
+    console.log("getting folders of current card variants");
+    dispatch({
+      type: 'SAGA/GET_FOLDERS'
+    }),[]
+  })
+  const currentFoldersArray = useSelector(store => (store.currentFolders))
+  console.log("this is the array of current folders", currentFoldersArray);
 
   let [variationName, setVariationName] = useState(null);
   let [UPCNumber, setUPCNumber] = useState(null);

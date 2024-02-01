@@ -16,6 +16,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
+    "google-auth-library": "^9.6.0",
     "googleapis": "^131.0.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",

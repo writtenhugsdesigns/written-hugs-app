@@ -1,16 +1,18 @@
 import Reach, {useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow, TableContainer, TablePagination } from "@mui/material";
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
+import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow, TableContainer, TablePagination, Box, Modal } from "@mui/material";
 import ViewCard from '../ViewCard/ViewCard';
 
 export default function CardList() {
   const dispatch = useDispatch();
+
   const cards = useSelector(store => store.cardsReducer.cardsList);
 
-  useEffect(() => {dispatch({type: 'SAGA/FETCH_CARDS'})}, []);
   const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {dispatch({type: 'SAGA/FETCH_CARDS'})}, []);
 
   // Style for MUI box in Modal
   const style = {
@@ -25,11 +27,6 @@ export default function CardList() {
     bgcolor: 'background.paper',
   };
 
-  // These two functions toggle the modal open and closed
-  const handleOpen = () => setOpen(true);
-
-  const handleClose = () => setOpen(false);
-  
   const viewCard = (x) => {
     handleOpen()
     dispatch({
@@ -99,9 +96,7 @@ export default function CardList() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <button onClick={handleClose}>Back</button>
-          <ViewCard />
-          <button onClick={handleClose}>Back</button>
+          <ViewCard handleClose={handleClose} />
         </Box>
       </Modal>
     </div>

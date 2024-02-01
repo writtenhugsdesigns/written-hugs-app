@@ -84,6 +84,22 @@ function* fetchCard(action) {
   } catch (error) {
     console.log('error in fetchCard:', error);
   }
+    }
+
+
+/** This saga function sends a get for all current folders in google drive
+ * It returns the folder and puts them in the cards reducer inside currentFolders
+ */
+function* getCurrentFolders() {
+  try {
+    const folders = yield axios.get('/api/cards/folders');
+    yield put({
+      type: 'SET_FOLDERS',
+      payload: folders.data
+    });
+  } catch (error) {
+    console.log('fetchCategories error:', error);
+  }
 }
 
 function* cardSaga() {
@@ -91,6 +107,7 @@ function* cardSaga() {
   yield takeLatest('SAGA/FETCH_CARDS', fetchAllCards);
   yield takeLatest('SAGA/DELETE_CARD', deleteCard);
   yield takeLatest('SAGA/EDIT_CARD', editCard);
+  yield takeLatest('SAGA/GET_FOLDERS', getCurrentFolders)
   yield takeLatest('SAGA/FETCH_CARD', fetchCard);
 }
 
