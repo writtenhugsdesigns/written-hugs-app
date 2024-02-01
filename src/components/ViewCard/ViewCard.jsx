@@ -20,14 +20,14 @@ export default function ViewCard({handleClose}) {
         <div className="container">
             <h2>Name: {selectedCard.name}</h2>
             <p>Description: {selectedCard.description}</p>
-            <p>Front Image:</p><img src={selectedCard.front_img} />
-            <p>Front Tiff:</p><img src={selectedCard.front_tiff} />
-            <p>Inner Image:</p><img src={selectedCard.inner_img} />
-            <p>Insert Image:</p><img src={selectedCard.insert_image} />
-            <button onClick={editCardText}>Edit Card Text</button>
-            <button onClick={editCardFiles}>Edit Card Files</button>
-            <button onClick={deleteCard}>Delete</button>
-            <button onClick={handleClose}>Back</button>
+            <p>Front Image:</p><img src={selectedCard.front_img.display} />
+            <p>Inner Image:</p><img src={selectedCard.inner_img.display} />
+            <p>Insert Image:</p><img src={selectedCard.insert_img.display} />
+            <p>Sticker Image:</p><img src={selectedCard.sticker_jpeg.display} />
+            <button className = 'pageButton' onClick={editCardText}>Edit Card Text</button>
+            <button className = 'pageButton' onClick={editCardFiles}>Edit Card Files</button>
+            <button className = 'pageButton' onClick={deleteCard}>Delete</button>
+            <button className = 'pageButton' onClick={handleClose}>Back</button>
         </div>
     )
 }
