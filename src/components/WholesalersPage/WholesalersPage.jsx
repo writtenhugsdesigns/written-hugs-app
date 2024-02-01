@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import WholesalersList from "../WholesalersList/WholesalersList";
 import Modal from '@mui/material/Modal';
@@ -8,7 +8,7 @@ import CreateWholesaler from '../CreateWholesaler/CreateWholesaler'
 
 export default function WholesalersPage() {
     const history = useHistory();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const style = {

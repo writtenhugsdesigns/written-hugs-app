@@ -5,9 +5,7 @@ export default function CreateWholesaler({handleClose}) {
     const history = useHistory();
     let [wholesalerName, setWholesalerName] = useState('');
 
-
-
-    // User hits submit button, POSTs a new card, redirects back to /cards
+    // User hits submit button, POSTs a new wholesaler, closes modal
     const handleSubmit = (e) => {
         console.log("In handleSubmit");
         e.preventDefault();
@@ -18,6 +16,7 @@ export default function CreateWholesaler({handleClose}) {
             wholesalerName,
         );
     };
+
     return (
         <div className='container'>
             Create Wholesaler
