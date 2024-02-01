@@ -15,6 +15,12 @@
     align-self: center;
 }
 
+.buttonGroup {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+}
+
 button:hover {
     cursor: pointer;
     transform: scale(1.2);

@@ -1,26 +1,42 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { google } = require('googleapis')
+const apikeys = require('../../googleDriveAPI.json')
+const SCOPE = ["https://www.googleapis.com/auth/drive"];
+const fs = require('fs')
+// const jwtClient = require('../modules/googleDriveAuth')
 
-router.get('/categories', (req, res) => {
-    const queryText = `
-      SELECT * FROM "categories"
-        ORDER BY "name" ASC;
-    `;
-    pool.query(queryText)
-        .then(result => {
-            res.send(result.rows);
-        })
-        .catch(err => {
-            console.log('ERROR: Get all categories', err);
-            res.sendStatus(500)
-        })
-
-});
+/** This function first authorizes to google drive using the JWT api method
+ * Then it makes an api get call to google drive to fetch files of 
+ * the folder mimeType.  
+ * It returns the folders.
+ */
+router.get('/folders', async (req, res) => {
+  const jwtClient = new google.auth.JWT(
+    apikeys.client_email,
+    null,
+    apikeys.private_key,
+    SCOPE
+    )
+  console.log("jwtClient before authorize", jwtClient);
+  await jwtClient.authorize()
+  console.log("jwtClient after authorize", jwtClient);
+    const drive = google.drive({version: 'v3', auth: jwtClient});
+    const folders = [];
+    const results = await drive.files.list({
+      q: 'mimeType=\'application/vnd.google-apps.folder\'',
+      fields: 'nextPageToken, files(id, name)',
+      spaces: 'drive',
+    });
+    console.log("this is the result", results.data.files);
+    res.send(results.data.files);
+}
+)
 
 router.get('/', (req, res) => {
     const queryText = `
-    SELECT cards.id, cards.name, cards.vendor_style, cards.upc, cards.sku, cards.barcode, cards.front_img, cards.front_tiff, cards.inner_img, cards.insert_img, cards.insert_ai, cards.raw_art, cards.sticker_jpeg, cards.sticker_pdf, categories.id as category_id, categories.name as category_name
+    SELECT cards.id, cards.name, cards.description, cards.vendor_style, cards.upc, cards.sku, cards.barcode, cards.front_img, cards.front_tiff, cards.inner_img, cards.insert_img, cards.insert_ai, cards.raw_art, cards.sticker_jpeg, cards.sticker_pdf, categories.id as category_id, categories.name as category_name
     FROM cards
     JOIN cards_categories
     ON cards.id = cards_categories.card_id
@@ -183,6 +199,7 @@ function formatCards(all) {
         let cardsArray = [{
             card_id: all[0].card_id,
             name: all[0].name,
+            description: all[0].description,
             vendor_style: all[0].vendor_style,
             upc: all[0].upc,
             sku: all[0].sku,

@@ -2,21 +2,6 @@ import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
 /**
- * Send a get request to receive all card categories and set the categories reducer
- */
-function* fetchCategories() {
-    try {
-      const Categories = yield axios.get('/api/categories');
-      yield put({
-        type: 'SET_CATEGORIES',
-        payload: Categories.data
-      });
-    } catch (error) {
-      console.log('fetchCategories error:', error);
-    }
-}
-
-/**
  * Send a get request to receive all cards and set the cards reducer
  */
 function* fetchAllCards() {
@@ -99,14 +84,30 @@ function* fetchCard(action) {
   } catch (error) {
     console.log('error in fetchCard:', error);
   }
+    }
+
+
+/** This saga function sends a get for all current folders in google drive
+ * It returns the folder and puts them in the cards reducer inside currentFolders
+ */
+function* getCurrentFolders() {
+  try {
+    const folders = yield axios.get('/api/cards/folders');
+    yield put({
+      type: 'SET_FOLDERS',
+      payload: folders.data
+    });
+  } catch (error) {
+    console.log('fetchCategories error:', error);
+  }
 }
 
 function* cardSaga() {
-  yield takeLatest('SAGA/FETCH_CATEGORIES', fetchCategories);
   yield takeLatest('SAGA/POST_CARD', postCard);
   yield takeLatest('SAGA/FETCH_CARDS', fetchAllCards);
   yield takeLatest('SAGA/DELETE_CARD', deleteCard);
   yield takeLatest('SAGA/EDIT_CARD', editCard);
+  yield takeLatest('SAGA/GET_FOLDERS', getCurrentFolders)
   yield takeLatest('SAGA/FETCH_CARD', fetchCard);
 }
 
