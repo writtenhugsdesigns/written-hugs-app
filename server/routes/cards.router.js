@@ -204,13 +204,13 @@ function formatCards(all) {
             upc: all[0].upc,
             sku: all[0].sku,
             barcode: all[0].barcode,
-            front_img: all[0].front_img,
+            front_img: {raw: all[0].front_img},
             front_tiff: all[0].front_tiff,
-            inner_img: all[0].inner_img,
-            insert_img: all[0].insert_img,
+            inner_img: {raw: all[0].inner_img},
+            insert_img: {raw: all[0].insert_img},
             insert_ai: all[0].insert_ai,
             raw_art: all[0].raw_art,
-            sticker_jpeg: all[0].sticker_jpeg,
+            sticker_jpeg: {raw: all[0].sticker_jpeg},
             sticker_pdf: all[0].sticker_pdf,
             categoriesArray: [{
                 category_name: all[0].category_name,
@@ -228,13 +228,13 @@ function formatCards(all) {
                     upc: all[i].upc,
                     sku: all[i].sku,
                     barcode: all[i].barcode,
-                    front_img: all[i].front_img,
+                    front_img: {raw: all[i].front_img},
                     front_tiff: all[i].front_tiff,
-                    inner_img: all[i].inner_img,
-                    insert_img: all[i].insert_img,
+                    inner_img: {raw: all[i].inner_img},
+                    insert_img: {raw: all[i].insert_img},
                     insert_ai: all[i].insert_ai,
                     raw_art: all[i].raw_art,
-                    sticker_jpeg: all[i].sticker_jpeg,
+                    sticker_jpeg: {raw: all[i].sticker_jpeg},
                     sticker_pdf: all[i].sticker_pdf,
                     categoriesArray: []
                 })
@@ -250,8 +250,28 @@ function formatCards(all) {
                 }
             }
         }
+
+        // After getting all cards in cardsArray, we must format the urls for displaying
+        for(let i = 0; i < cardsArray.length; i++){
+            //front_img
+            cardsArray[i].front_img.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].front_img.raw)}`;
+            //inner_img
+            cardsArray[i].inner_img.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].inner_img.raw)}`;
+            //insert_img
+            cardsArray[i].insert_img.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].insert_img.raw)}`;
+            //sticker_jpeg
+            cardsArray[i].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].sticker_jpeg.raw)}`;
+        }
         return cardsArray
     }
+}
+
+/**
+ * this function takes in a file's raw google drive url, and extracts the file ID
+ * returns a string representing the id
+ */
+function extractID(rawURL){
+    return rawURL.substring(32, rawURL.length-17);
 }
 
 /**  

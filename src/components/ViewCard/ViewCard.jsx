@@ -1,33 +1,70 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
+import { Button } from "@mui/material";
+import { ArrowBackIos, AddCircleOutline } from "@mui/icons-material";
+import "./ViewCard.css";
 
-export default function ViewCard({handleClose}) {
-    const selectedCard = useSelector(store => store.cardsReducer.selectedCard);
+export default function ViewCard({ handleClose }) {
+  const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
 
-    const editCardText = () => {
-        console.log("This will do pop up stuff for edit.");
-    };
+  const editCardText = () => {
+    console.log("This will do pop up stuff for edit.");
+  };
 
-    const editCardFiles = () => {
-        console.log("This will do pop up stuff for edit.");
-    };
+  const editCardFiles = () => {
+    console.log("This will do pop up stuff for edit.");
+  };
 
-    const deleteCard = () => {
-        console.log("BEGONE THINGY WITH card", selectedCard.id);
-    };
+  const deleteCard = () => {
+    console.log("BEGONE THINGY WITH card", selectedCard.id);
+  };
 
-    return (
-        <div className="container">
-            <h2>Name: {selectedCard.name}</h2>
-            <p>Description: {selectedCard.description}</p>
-            <p>Front Image:</p><img src={selectedCard.front_img} />
-            <p>Front Tiff:</p><img src={selectedCard.front_tiff} />
-            <p>Inner Image:</p><img src={selectedCard.inner_img} />
-            <p>Insert Image:</p><img src={selectedCard.insert_image} />
-            <button onClick={editCardText}>Edit Card Text</button>
-            <button onClick={editCardFiles}>Edit Card Files</button>
-            <button onClick={deleteCard}>Delete</button>
-            <button onClick={handleClose}>Back</button>
+  return (
+    <div className="modalContainer">
+      <Button
+        variant="outlined"
+        startIcon={<ArrowBackIos />}
+        onClick={handleClose}
+      >
+        Back
+      </Button>
+      <h1>{selectedCard.name}</h1>
+      <p>{selectedCard.description}</p>
+      <p>
+        Categories:
+        {selectedCard.categoriesArray.map((x) => {
+          return <span className="tag">{x.category_name}</span>;
+        })}
+        <Button>
+          <AddCircleOutline />
+        </Button>
+      </p>
+      <div className="imgPageContainer">
+        <div className="imgLeft">
+          <img className="frontImg" src={selectedCard.front_img.display} />
         </div>
-    )
+        <div className="imgRight">
+          <p>Inner Image:</p>
+          <img src={selectedCard.inner_img.display} />
+          <p>Insert Image:</p>
+          <img src={selectedCard.insert_img.display} />
+          <p>Sticker Image:</p>
+          <img src={selectedCard.sticker_jpeg.display} />
+        </div>
+      </div>
+      <div>
+        <Button variant="outlined" onClick={editCardText}>
+          Edit Card Info
+        </Button>
+        <span> </span>
+        <Button variant="outlined" onClick={editCardFiles}>
+          Edit Card Files
+        </Button>
+      </div>
+      <br />
+      <Button variant="contained" color="error" onClick={deleteCard}>
+        Delete Card
+      </Button>
+    </div>
+  );
 }

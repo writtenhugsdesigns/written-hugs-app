@@ -1,38 +1,52 @@
-import Reach, {useState, useEffect} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow, TableContainer, TablePagination, Box, Modal } from "@mui/material";
-import ViewCard from '../ViewCard/ViewCard';
+import Reach, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  TablePagination,
+  Box,
+  Modal,
+} from "@mui/material";
+import ViewCard from "../ViewCard/ViewCard";
 
 export default function CardList() {
   const dispatch = useDispatch();
 
-  const cards = useSelector(store => store.cardsReducer.cardsList);
+  const cards = useSelector((store) => store.cardsReducer.cardsList);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  useEffect(() => {dispatch({type: 'SAGA/FETCH_CARDS'})}, []);
+  useEffect(() => {
+    dispatch({ type: "SAGA/FETCH_CARDS" });
+  }, []);
 
   // Style for MUI box in Modal
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    overflow: 'auto',
-    display: 'block',
-    width: '90vw',
-    height: '90vh',
-    bgcolor: 'background.paper',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    overflow: "auto",
+    display: "block",
+    width: "90vw",
+    height: "90vh",
+    bgcolor: "background.paper",
   };
 
   const viewCard = (x) => {
-    handleOpen()
+    handleOpen();
     dispatch({
-      type: 'SET_CARD',
-      payload: x
-    })
+      type: "SET_CARD",
+      payload: x,
+    });
   };
 
   const editCard = () => {
@@ -44,50 +58,54 @@ export default function CardList() {
   };
 
   return (
-    <div className = 'container'>
-      <Paper sx={{width: '100%', overflow: 'hidden'}}>
-                <TableContainer>
-                    <Table stickyheader aria-label='sticky table'>
-                        <TableHead >
-                            <TableRow>
-                                <TableCell>Card Name</TableCell>
-                                <TableCell>Description</TableCell>
-                                <TableCell>Categories</TableCell>
-                                <TableCell>Preview</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {cards && cards.map((x) => (
-                                <TableRow hover role='checkbox' tabIndex={-1} key = {x.id}>
-                                    <TableCell>
-                                        {x.name}
-                                    </TableCell>
-                                    <TableCell>
-                                        {x.description}
-                                    </TableCell>
-                                    <TableCell>
-                                        {x.categoriesArray.map((y) => {
-                                          return <span key={y.category_id}>{y.category_name}, </span>
-                                        })}
-                                    </TableCell>
-                                    <TableCell>
-                                      <img src={x.front_img}/>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button onClick = {() => viewCard(x)} variant='outlined'>View</Button>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button variant='outlined'>Edit</Button>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button variant='outlined' color='error'>Delete</Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
+    <div className="container">
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer>
+          <Table stickyheader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Card Name</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Categories</TableCell>
+                <TableCell>Preview</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {cards &&
+                cards.map((x) => (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={x.id}>
+                    <TableCell>{x.name}</TableCell>
+                    <TableCell>{x.description}</TableCell>
+                    <TableCell>
+                      <div className = 'tagContainer'>
+                        {x.categoriesArray.map((y) => {
+                          return (
+                            <span className='tag' key={y.category_id}>{y.category_name}</span>
+                          );
+                        })}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <img width='180em' src={x.front_img.display} />
+                    </TableCell>
+                    <TableCell>
+                      <Button onClick={() => viewCard(x)} variant="contained">
+                        View
+                      </Button>
+                      <span> </span>
+                      <Button variant="outlined">Edit</Button>
+                      <span> </span>
+                      <Button variant="contained" color="error">
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
 
       <Modal
         open={open}
@@ -100,6 +118,5 @@ export default function CardList() {
         </Box>
       </Modal>
     </div>
-
   );
 }
