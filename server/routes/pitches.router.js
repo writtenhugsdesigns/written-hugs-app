@@ -158,19 +158,25 @@ router.post("/", rejectUnauthenticated, (req, res) => {
       res.sendStatus(201);
     })
     .catch((err) => {
-      console.log("Error in wholesaler POST route,", err);
+      console.log("Error in pitches POST route,", err);
       res.sendStatus(500);
     });
 });
 
 router.put("/:id", rejectUnauthenticated, (req, res) => {
   const sqlText = `
-  UPDATE "wholesalers"
-  SET "company_name" = $1,
-      "user_id" = $2
-  WHERE "id" = $3;`;
+  UPDATE "pitches"
+  SET "wholesaler_id" = $1,
+      "is_current" = $2,
+      "description" = $3
+  WHERE "id" = $4;`;
 
-  const sqlValues = [req.body.company_name, req.body.user_id, req.params.id];
+  const sqlValues = [
+    req.body.wholesaler_id,
+    req.body.is_current,
+    req.body.description,
+    req.params.id,
+  ];
 
   pool
     .query(sqlText, sqlValues)
@@ -178,14 +184,14 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
       res.sendStatus(200);
     })
     .catch((err) => {
-      console.log("Error in wholesalers PUT route,", err);
+      console.log("Error in pitches PUT route,", err);
       res.sendStatus(500);
     });
 });
 
 router.delete("/:id", rejectUnauthenticated, (req, res) => {
   const sqlText = `
-  DELETE FROM "wholesalers"
+  DELETE FROM "pitches"
   WHERE "id" = $1;`;
 
   const sqlValues = [req.params.id];
@@ -196,7 +202,7 @@ router.delete("/:id", rejectUnauthenticated, (req, res) => {
       res.sendStatus(200);
     })
     .catch((err) => {
-      console.log("Error in wholesalers PUT route,", err);
+      console.log("Error in pitches DELETE route,", err);
       res.sendStatus(500);
     });
 });
