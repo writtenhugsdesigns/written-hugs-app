@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function CreateCategory({handleClose}){
+export default function CreateCategory({ handleClose }) {
     let [categoryName, setCategoryName] = useState('');
 
     // User hits submit button, POSTs a new category, closes modal

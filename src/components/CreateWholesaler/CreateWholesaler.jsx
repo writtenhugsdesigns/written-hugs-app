@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom"
 import { useState } from "react";
 
-export default function CreateWholesaler({handleClose}) {
+export default function CreateWholesaler({ handleClose }) {
     const history = useHistory();
     let [wholesalerName, setWholesalerName] = useState('');
 

@@ -37,7 +37,7 @@ export default function CategoriesPage() {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <CreateCategory handleClose={handleClose}/>
+                    <CreateCategory handleClose={handleClose} />
                 </Box>
             </Modal>
         </>

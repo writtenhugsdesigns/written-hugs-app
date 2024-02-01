@@ -37,7 +37,7 @@ export default function WholesalersPage() {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <CreateWholesaler handleClose={handleClose}/>
+                    <CreateWholesaler handleClose={handleClose} />
                 </Box>
             </Modal>
         </>
