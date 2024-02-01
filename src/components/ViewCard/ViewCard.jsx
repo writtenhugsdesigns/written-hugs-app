@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-export default function ViewCard() {
+export default function ViewCard({handleClose}) {
     const selectedCard = useSelector(store => store.cardsReducer.selectedCard);
 
     const editCardText = () => {
@@ -27,6 +27,7 @@ export default function ViewCard() {
             <button onClick={editCardText}>Edit Card Text</button>
             <button onClick={editCardFiles}>Edit Card Files</button>
             <button onClick={deleteCard}>Delete</button>
+            <button onClick={handleClose}>Back</button>
         </div>
     )
 }

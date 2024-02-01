@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from "react";
 import { useDispatch } from 'react-redux';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -6,7 +6,7 @@ import ViewCard from '../ViewCard/ViewCard';
 
 export default function CardList({ card }) {
   const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -56,9 +56,7 @@ export default function CardList({ card }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <button onClick={handleClose}>Back</button>
-          <ViewCard />
-          <button onClick={handleClose}>Back</button>
+          <ViewCard handleClose={handleClose} />
         </Box>
       </Modal>
     </>
