@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import CategoriesList from "../CategoriesList/CategoriesList";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import './CategoriesPage.css';
 import CreateCategory from '../CreateCategory/CreateCategory'
 
 export default function CategoriesPage() {

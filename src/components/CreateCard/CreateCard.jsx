@@ -10,13 +10,15 @@ export default function CreateCard() {
   //After this is triggered a useSelector will get the current folders array
   //and save it in a local array
   useEffect(()=> {
-    console.log("getting folders of current card variants");
     dispatch({
       type: 'SAGA/GET_FOLDERS'
-    }),[]
-  })
+    });
+    dispatch({
+      type: "SAGA/FETCH_CATEGORIES",
+    });
+  }, []);
+
   const currentFoldersArray = useSelector(store => (store.currentFolders))
-  console.log("this is the array of current folders", currentFoldersArray);
 
   let [variationName, setVariationName] = useState(null);
   let [UPCNumber, setUPCNumber] = useState(null);
@@ -29,23 +31,12 @@ export default function CreateCard() {
   let [TIFFFile, setTIFFFile] = useState(null);
   let [AIFile, setAIFile] = useState(null);
 
-  // const dummyCategories = [
-  //   { id: 1, name: "goats" },
-  //   { id: 2, name: "pikefish" },
-  //   { id: 3, name: "stuck in placehold data" },
-  // ];
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch({
-      type: "SAGA/FETCH_CATEGORIES",
-    });
-  }, []);
-
   const dummyCategories = useSelector((store) => store.categoriesReducer);
-  console.log(dummyCategories);
 
+  /**
+   * Get  the user selected category ids
+   * @returns an array of the ids of the checked categories
+   */
   const getCategories = () => {
     let checkboxes = document.querySelectorAll(
       'input[name="categories"]:checked'
@@ -54,7 +45,6 @@ export default function CreateCard() {
     checkboxes.forEach((checkbox) => {
       values.push(checkbox.value);
     });
-    console.log(values);
     return values;
   };
 
@@ -104,15 +94,15 @@ export default function CreateCard() {
         />
         <p>Categories</p>
         {dummyCategories.categories &&
-          dummyCategories.categories.map((index) => {
+          dummyCategories.categories.map((category) => {
             return (
               <div>
-                {index.name}
+                {category.name}
                 <input
                   type="checkbox"
                   name="categories"
-                  value={index.name}
-                  id={index.id}
+                  value={category.id}
+                  id={category.id}
                 />
               </div>
             );
