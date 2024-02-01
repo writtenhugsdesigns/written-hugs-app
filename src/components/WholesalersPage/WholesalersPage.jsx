@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import WholesalersList from "../WholesalersList/WholesalersList";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import { AddCircleOutline } from "@mui/icons-material";
 import './WholesalersPage.css';
 import CreateWholesaler from '../CreateWholesaler/CreateWholesaler'
 
@@ -25,7 +26,7 @@ export default function WholesalersPage() {
             <div className='container'>
                 <div className='wholesalerBar'>
                     <h1>Wholesalers</h1>
-                    <button className='pageButton' onClick={handleOpen}>Add Wholesaler</button>
+                    <button className='pageButton' onClick={handleOpen}><AddCircleOutline/>Add Wholesaler</button>
                 </div>
 
                 <WholesalersList />

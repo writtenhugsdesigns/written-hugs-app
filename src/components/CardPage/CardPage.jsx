@@ -1,5 +1,6 @@
 import { useHistory } from "react-router-dom";
 import CardList from "../CardList/CardList";
+import { AddCircleOutline } from "@mui/icons-material";
 
 export default function CardPage() {
   const history = useHistory();
@@ -32,7 +33,7 @@ export default function CardPage() {
         <h1>Card Variations</h1>
         <div className = 'buttonGroup'>
           <button className = 'pageButton' onClick = {() => history.push("/categories")}>Manage Categories</button>
-          <button className = 'pageButton' onClick = {() => history.push("/createCard")}>New Card</button>
+          <button className = 'pageButton' onClick = {() => history.push("/createCard")}><AddCircleOutline/>New Card</button>
         </div>
       </div>
       

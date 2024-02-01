@@ -78,21 +78,25 @@ export default function CardList() {
                     <TableCell>{x.name}</TableCell>
                     <TableCell>{x.description}</TableCell>
                     <TableCell>
-                      {x.categoriesArray.map((y) => {
-                        return (
-                          <span key={y.category_id}>{y.category_name}, </span>
-                        );
-                      })}
+                      <div className = 'tagContainer'>
+                        {x.categoriesArray.map((y) => {
+                          return (
+                            <span className='tag' key={y.category_id}>{y.category_name}</span>
+                          );
+                        })}
+                      </div>
                     </TableCell>
                     <TableCell>
-                      <img src={x.front_img.display} />
+                      <img width='180em' src={x.front_img.display} />
                     </TableCell>
                     <TableCell>
-                      <Button onClick={() => viewCard(x)} variant="outlined">
+                      <Button onClick={() => viewCard(x)} variant="contained">
                         View
                       </Button>
+                      <span> </span>
                       <Button variant="outlined">Edit</Button>
-                      <Button variant="outlined" color="error">
+                      <span> </span>
+                      <Button variant="contained" color="error">
                         Delete
                       </Button>
                     </TableCell>
