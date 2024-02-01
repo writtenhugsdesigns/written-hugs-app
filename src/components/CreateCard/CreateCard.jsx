@@ -35,7 +35,6 @@ export default function CreateCard() {
   //   { id: 3, name: "stuck in placehold data" },
   // ];
 
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch({

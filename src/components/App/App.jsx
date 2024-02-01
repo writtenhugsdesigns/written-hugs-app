@@ -27,6 +27,7 @@ import WholesalersPage from '../WholesalersPage/WholesalersPage';
 import CreateWholesaler from '../CreateWholesaler/CreateWholesaler';
 import CategoriesPage from '../CategoriesPage/CategoriesPage';
 import CreateCategory from '../CreateCategory/CreateCategory';
+import ViewPitch from '../ViewPitch/ViewPitch';
 
 import './App.css';
 
@@ -100,6 +101,10 @@ function App() {
 
           <ProtectedRoute exact path="/reviewPitch">
             <ReviewPitch/>
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/viewPitch">
+            <ViewPitch/>
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/wholesalers">
