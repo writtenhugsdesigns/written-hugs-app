@@ -1,5 +1,4 @@
--- Database Name: written-hugs
-DROP 
+-- Database Name: written-hugs 
 
 create table "user" (
 	"id" serial primary key,

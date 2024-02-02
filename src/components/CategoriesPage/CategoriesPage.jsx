@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import CategoriesList from "../CategoriesList/CategoriesList";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import { AddCircleOutline } from "@mui/icons-material";
 import CreateCategory from '../CreateCategory/CreateCategory'
 
 export default function CategoriesPage() {
@@ -23,9 +24,9 @@ export default function CategoriesPage() {
     return (
         <>
             <div className='container'>
-                <div className='categoryBar'>
+                <div className='wholesalerBar'>
                     <h1>Categories</h1>
-                    <button className='pageButton' onClick={handleOpen}>Add Category</button>
+                    <button className='pageButton' onClick={handleOpen}><AddCircleOutline/>Add Category</button>
                 </div>
 
                 <CategoriesList />

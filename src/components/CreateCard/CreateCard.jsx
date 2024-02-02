@@ -1,6 +1,9 @@
 import { useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { ArrowBackIos } from "@mui/icons-material";
+import { Button } from "@mui/material";
+import './CreateCard.css';
 
 export default function CreateCard() {
   const history = useHistory();
@@ -91,17 +94,34 @@ export default function CreateCard() {
       //   getCategories()
       // );
     }
+    // Clear fields
+    setVariationName(null);
+    setUPCNumber(null);
+    setVendorStyle(null);
   };
+
+  // Clears form inputs when user hits the clear button
+  const handleClear = (e) => {
+    e.preventDefault();
+    setVariationName(null);
+    setUPCNumber(null);
+    setVendorStyle(null);
+  }
 
   return (
     <div className="container">
+            <div className = 'wholesalerBar'>
+        <h1>New Card Info</h1>
+        <button className = 'pageButton' onClick = {() => history.push("/cards")}><ArrowBackIos/>Back</button> 
+      </div>
+      <div className = 'formContainer'></div>
       <form>
         Variation Name
         <input
           value={variationName}
           label="Variation Name"
           placeholder="Variation Name"
-          onChange={(event) => setVariationName(event.target.value)}
+          onChange={() => setVariationName(event.target.value)}
           id="variation"
         />
         <br></br>
@@ -110,7 +130,7 @@ export default function CreateCard() {
           value={UPCNumber}
           label="UPC Number"
           placeholder="UPC Number"
-          onChange={(event) => setUPCNumber(event.target.value)}
+          onChange={() => setUPCNumber(event.target.value)}
           id="UPCNumber"
         />
         <br></br>
@@ -119,7 +139,7 @@ export default function CreateCard() {
           value={vendorStyle}
           label="Vendor Style"
           placeholder="Vendor Style"
-          onChange={(event) => setVendorStyle(event.target.value)}
+          onChange={() => setVendorStyle(event.target.value)}
           id="vendorStyle"
         />
         <p>Categories</p>
@@ -137,81 +157,73 @@ export default function CreateCard() {
               </div>
             );
           })}
-        <label for="barcode">Barcode Image: </label>
+        <label for="barcode">Barcode: </label>
         <input
           id="barcode"
           type="file"
-          onChange={(event) => {
-            setBarcode(event.target.files);
+          value={barcode}
+          onChange={() => {
+            setBarcode(event.target.value);
           }}
         />
-        <label for="frontImg">Front Image: </label>
+        <label for="front">Front: </label>
         <input
-          id="frontImg"
+          id="front"
           type="file"
-          onChange={(event) => {
-            setFrontImg(event.target.files);
+          value={front}
+          onChange={() => {
+            setFront(event.target.value);
           }}
         />
-        <label for="insideImg">Inside Image: </label>
+        <label for="insideInsertion">Inside Insertion: </label>
         <input
-          id="insideImg"
+          id="insideInsertion"
           type="file"
-          onChange={(event) => {
-            setInsideImg(event.target.files);
+          value={insideInsertion}
+          onChange={() => {
+            setInsideInsertion(event.target.value);
           }}
         />
-        <label for="insertImg">Insert Image: </label>
+        <label for="insert">Insert: </label>
         <input
-          id="insertImg"
+          id="insert"
           type="file"
-          onChange={(event) => {
-            setInsertImg(event.target.files);
+          value={insert}
+          onChange={() => {
+            setInsert(event.target.value);
           }}
         />
-        <label for="insertAi">Insert AI File: </label>
+        <label for="sticker">sticker: </label>
         <input
-          id="insertAi"
+          id="sticker"
           type="file"
-          onChange={(event) => {
-            setInsertAi(event.target.files);
-          }}
-        />
-        <label for="stickerImg">Sticker Image: </label>
-        <input
-          id="stickerImg"
-          type="file"
-          onChange={(event) => {
-            setStickerImg(event.target.files);
-          }}
-        />
-        <label for="stickerPdf">Sticker Pdf: </label>
-        <input
-          id="stickerPdf"
-          type="file"
-          onChange={(event) => {
-            setStickerPdf(event.target.files);
+          value={sticker}
+          onChange={() => {
+            setSticker(event.target.value);
           }}
         />
         <label for="tiffFile">TIFF File: </label>
         <input
           id="tiffFile"
           type="file"
-          onChange={(event) => {
-            setTIFFFile(event.target.files);
+          value={TIFFFile}
+          onChange={() => {
+            setTIFFFile(event.target.value);
           }}
         />
         <label for="AIfile">AI File: </label>
         <input
           id="AIfile"
           type="file"
-          onChange={(event) => {
-            setAIFile(event.target.files);
+          value={AIFile}
+          onChange={() => {
+            setAIFile(event.target.value);
           }}
         />
         Create Card
         <button onClick={handleSubmit}>Submit</button>
       </form>
+      </div>
     </div>
   );
 }
