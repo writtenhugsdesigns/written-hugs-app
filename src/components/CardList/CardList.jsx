@@ -1,4 +1,4 @@
-import React, {  useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -16,12 +16,82 @@ import {
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ViewCard from "../ViewCard/ViewCard";
+import { Category } from "@mui/icons-material";
 
 export default function CardList() {
   const dispatch = useDispatch();
 
   const cards = useSelector(store => store.cardsReducer.cardsList);
   const categories = useSelector(store => store.categoriesReducer.categories);
+  // reducer still needs to be made
+  // const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
+
+  const cardsByCategory = [
+    {
+      id: 1,
+      name: 'goats',
+      cards: [
+        {
+          id: 1,
+          name: 'first card',
+          vendor_style: 'MH1001',
+          description: 'first mental health card',
+          upc: 101,
+          sku: 111,
+          barcode: 'barcode',
+          front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
+        },
+        {
+          id: 2,
+          name: 'second card',
+          vendor_style: 'MH1002',
+          description: 'second mental health card',
+          upc: 102,
+          sku: 222,
+          barcode: 'barcode',
+          front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+        }
+      ]
+    },
+    {
+      id: 2,
+      name: 'goatz',
+      cards: [
+        {
+          id: 1,
+          name: 'first card',
+          vendor_style: 'MH1001',
+          description: 'first mental health card',
+          upc: 101,
+          sku: 111,
+          barcode: 'barcode',
+          front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
+        },
+        {
+          id: 3,
+          name: 'third card',
+          vendor_style: 'MH1001',
+          description: 'third mental health card',
+          upc: 103,
+          sku: 333,
+          barcode: 'barcode',
+          front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+          sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
+        }
+      ]
+    }
+  ]
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -30,6 +100,8 @@ export default function CardList() {
   useEffect(() => {
     dispatch({ type: "SAGA/FETCH_CARDS" });
     dispatch({ type: "SAGA/FETCH_CATEGORIES" });
+    // saga still needs to be made
+    // dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
   }, []);
 
   // Style for MUI box in Modal
@@ -61,50 +133,13 @@ export default function CardList() {
     console.log("BEGONE THINGY WITH card", card.id);
   };
 
-  function createData(category, category_id, cards) {
-    console.log('category, category_id, cards:', category, category_id, cards);
-    return {
-      category,
-      category_id,
-      cards
-    };
-  }
 
-  const cardFunction = (row) => {
-    console.log('row:', row);
-    for (let i = 0; i < row.cards.length; i++) {
-      console.log('card:', row.cards[i]);
-      console.log('card categories:', row.cards[i].categoriesArrayID);
-      for (let j = 0; j < row.cards[i].categoriesArrayID.length; j++) {
-        do {
-          j++
-          console.log('name, description:', row.cards[i].name, row.cards[i].description);
-
-            < TableRow key={row.cards[i].id} >
-              <TableCell>{row.cards[i].description}</TableCell>
-            </TableRow>
-
-        } while (row.cards[i].categoriesArrayID[j] === row.category_id)
-
-
-
-        // if (row.cards[i].categoriesArrayID[j] === row.category_id) {
-        //   console.log('name, description:', row.cards[i].name, row.cards[i].description);
-        //   < TableRow key={row.cards[i].id} >
-        //     <TableCell>{row.cards[i].description}</TableCell>
-        //   </TableRow>
-        // }
-      }
-
-
-    }
-  }
-
-
-  function Row(cards) {
-    const { row } = cards;
-    const [openRow, setOpenRow] = useState(false);
-
+  
+  function Row(props) {
+    const { row } = props;
+    console.log('row', row);
+    const [openRow, setOpenRow] = React.useState(false);
+  
     return (
       <React.Fragment>
         <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -117,9 +152,7 @@ export default function CardList() {
               {openRow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell component="th" scope="row">
-            {row.category}
-          </TableCell>
+          <TableCell>{row.name}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -128,82 +161,35 @@ export default function CardList() {
                 <Table size="small" aria-label="purchases">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Card Name</TableCell>
-                      <TableCell>Description</TableCell>
-                      <TableCell>Preview</TableCell>
+                      <TableCell>description</TableCell>
+                      <TableCell>name</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {cardFunction(row)}
-                    {/* {row.cards.map((card) => {
-                      if (card.categoriesArrayID.includes(row.category_id)) {
-                        < TableRow key={card.id} >
-                          <TableCell>{card.description}</TableCell>
-                        </TableRow>
-                      }
-                    })} */}
+                    {row.cards.map((card) => (
+                      <TableRow key={card.id}>
+                        <TableCell>{card.description}</TableCell>
+                        <TableCell>{card.name}</TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </Box>
             </Collapse>
           </TableCell>
         </TableRow>
-      </React.Fragment >
+      </React.Fragment>
     );
   }
+  
+  const rows = 
+    cardsByCategory.map((category) => {
+      return category
+    });
 
-  // Row.propTypes = {
-  //   row: PropTypes.shape({
-  //     calories: PropTypes.number.isRequired,
-  //     carbs: PropTypes.number.isRequired,
-  //     fat: PropTypes.number.isRequired,
-  //     history: PropTypes.arrayOf(
-  //       PropTypes.shape({
-  //         amount: PropTypes.number.isRequired,
-  //         customerId: PropTypes.string.isRequired,
-  //         date: PropTypes.string.isRequired,
-  //       }),
-  //     ).isRequired,
-  //     name: PropTypes.string.isRequired,
-  //     price: PropTypes.number.isRequired,
-  //     protein: PropTypes.number.isRequired,
-  //   }).isRequired,
-  // };
+  console.log('rows out of function:', rows);
 
-  // const formatCards = (cards) => {
 
-  //   cards.map((card) => {
-
-  //     card.categoriesArray.map((category) => {
-  //       console.log('category_id', category.category_id)
-  //       card.categoriesArrayID.push(card.category.category_id)
-  //     })
-
-  //   })
-  //   console.log('cards', cards);
-  // }
-
-  const formatCards = (cards) => {
-
-    for (let i = 0; i < cards.length; i++) {
-      cards[i].categoriesArrayID = []
-      for (let j = 0; j < cards[i].categoriesArray.length; j++) {
-        cards[i].categoriesArrayID.push(cards[i].categoriesArray[j].category_id)
-      }
-    }
-    return cards
-  }
-
-  const getRows = (categories, cards) => {
-    console.log('cards', cards);
-    let rowsArray = []
-    categories.map((category) => {
-      rowsArray.push(createData(category.name, category.id, cards))
-    })
-    return rowsArray;
-  }
-
-  const rows = getRows(categories, formatCards(cards))
 
   return (
     <div className="container">
@@ -226,7 +212,7 @@ export default function CardList() {
                     <TableCell>{x.name}</TableCell>
                     <TableCell>{x.description}</TableCell>
                     <TableCell>
-                      <div className = 'tagContainer'>
+                      <div className='tagContainer'>
                         {x.categoriesArray.map((y) => {
                           return (
                             <span className='tag' key={y.category_id}>{y.category_name}</span>
@@ -254,22 +240,23 @@ export default function CardList() {
           </Table>
         </TableContainer>
       </Paper>
-
+<br />
+<br />
       <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell>Category</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <Row key={row.category} row={row} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Table aria-label="collapsible table">
+        <TableHead>
+          <TableRow>
+            <TableCell />
+            <TableCell>Category</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <Row key={row.id} row={row} />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
 
       <Modal
         open={open}
