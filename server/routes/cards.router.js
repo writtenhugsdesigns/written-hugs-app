@@ -68,12 +68,14 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     vendor_style: req.body.vendor_style,
     front_img: '',
     front_tiff: '',
+    inner_img: '',
     insert_img: '',
     insert_ai: '',
     sticker_jpeg: '',
     sticker_pdf: '',
+    barcode: ''
     };
-    console.log(req.body);
+    // console.log(req.body);
 
     //This creates an authentication token
     const jwtClient = new google.auth.JWT(
@@ -128,9 +130,9 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     
     const queryText = `
     INSERT INTO "cards" 
-    ("name", "upc", "vendor_style", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "sticker_jpeg", "sticker_pdf")
+    ("name", "upc", "vendor_style", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "sticker_jpeg", "sticker_pdf", "barcode")
     VALUES 
-      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING "id";
     `;
     const queryValues = [
@@ -143,10 +145,11 @@ router.post('/', uploadHandler.any(), async (req, res) => {
         objectToSendToDB.insert_img,
         objectToSendToDB.insert_ai,
         objectToSendToDB.sticker_jpeg,
-        objectToSendToDB.sticker_pdf
+        objectToSendToDB.sticker_pdf,
+        objectToSendToDB.barcode
     ];
     pool.query(queryText, queryValues)
-        .then(result => {
+        .then((result) => {
     //         const card_id = result.rows[0].id
     //         const categoriesArray = req.body.categoriesArray
     //         const insertCardsCategoriesQuery = newCardsCategoriesQuery(categoriesArray, card_id);
@@ -158,11 +161,11 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     //             }).catch(err => {
     //                 // catch for second query
     //                 console.log(err);
-                    res.sendStatus(201)
-                })
-        .catch(err => { // 👈 Catch for first query
+                    result.sendStatus(201)
+        })
+        .catch((err) => {
+            // result.sendStatus(500)
             console.log(err);
-            res.sendStatus(500)
         })
 
 

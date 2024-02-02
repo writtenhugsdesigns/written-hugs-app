@@ -71,6 +71,7 @@ export default function CreateCard() {
     newCardToSend.append("insert_ai", insertAi[0]);
     newCardToSend.append("sticker_jpeg", stickerImg[0]);
     newCardToSend.append("sticker_pdf", stickerPdf[0]);
+    newCardToSend.append("barcode", barcode[0]);
     newCardToSend.append("upc", UPCNumber);
     newCardToSend.append("vendor_style", vendorStyle);
     newCardToSend.append("name", variationName);
