@@ -1,0 +1,25 @@
+.formContainer {
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-top: 2em;
+    font-size: large;
+    
+    
+}
+
+input {
+    margin-left: 1em;
+    margin-right: 1em;
+
+}
+
+.categoryInputs {
+    height: 15vh;
+    overflow-y: auto;
+}
+
+.fileInputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}

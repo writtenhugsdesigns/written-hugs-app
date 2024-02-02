@@ -4,10 +4,8 @@ const router = express.Router();
 const { google } = require('googleapis')
 const apikeys = require('../../googleDriveAPI.json')
 const SCOPE = ["https://www.googleapis.com/auth/drive"];
-const fs = require('fs')
 const multer = require('multer');
 const uploadHandler = multer();
-const MulterGoogleCloudStorage = require('multer-cloud-storage');
 const stream = require('stream')
 
 

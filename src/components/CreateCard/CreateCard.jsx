@@ -31,12 +31,10 @@ export default function CreateCard() {
   let [UPCNumber, setUPCNumber] = useState(null);
   let [vendorStyle, setVendorStyle] = useState(null);
   let [barcode, setBarcode] = useState([]);
-  let [frontImg, setFrontImg] = useState([]);
-  let [insideImg, setInsideImg] = useState([]);
-  let [insertImg, setInsertImg] = useState([]);
-  let [insertAi, setInsertAi] = useState([]);
-  let [stickerImg, setStickerImg] = useState([]);
-  let [stickerPdf, setStickerPdf] = useState([]);
+  let [front, setFront] = useState([]);
+  let [insideInsertion, setInsideInsertion] = useState([]);
+  let [insert, setInsert] = useState([]);
+  let [sticker, setSticker] = useState([]);
   let [TIFFFile, setTIFFFile] = useState([]);
   let [AIFile, setAIFile] = useState([]);
 
@@ -67,14 +65,13 @@ export default function CreateCard() {
     if (sameName) {
       alert("same name!");
     } else {
-    newCardToSend.append("front_img", frontImg[0]);
+    newCardToSend.append("front_img", front[0]);
     newCardToSend.append("front_tiff", TIFFFile[0]);
-    newCardToSend.append("inner_img", insideImg[0]);
-    newCardToSend.append("insert_img", insertImg[0]);
-    newCardToSend.append("insert_ai", insertAi[0]);
-    newCardToSend.append("sticker_jpeg", stickerImg[0]);
-    newCardToSend.append("sticker_pdf", stickerPdf[0]);
+    newCardToSend.append("inner_img", insideInsertion[0]);
+    newCardToSend.append("insert_img", insert[0]);
+    newCardToSend.append("sticker_jpeg", sticker[0]);
     newCardToSend.append("barcode", barcode[0]);
+    newCardToSend.append("insert_ai", AIFile[0]);
     newCardToSend.append("upc", UPCNumber);
     newCardToSend.append("vendor_style", vendorStyle);
     newCardToSend.append("name", variationName);
@@ -161,69 +158,62 @@ export default function CreateCard() {
         <input
           id="barcode"
           type="file"
-          value={barcode}
           onChange={() => {
-            setBarcode(event.target.value);
+            setBarcode(event.target.files);
           }}
         />
         <label for="front">Front: </label>
         <input
           id="front"
           type="file"
-          value={front}
           onChange={() => {
-            setFront(event.target.value);
+            setFront(event.target.files);
           }}
         />
         <label for="insideInsertion">Inside Insertion: </label>
         <input
           id="insideInsertion"
           type="file"
-          value={insideInsertion}
           onChange={() => {
-            setInsideInsertion(event.target.value);
+            setInsideInsertion(event.target.files);
           }}
         />
         <label for="insert">Insert: </label>
         <input
           id="insert"
           type="file"
-          value={insert}
           onChange={() => {
-            setInsert(event.target.value);
+            setInsert(event.target.files);
           }}
         />
         <label for="sticker">sticker: </label>
         <input
           id="sticker"
           type="file"
-          value={sticker}
           onChange={() => {
-            setSticker(event.target.value);
+            setSticker(event.target.files);
           }}
         />
         <label for="tiffFile">TIFF File: </label>
         <input
           id="tiffFile"
           type="file"
-          value={TIFFFile}
           onChange={() => {
-            setTIFFFile(event.target.value);
+            setTIFFFile(event.target.files);
           }}
         />
         <label for="AIfile">AI File: </label>
         <input
           id="AIfile"
           type="file"
-          value={AIFile}
           onChange={() => {
-            setAIFile(event.target.value);
+            setAIFile(event.target.files);
           }}
         />
         Create Card
         <button onClick={handleSubmit}>Submit</button>
       </form>
-      </div>
+
     </div>
   );
 }
