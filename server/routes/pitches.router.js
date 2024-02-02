@@ -13,6 +13,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     pitches.wholesaler_id,
     pitches.is_current,
     pitches.description,
+    pitches.updated_at,
     wholesalers.company_name as wholesaler_company_name,
     "user".username as wholesaler_user,
     pitches_cards.ordered as card_ordered,
@@ -72,6 +73,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
             wholesaler_id: input.wholesaler_id,
             wholesaler_company_name: input.wholesaler_company_name,
             wholesaler_name: input.wholesaler_user,
+            date: input.updated_at,
             is_current: input.is_current,
             description: input.description,
             cards: [
