@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { useDownloadExcel } from 'react-export-table-to-excel';
 import { CSVLink } from "react-csv";
 import print from 'print-js'
 
