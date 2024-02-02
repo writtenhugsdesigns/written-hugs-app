@@ -13,21 +13,21 @@ const fs = require('fs')
  * It returns the folders.
  */
 router.get('/folders', async (req, res) => {
-  const jwtClient = new google.auth.JWT(
-    apikeys.client_email,
-    null,
-    apikeys.private_key,
-    SCOPE
+    const jwtClient = new google.auth.JWT(
+        apikeys.client_email,
+        null,
+        apikeys.private_key,
+        SCOPE
     )
-  console.log("jwtClient before authorize", jwtClient);
-  await jwtClient.authorize()
-  console.log("jwtClient after authorize", jwtClient);
-    const drive = google.drive({version: 'v3', auth: jwtClient});
+    console.log("jwtClient before authorize", jwtClient);
+    await jwtClient.authorize()
+    console.log("jwtClient after authorize", jwtClient);
+    const drive = google.drive({ version: 'v3', auth: jwtClient });
     const folders = [];
     const results = await drive.files.list({
-      q: 'mimeType=\'application/vnd.google-apps.folder\'',
-      fields: 'nextPageToken, files(id, name)',
-      spaces: 'drive',
+        q: 'mimeType=\'application/vnd.google-apps.folder\'',
+        fields: 'nextPageToken, files(id, name)',
+        spaces: 'drive',
     });
     console.log("this is the result", results.data.files);
     res.send(results.data.files);
@@ -47,6 +47,27 @@ router.get('/', (req, res) => {
     pool.query(queryText)
         .then((result) => {
             let theCards = formatCards(result.rows)
+            res.send(theCards)
+        })
+        .catch(err => {
+            console.log('ERROR: Get all cards', err);
+            res.sendStatus(500)
+        })
+});
+
+router.get('/byCategory', (req, res) => {
+    const queryText = `
+    SELECT cards.id, cards.name, cards.description, cards.vendor_style, cards.upc, cards.sku, cards.barcode, cards.front_img, cards.front_tiff, cards.inner_img, cards.insert_img, cards.insert_ai, cards.raw_art, cards.sticker_jpeg, cards.sticker_pdf, categories.id as category_id, categories.name as category_name
+    FROM cards
+    JOIN cards_categories
+    ON cards.id = cards_categories.card_id
+    JOIN categories
+    ON categories.id = cards_categories.category_id
+    ORDER BY cards.id ASC;
+    `;
+    pool.query(queryText)
+        .then((result) => {
+            let theCards = formatCardsByCategory(result.rows)
             res.send(theCards)
         })
         .catch(err => {
@@ -145,25 +166,25 @@ router.put('/:id', (req, res) => {
       DELETE FROM cards_categories
         WHERE cards_id=${req.params.id};
     `;
-        // second QUERY removes categories FOR THAT card
-        pool.query(queryDeleteText)
-            .then(result => {
-                const categoriesArray = req.body.categoriesArrayForQuery
-                const editCardsCategoriesQuery = editCardsCategoriesQuery(categoriesArray, req.params.id);
-                // Third QUERY ADDS categories FOR THAT card
-                pool.query(editCardsCategoriesQuery)
-                    .then(result => {
-                        res.sendStatus(201);
-                    }).catch(err => {
-                        // catch for third query
-                        console.log(err);
-                        res.sendStatus(500)
-                    })
-            }).catch(err => {
-                // catch for second query
-                console.log(err);
-                res.sendStatus(500)
-            })
+            // second QUERY removes categories FOR THAT card
+            pool.query(queryDeleteText)
+                .then(result => {
+                    const categoriesArray = req.body.categoriesArrayForQuery
+                    const editCardsCategoriesQuery = editCardsCategoriesQuery(categoriesArray, req.params.id);
+                    // Third QUERY ADDS categories FOR THAT card
+                    pool.query(editCardsCategoriesQuery)
+                        .then(result => {
+                            res.sendStatus(201);
+                        }).catch(err => {
+                            // catch for third query
+                            console.log(err);
+                            res.sendStatus(500)
+                        })
+                }).catch(err => {
+                    // catch for second query
+                    console.log(err);
+                    res.sendStatus(500)
+                })
         }).catch(err => { // 👈 Catch for first query
             console.log(err);
             res.sendStatus(500)
@@ -204,13 +225,13 @@ function formatCards(all) {
             upc: all[0].upc,
             sku: all[0].sku,
             barcode: all[0].barcode,
-            front_img: {raw: all[0].front_img},
+            front_img: { raw: all[0].front_img },
             front_tiff: all[0].front_tiff,
-            inner_img: {raw: all[0].inner_img},
-            insert_img: {raw: all[0].insert_img},
+            inner_img: { raw: all[0].inner_img },
+            insert_img: { raw: all[0].insert_img },
             insert_ai: all[0].insert_ai,
             raw_art: all[0].raw_art,
-            sticker_jpeg: {raw: all[0].sticker_jpeg},
+            sticker_jpeg: { raw: all[0].sticker_jpeg },
             sticker_pdf: all[0].sticker_pdf,
             categoriesArray: [{
                 category_name: all[0].category_name,
@@ -228,13 +249,13 @@ function formatCards(all) {
                     upc: all[i].upc,
                     sku: all[i].sku,
                     barcode: all[i].barcode,
-                    front_img: {raw: all[i].front_img},
+                    front_img: { raw: all[i].front_img },
                     front_tiff: all[i].front_tiff,
-                    inner_img: {raw: all[i].inner_img},
-                    insert_img: {raw: all[i].insert_img},
+                    inner_img: { raw: all[i].inner_img },
+                    insert_img: { raw: all[i].insert_img },
                     insert_ai: all[i].insert_ai,
                     raw_art: all[i].raw_art,
-                    sticker_jpeg: {raw: all[i].sticker_jpeg},
+                    sticker_jpeg: { raw: all[i].sticker_jpeg },
                     sticker_pdf: all[i].sticker_pdf,
                     categoriesArray: []
                 })
@@ -252,7 +273,7 @@ function formatCards(all) {
         }
 
         // After getting all cards in cardsArray, we must format the urls for displaying
-        for(let i = 0; i < cardsArray.length; i++){
+        for (let i = 0; i < cardsArray.length; i++) {
             //front_img
             cardsArray[i].front_img.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].front_img.raw)}`;
             //inner_img
@@ -266,12 +287,97 @@ function formatCards(all) {
     }
 }
 
+/**  
+ * this function takes in an array from the database 
+ * it's goal is to bundle categories with an array of cards within each category
+ * since a single category could have multiple cards
+ * */
+function formatCardsByCategory(all) {
+    // if array from database is empty, return empty array
+    if (all[0] === undefined) {
+        return [];
+    } else {
+        // create categoriesArray with first response and first category
+        let categoriesArray = [{
+            category_name: all[0].category_name,
+            category_id: all[0].category_id,
+            cardsArray: [{
+                card_id: all[0].card_id,
+                name: all[0].name,
+                description: all[0].description,
+                vendor_style: all[0].vendor_style,
+                upc: all[0].upc,
+                sku: all[0].sku,
+                barcode: all[0].barcode,
+                front_img: { raw: all[0].front_img },
+                front_tiff: all[0].front_tiff,
+                inner_img: { raw: all[0].inner_img },
+                insert_img: { raw: all[0].insert_img },
+                insert_ai: all[0].insert_ai,
+                raw_art: all[0].raw_art,
+                sticker_jpeg: { raw: all[0].sticker_jpeg },
+                sticker_pdf: all[0].sticker_pdf,
+            }]
+        }]
+        for (let i = 1; i < all.length; i++) {
+            // if the category.id in the next index in the array does NOT match the previous index
+            // then add the new category to the categoriesArray
+            if (all[i].category_id !== all[i - 1].category_id) {
+                categoriesArray.push({
+                    category_name: all[i].category_name,
+                    category_id: all[i].category_id,
+                    cardsArray: []
+                })
+            }
+            // if the category.id in the next index in the array DOES match the previous index
+            // then add the other cards to the category
+            for (let j = 0; j < categoriesArray.length; j++) {
+                if (categoriesArray[j].category_id === all[i].category_id) {
+                    categoriesArray[j].cardsArray.push({
+                        card_id: all[i].card_id,
+                        name: all[i].name,
+                        description: all[i].description,
+                        vendor_style: all[i].vendor_style,
+                        upc: all[i].upc,
+                        sku: all[i].sku,
+                        barcode: all[i].barcode,
+                        front_img: { raw: all[i].front_img },
+                        front_tiff: all[i].front_tiff,
+                        inner_img: { raw: all[i].inner_img },
+                        insert_img: { raw: all[i].insert_img },
+                        insert_ai: all[i].insert_ai,
+                        raw_art: all[i].raw_art,
+                        sticker_jpeg: { raw: all[i].sticker_jpeg },
+                        sticker_pdf: all[i].sticker_pdf,
+                    })
+                }
+            }
+        }
+
+        // After getting all cards in cardsArray, we must format the urls for displaying
+        for (let i = 0; i < categoriesArray.length; i++) {
+            for (let j = 0; j < categoriesArray[i].cardsArray.length; j++) {
+            //front_img
+            categoriesArray[i].cardsArray[j].front_img.display = `https://drive.google.com/thumbnail?id=${extractID(categoriesArray[i].cardsArray[j].front_img.raw)}`;
+            //inner_img
+            categoriesArray[i].cardsArray[j].inner_img.display = `https://drive.google.com/thumbnail?id=${extractID(categoriesArray[i].cardsArray[j].inner_img.raw)}`;
+            //insert_img
+            categoriesArray[i].cardsArray[j].insert_img.display = `https://drive.google.com/thumbnail?id=${extractID(categoriesArray[i].cardsArray[j].insert_img.raw)}`;
+            //sticker_jpeg
+            categoriesArray[i].cardsArray[j].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${extractID(categoriesArray[i].cardsArray[j].sticker_jpeg.raw)}`;
+            }
+
+        }
+        return categoriesArray
+    }
+}
+
 /**
  * this function takes in a file's raw google drive url, and extracts the file ID
  * returns a string representing the id
  */
-function extractID(rawURL){
-    return rawURL.substring(32, rawURL.length-17);
+function extractID(rawURL) {
+    return rawURL.substring(32, rawURL.length - 17);
 }
 
 /**  
@@ -291,7 +397,7 @@ function newCardsCategoriesQuery(categoriesArray, card_id) {
             cardsCategoriesQuery += `
         (${card_id}, ${categoriesArray[i]}),
       `
-        // adds the appropriate ids and a semi colon
+            // adds the appropriate ids and a semi colon
         } else if (i === categoriesArray.length - 1) {
             cardsCategoriesQuery += `
         (${card_id}, ${categoriesArray[i]});
@@ -318,7 +424,7 @@ function editCardsCategoriesQuery(categoriesArray, card_id) {
             cardsCategoriesQuery += `
         (${card_id}, ${categoriesArray[i].id}),
       `
-        // adds the appropriate ids and a semi colon
+            // adds the appropriate ids and a semi colon
         } else if (i === categoriesArray.length - 1) {
             cardsCategoriesQuery += `
         (${card_id}, ${categoriesArray[i].id});
