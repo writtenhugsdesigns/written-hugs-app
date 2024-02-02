@@ -9,6 +9,15 @@ const cardsList = (state = [], action) => {
     }
 };
 
+const cardsListByCategory = (state = [], action) => {
+  switch (action.type) {
+    case 'SET_CARDS_BY_CATEGORY':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 const selectedCard = (state = {}, action) => {
   if (action.type === 'SET_CARD') {
     return action.payload
@@ -31,6 +40,7 @@ const currentFolders = (state = [], action) => {
 
 export default combineReducers({
     cardsList,
+    cardsListByCategory,
     selectedCard,
     currentFolders
 });
