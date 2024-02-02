@@ -8,7 +8,9 @@ const fs = require('fs')
 const multer = require('multer');
 const uploadHandler = multer();
 const MulterGoogleCloudStorage = require('multer-cloud-storage');
-// const jwtClient = require('../modules/googleDriveAuth')
+const stream = require('stream')
+
+
 
 /** This function first authorizes to google drive using the JWT api method
  * Then it makes an api get call to google drive to fetch files of 
@@ -32,7 +34,7 @@ router.get('/folders', async (req, res) => {
       fields: 'nextPageToken, files(id, name)',
       spaces: 'drive',
     });
-    console.log("this is the result", results.data.files);
+    // console.log("this is the result", results.data.files);
     res.send(results.data.files);
 }
 )
@@ -58,8 +60,7 @@ router.get('/', (req, res) => {
         })
 });
 
-router.post('/', uploadHandler.single('front_img'), async (req, res) => {
-    console.log(req);
+router.post('/', uploadHandler.any(), async (req, res) => {
     const folderName = req.body.vendor_style + " " + req.body.name;
    
     //This creates an authentication token
@@ -69,7 +70,6 @@ router.post('/', uploadHandler.single('front_img'), async (req, res) => {
         apikeys.private_key,
         SCOPE
         )
-      console.log("jwtClient before authorize", jwtClient);
       await jwtClient.authorize()
     const drive = google.drive({version: 'v3', auth: jwtClient});
     
@@ -82,25 +82,50 @@ router.post('/', uploadHandler.single('front_img'), async (req, res) => {
 
     //This creates the folder for the card variant    
     const folderResponse = await drive.files.create({
-            resource:fileMetaData,
+            resource: fileMetaData,
             fields: 'id'
         })
-    const folderID = folderResponse.data.id;
+    const folderID = folderResponse.data.id
+    
+    const uploadFile = async (fileObject) => {
+        const bufferStream = new stream.PassThrough();
+        bufferStream.end(fileObject.buffer);
+        const { data } = await drive.files.create({
+            media: {
+                name: fileObject.mimeType,
+                body: bufferStream,
+            },
+            requestBody: {
+                name: folderName + " " ,
+                parents: [folderID]
+            },
+            fields: 'id.name'
+        })
+        console.log("dataID:", data.id);
+    };
 
-    let frontImgMetaData = {
-        name: folderName + " FRONT Image",
-        parents: [folderID]
+    const { body, files } = req;
+    for (let f=0; f < files.length; f++) {
+        await uploadFile(files[f])
+        }
+        console.log(body);
+        res.status(200).send('Form Submitted');
     }
-    const frontImageResponse = await drive.files.create({
-        resource:frontImgMetaData,
-        media:{
-            body: fs.createReadStream(req.file.buffer),
-            mimeType: 'image/jpeg'
-        },
-        fields: 'id'
-    }).data.id
 
-    console.log(frontImageResponse);
+    // let frontImgMetaData = {
+    //     name: folderName + " FRONT Image",
+    //     parents: [folderID]
+    // }
+    // const frontImageResponse = await drive.files.create({
+    //     resource:frontImgMetaData,
+    //     media:{
+    //         body: fs.createReadStream(req.file.originalname),
+    //         mimeType: 'image/jpeg'
+    //     },
+    //     fields: 'id'
+    // })
+
+    // console.log(frontImageResponse);
     // const queryText = `
     // INSERT INTO "cards" 
     // ("name", "vendor_style", "description", "upc", "sku", "barcode", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "raw_art", "sticker_id")
@@ -143,7 +168,7 @@ router.post('/', uploadHandler.single('front_img'), async (req, res) => {
     //         console.log(err);
     //         res.sendStatus(500)
     //     })
-})
+)
 
 router.put('/:id', (req, res) => {
     const queryText = `

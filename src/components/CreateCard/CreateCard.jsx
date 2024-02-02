@@ -81,14 +81,14 @@ export default function CreateCard() {
 
       // Do the dispatch
       // history.push("/cards");
-      console.log(
-        currentFoldersArray,
-        variationName,
-        UPCNumber,
-        vendorStyle,
-        barcode,
-        getCategories()
-      );
+      // console.log(
+      //   currentFoldersArray,
+      //   variationName,
+      //   UPCNumber,
+      //   vendorStyle,
+      //   barcode,
+      //   getCategories()
+      // );
     }
   };
 
