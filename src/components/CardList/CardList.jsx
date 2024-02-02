@@ -24,73 +24,6 @@ export default function CardList() {
   // const cards = useSelector(store => store.cardsReducer.cardsList);
   const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
 
-  // const cardsByCategory = [
-  //   {
-  //     id: 1,
-  //     name: 'goats',
-  //     cards: [
-  //       {
-  //         id: 1,
-  //         name: 'first card',
-  //         vendor_style: 'MH1001',
-  //         description: 'first mental health card',
-  //         upc: 101,
-  //         sku: 111,
-  //         barcode: 'barcode',
-  //         front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
-  //       },
-  //       {
-  //         id: 2,
-  //         name: 'second card',
-  //         vendor_style: 'MH1002',
-  //         description: 'second mental health card',
-  //         upc: 102,
-  //         sku: 222,
-  //         barcode: 'barcode',
-  //         front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'goatz',
-  //     cards: [
-  //       {
-  //         id: 1,
-  //         name: 'first card',
-  //         vendor_style: 'MH1001',
-  //         description: 'first mental health card',
-  //         upc: 101,
-  //         sku: 111,
-  //         barcode: 'barcode',
-  //         front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
-  //       },
-  //       {
-  //         id: 3,
-  //         name: 'third card',
-  //         vendor_style: 'MH1001',
-  //         description: 'third mental health card',
-  //         upc: 103,
-  //         sku: 333,
-  //         barcode: 'barcode',
-  //         front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-  //         sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
-  //       }
-  //     ]
-  //   }
-  // ]
-
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -129,12 +62,14 @@ export default function CardList() {
     console.log("BEGONE THINGY WITH card", card.id);
   };
 
-
-  
+  /**
+   * 
+   * @param {*} props 
+   * @returns a  
+   */
   function Row(props) {
     const { row } = props;
-    console.log('row', row);
-    const [openRow, setOpenRow] = React.useState(false);
+    const [openRow, setOpenRow] = useState(false);
   
     return (
       <React.Fragment>
@@ -154,6 +89,7 @@ export default function CardList() {
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={openRow} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
+
                 <Table size="small" aria-label="purchases">
                   <TableHead>
                     <TableRow>
@@ -182,10 +118,6 @@ export default function CardList() {
     cardsByCategory.map((category) => {
       return category
     });
-
-  console.log('rows out of function:', rows);
-
-
 
   return (
     <div className="container">
@@ -236,8 +168,9 @@ export default function CardList() {
           </Table>
         </TableContainer>
       </Paper> */}
-<br />
-<br />
+      <br />
+      <br />
+
       <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
@@ -254,16 +187,16 @@ export default function CardList() {
       </Table>
     </TableContainer>
 
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <ViewCard handleClose={handleClose} />
-        </Box>
-      </Modal>
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <ViewCard handleClose={handleClose} />
+      </Box>
+    </Modal>
     </div>
   );
 }
