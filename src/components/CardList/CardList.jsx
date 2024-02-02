@@ -253,6 +253,22 @@ export default function CardList() {
         </TableContainer>
       </Paper>
 
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              <TableCell>Category</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <Row key={row.category} row={row} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
       <Modal
         open={open}
         onClose={handleClose}
