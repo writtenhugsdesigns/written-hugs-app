@@ -90,11 +90,11 @@ export default function ViewPitch({ pitch }) {
 
     const tableRef = useRef(null);
 
-    const { onDownload } = useDownloadExcel({
-        currentTableRef: tableRef.current,
-        filename: "Pitch table",
-        sheet: "Pitch"
-    });
+    // const { onDownload } = useDownloadExcel({
+    //     currentTableRef: tableRef.current,
+    //     filename: "Pitch table",
+    //     sheet: "Pitch"
+    // });
 
     const editPitch = () => {
         console.log("This will do pop up stuff for edit.");
@@ -139,7 +139,7 @@ export default function ViewPitch({ pitch }) {
                 </tbody>
             </table>
             <br /><br />
-            <table ref={tableRef}>
+            {/* <table ref={tableRef}>
                 <tbody>
                     <tr>
                         <th>Vendor Stlye</th>
@@ -154,11 +154,11 @@ export default function ViewPitch({ pitch }) {
                         </tr>)
                     })}
                 </tbody>
-            </table>
+            </table> */}
             <button onClick={editPitch}>Edit Pitch</button>
             <button onClick={deletePitch}>Delete</button>
             <br /><br />
-            <button onClick={onDownload}>Download as excel</button>
+            {/* <button onClick={onDownload}>Download as excel</button> */}
             <br /><br />
             <CSVLink data={getCards(dummyPitch)}>Download CSV</CSVLink>;
             <br /><br />

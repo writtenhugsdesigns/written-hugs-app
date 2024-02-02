@@ -21,6 +21,7 @@ export default function CardList() {
   const dispatch = useDispatch();
 
   const cards = useSelector(store => store.cardsReducer.cardsList);
+  const categories = useSelector(store => store.categoriesReducer.categories);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -28,6 +29,7 @@ export default function CardList() {
 
   useEffect(() => {
     dispatch({ type: "SAGA/FETCH_CARDS" });
+    dispatch({ type: "SAGA/FETCH_CATEGORIES" });
   }, []);
 
   // Style for MUI box in Modal
