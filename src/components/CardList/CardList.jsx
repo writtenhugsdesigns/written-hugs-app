@@ -1,121 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow, TableContainer, TablePagination, Box, Modal, IconButton, Collapse, Typography } from "@mui/material";
+import React, {  useState, useEffect  } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  TablePagination,
+  Box,
+  Modal, IconButton, Collapse, Typography,
+} from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import ViewCard from '../ViewCard/ViewCard';
+import ViewCard from "../ViewCard/ViewCard";
 
 export default function CardList() {
   const dispatch = useDispatch();
 
-  // const cards = useSelector(store => store.cardsReducer.cardsList);
-  // const categories = useSelector(store => store.categoriesReducer.categories);
-  const cards = [{
-    id: 1,
-    name: 'first card',
-    vendor_style: 'MH1001',
-    description: 'first mental health card',
-    upc: 101,
-    sku: 111,
-    barcode: 'barcode',
-    front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    categoriesArray: [{
-      category_name: 'mental health',
-      category_id: 1
-    },
-    {
-      category_name: 'christmas',
-      category_id: 2
-    }]
-  },
-  {
-    id: 2,
-    name: 'second card',
-    vendor_style: 'MH1002',
-    description: 'second mental health card',
-    upc: 102,
-    sku: 122,
-    barcode: 'barcode',
-    front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    front_tiff: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    insert_ai: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    raw_art: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    sticker_pdf: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    categoriesArray: [{
-      category_name: 'mental health',
-      category_id: 1
-    },
-    {
-      category_name: 'christmas',
-      category_id: 2
-    }]
-  },
-  {
-    id: 3,
-    name: 'third card',
-    vendor_style: 'MH1000',
-    description: 'third mental health card',
-    upc: 103,
-    sku: 133,
-    barcode: 'barcode',
-    front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    front_tiff: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    insert_ai: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    raw_art: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    sticker_pdf: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-    categoriesArray: [{
-      category_name: 'fathers day',
-      category_id: 3
-    }]
-  }]
-
-  const categories = [{
-    name: 'mental health',
-    id: 1
-  },
-  {
-    name: 'christmas',
-    id: 2
-  },
-  {
-    name: 'fathers day',
-    id: 3
-  }]
+  const cards = useSelector(store => store.cardsReducer.cardsList);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  useEffect(() => { dispatch({ type: 'SAGA/FETCH_CARDS' }) }, []);
+  useEffect(() => {
+    dispatch({ type: "SAGA/FETCH_CARDS" });
+  }, []);
 
   // Style for MUI box in Modal
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    overflow: 'auto',
-    display: 'block',
-    width: '90vw',
-    height: '90vh',
-    bgcolor: 'background.paper',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    overflow: "auto",
+    display: "block",
+    width: "90vw",
+    height: "90vh",
+    bgcolor: "background.paper",
   };
 
   const viewCard = (x) => {
-    handleOpen()
+    handleOpen();
     dispatch({
-      type: 'SET_CARD',
-      payload: x
-    })
+      type: "SET_CARD",
+      payload: x,
+    });
   };
 
   const editCard = () => {
@@ -271,67 +204,54 @@ export default function CardList() {
   const rows = getRows(categories, formatCards(cards))
 
   return (
-    <div className='container'>
-      {/* <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    <div className="container">
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer>
-          <Table stickyheader aria-label='sticky table'>
-            <TableHead >
+          <Table stickyheader aria-label="sticky table">
+            <TableHead>
               <TableRow>
                 <TableCell>Card Name</TableCell>
                 <TableCell>Description</TableCell>
                 <TableCell>Categories</TableCell>
                 <TableCell>Preview</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {cards && cards.map((x) => (
-                <TableRow hover role='checkbox' tabIndex={-1} key={x.id}>
-                  <TableCell>
-                    {x.name}
-                  </TableCell>
-                  <TableCell>
-                    {x.description}
-                  </TableCell>
-                  <TableCell>
-                    {x.categoriesArray.map((y) => {
-                      return <span key={y.category_id}>{y.category_name}, </span>
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    <img src={x.front_img} />
-                  </TableCell>
-                  <TableCell>
-                    <Button onClick={() => viewCard(x)} variant='outlined'>View</Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button variant='outlined'>Edit</Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button variant='outlined' color='error'>Delete</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {cards &&
+                cards.map((x) => (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={x.id}>
+                    <TableCell>{x.name}</TableCell>
+                    <TableCell>{x.description}</TableCell>
+                    <TableCell>
+                      <div className = 'tagContainer'>
+                        {x.categoriesArray.map((y) => {
+                          return (
+                            <span className='tag' key={y.category_id}>{y.category_name}</span>
+                          );
+                        })}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <img width='180em' src={x.front_img.display} />
+                    </TableCell>
+                    <TableCell>
+                      <Button onClick={() => viewCard(x)} variant="contained">
+                        View
+                      </Button>
+                      <span> </span>
+                      <Button variant="outlined">Edit</Button>
+                      <span> </span>
+                      <Button variant="contained" color="error">
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
-      </Paper> */}
-
-
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell>Category</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <Row key={row.category} row={row} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      </Paper>
 
       <Modal
         open={open}

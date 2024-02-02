@@ -18,7 +18,7 @@ export default function WholesalersList(){
         <div className = 'container'>
             {/* MUI table within an MUI paper component */}
             <Paper sx={{width: '100%', overflow: 'hidden'}}>
-                <TableContainer>
+                <TableContainer >
                     <Table stickyheader aria-label='sticky table'>
                         <TableHead >
                             <TableRow>
@@ -37,9 +37,8 @@ export default function WholesalersList(){
                                     </TableCell>
                                     <TableCell>
                                         <Button variant='outlined'>Edit</Button>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button variant='outlined' color='error'>Delete</Button>
+                                        <span> </span>
+                                        <Button variant='contained' color='error'>Delete</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}

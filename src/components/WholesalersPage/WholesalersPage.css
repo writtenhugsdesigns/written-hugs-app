@@ -8,11 +8,21 @@
 .pageButton {
     border: none;
     border-radius: 2px;
-    width: 10vw;
+    width: 15vw;
     height: 3rem;
-    background-color: rgb(138, 149, 185);
-    box-shadow: 3px 5px 5px rgb(172, 171, 171);
+    background-color: rgb(241, 238, 231);
+    box-shadow: 3px 5px 5px rgb(198, 196, 196);
     align-self: center;
+    font-size: large;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    gap: 0.5em;
+}
+
+.tableContainer {
+    box-shadow: 3px 5px 5px rgb(198, 196, 196);
+
 }
 
 .buttonGroup {

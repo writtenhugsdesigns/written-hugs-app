@@ -72,7 +72,7 @@ router.delete("/:id", rejectUnauthenticated, (req, res) => {
       res.sendStatus(200);
     })
     .catch((err) => {
-      console.log("Error in wholesalers PUT route,", err);
+      console.log("Error in wholesalers DELETE route,", err);
       res.sendStatus(500);
     });
 });
