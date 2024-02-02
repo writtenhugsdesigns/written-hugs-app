@@ -21,7 +21,7 @@ export default function WholesalersList(){
                 <TableContainer >
                     <Table stickyheader aria-label='sticky table'>
                         <TableHead >
-                            <TableRow>
+                            <TableRow sx={{backgroundColor: '#eeebe5'}}>
                                 <TableCell style={{minWidth: '50vw'}}key={'name'}>
                                     Organization Name
                                 </TableCell>
