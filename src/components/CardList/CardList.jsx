@@ -21,87 +21,83 @@ import { Category } from "@mui/icons-material";
 export default function CardList() {
   const dispatch = useDispatch();
 
-  const cards = useSelector(store => store.cardsReducer.cardsList);
-  const categories = useSelector(store => store.categoriesReducer.categories);
-  // reducer still needs to be made
-  // const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
+  // const cards = useSelector(store => store.cardsReducer.cardsList);
+  const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
 
-  const cardsByCategory = [
-    {
-      id: 1,
-      name: 'goats',
-      cards: [
-        {
-          id: 1,
-          name: 'first card',
-          vendor_style: 'MH1001',
-          description: 'first mental health card',
-          upc: 101,
-          sku: 111,
-          barcode: 'barcode',
-          front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
-        },
-        {
-          id: 2,
-          name: 'second card',
-          vendor_style: 'MH1002',
-          description: 'second mental health card',
-          upc: 102,
-          sku: 222,
-          barcode: 'barcode',
-          front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: 'goatz',
-      cards: [
-        {
-          id: 1,
-          name: 'first card',
-          vendor_style: 'MH1001',
-          description: 'first mental health card',
-          upc: 101,
-          sku: 111,
-          barcode: 'barcode',
-          front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
-        },
-        {
-          id: 3,
-          name: 'third card',
-          vendor_style: 'MH1001',
-          description: 'third mental health card',
-          upc: 103,
-          sku: 333,
-          barcode: 'barcode',
-          front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
-          sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
-        }
-      ]
-    }
-  ]
+  // const cardsByCategory = [
+  //   {
+  //     id: 1,
+  //     name: 'goats',
+  //     cards: [
+  //       {
+  //         id: 1,
+  //         name: 'first card',
+  //         vendor_style: 'MH1001',
+  //         description: 'first mental health card',
+  //         upc: 101,
+  //         sku: 111,
+  //         barcode: 'barcode',
+  //         front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
+  //       },
+  //       {
+  //         id: 2,
+  //         name: 'second card',
+  //         vendor_style: 'MH1002',
+  //         description: 'second mental health card',
+  //         upc: 102,
+  //         sku: 222,
+  //         barcode: 'barcode',
+  //         front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'goatz',
+  //     cards: [
+  //       {
+  //         id: 1,
+  //         name: 'first card',
+  //         vendor_style: 'MH1001',
+  //         description: 'first mental health card',
+  //         upc: 101,
+  //         sku: 111,
+  //         barcode: 'barcode',
+  //         front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
+  //       },
+  //       {
+  //         id: 3,
+  //         name: 'third card',
+  //         vendor_style: 'MH1001',
+  //         description: 'third mental health card',
+  //         upc: 103,
+  //         sku: 333,
+  //         barcode: 'barcode',
+  //         front_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         inner_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         insert_img: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY',
+  //         sticker_jpeg: 'https://drive.google.com/thumbnail?id=14va096SvAYsaZbnNlle4ulyhnC6-0MXY'
+  //       }
+  //     ]
+  //   }
+  // ]
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    dispatch({ type: "SAGA/FETCH_CARDS" });
-    dispatch({ type: "SAGA/FETCH_CATEGORIES" });
-    // saga still needs to be made
-    // dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
+    // dispatch({ type: "SAGA/FETCH_CARDS" });
+    dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
   }, []);
 
   // Style for MUI box in Modal
@@ -152,7 +148,7 @@ export default function CardList() {
               {openRow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell>{row.name}</TableCell>
+          <TableCell>{row.category_name}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -166,7 +162,7 @@ export default function CardList() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {row.cards.map((card) => (
+                    {row.cardsArray.map((card) => (
                       <TableRow key={card.id}>
                         <TableCell>{card.description}</TableCell>
                         <TableCell>{card.name}</TableCell>
@@ -193,7 +189,7 @@ export default function CardList() {
 
   return (
     <div className="container">
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      {/* <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer>
           <Table stickyheader aria-label="sticky table">
             <TableHead>
@@ -239,7 +235,7 @@ export default function CardList() {
             </TableBody>
           </Table>
         </TableContainer>
-      </Paper>
+      </Paper> */}
 <br />
 <br />
       <TableContainer component={Paper}>
