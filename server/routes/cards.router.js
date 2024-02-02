@@ -62,7 +62,19 @@ router.get('/', (req, res) => {
 
 router.post('/', uploadHandler.any(), async (req, res) => {
     const folderName = req.body.vendor_style + " " + req.body.name;
-   
+    const objectToSendToDB = 
+    {name: req.body.name,
+    upc: req.body.upc,
+    vendor_style: req.body.vendor_style,
+    front_img: '',
+    front_tiff: '',
+    insert_img: '',
+    insert_ai: '',
+    sticker_jpeg: '',
+    sticker_pdf: '',
+    };
+    console.log(req.body);
+
     //This creates an authentication token
     const jwtClient = new google.auth.JWT(
         apikeys.client_email,
@@ -96,61 +108,45 @@ router.post('/', uploadHandler.any(), async (req, res) => {
                 body: bufferStream,
             },
             requestBody: {
-                name: folderName + " " ,
+                name: fileObject.originalname,
                 parents: [folderID]
             },
-            fields: 'id.name'
+            fileds: 'id.name'
         })
-        console.log("dataID:", data.id);
+        objectToSendToDB[fileObject.fieldname] = data.id;
+        // console.log("fieldName:", fileObject.fieldname);
+        // console.log("dataID:", data.id);
+        console.log(objectToSendToDB);
     };
 
     const { body, files } = req;
     for (let f=0; f < files.length; f++) {
         await uploadFile(files[f])
         }
-        console.log(body);
+        // console.log(body);
         res.status(200).send('Form Submitted');
-    }
-
-    // let frontImgMetaData = {
-    //     name: folderName + " FRONT Image",
-    //     parents: [folderID]
-    // }
-    // const frontImageResponse = await drive.files.create({
-    //     resource:frontImgMetaData,
-    //     media:{
-    //         body: fs.createReadStream(req.file.originalname),
-    //         mimeType: 'image/jpeg'
-    //     },
-    //     fields: 'id'
-    // })
-
-    // console.log(frontImageResponse);
-    // const queryText = `
-    // INSERT INTO "cards" 
-    // ("name", "vendor_style", "description", "upc", "sku", "barcode", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "raw_art", "sticker_id")
-    // VALUES 
-    //   ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
-    //   RETURNING "id";
-    // `;
-    // const queryValues = [
-    //     req.body.name,
-    //     req.body.vendor_style,
-    //     req.body.description,
-    //     req.body.upc,
-    //     req.body.sku,
-    //     req.body.barcode,
-    //     req.body.front_img,
-    //     req.body.front_tiff,
-    //     req.body.inner_img,
-    //     req.body.insert_img,
-    //     req.body.insert_ai,
-    //     req.body.raw_art,
-    //     req.body.sticker_jpeg,
-    //     req.body.sticker_pdf
-    // ];
-    // pool.query(queryText, queryValues)
-    //     .then(result => {
+    
+    const queryText = `
+    INSERT INTO "cards" 
+    ("name", "upc", "vendor_style", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "sticker_jpeg", "sticker_pdf")
+    VALUES 
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      RETURNING "id";
+    `;
+    const queryValues = [
+        objectToSendToDB.name,
+        objectToSendToDB.upc,
+        objectToSendToDB.vendor_style,
+        objectToSendToDB.front_img,
+        objectToSendToDB.front_tiff,
+        objectToSendToDB.inner_img,
+        objectToSendToDB.insert_img,
+        objectToSendToDB.insert_ai,
+        objectToSendToDB.sticker_jpeg,
+        objectToSendToDB.sticker_pdf
+    ];
+    pool.query(queryText, queryValues)
+        .then(result => {
     //         const card_id = result.rows[0].id
     //         const categoriesArray = req.body.categoriesArray
     //         const insertCardsCategoriesQuery = newCardsCategoriesQuery(categoriesArray, card_id);
@@ -162,13 +158,13 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     //             }).catch(err => {
     //                 // catch for second query
     //                 console.log(err);
-    //                 res.sendStatus(500)
-    //             })
-    //     }).catch(err => { // 👈 Catch for first query
-    //         console.log(err);
-    //         res.sendStatus(500)
-    //     })
-)
+                    res.sendStatus(201)
+                })
+        .catch(err => { // 👈 Catch for first query
+            console.log(err);
+            res.sendStatus(500)
+        })
+
 
 router.put('/:id', (req, res) => {
     const queryText = `
@@ -238,6 +234,7 @@ router.put('/:id', (req, res) => {
             console.log(err);
             res.sendStatus(500)
         })
+})
 })
 
 router.get('/:id', (req, res) => {
