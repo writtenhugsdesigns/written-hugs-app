@@ -36,19 +36,43 @@ export default function CreatePitchPage() {
         return (
             <React.Fragment>
                 <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1-content"
-                    id={category.category_id}
-                >
-                    {category.category_name}
-                </AccordionSummary>
-                <AccordionDetails>
-                    {category.cardsArray.map((card) => {
-                        return card.name
-                    })}
-                </AccordionDetails>
-            </Accordion>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1-content"
+                        id={category.category_id}
+                    >
+                        {category.category_name}
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <AccordionActions>
+                            <Button>Add All to pitch</Button>
+                        </AccordionActions>
+                        {category.cardsArray.map((card) => {
+                            return (
+                                <>
+                                    <p>{card.name}</p>
+                                    <div className="imgPageContainer">
+                                        <div className="imgLeft">
+                                            <img className="frontImg" src={card.front_img.display} />
+                                        </div>
+                                        <div className="imgRight">
+                                            <p>Inner Image:</p>
+                                            <img src={card.inner_img.display} />
+                                            <p>Insert Image:</p>
+                                            <img src={card.insert_img.display} />
+                                            <p>Sticker Image:</p>
+                                            <img src={card.sticker_jpeg.display} />
+                                        </div>
+                                    </div>
+                                    <AccordionActions>
+                                        <Button>Add to pitch</Button>
+                                        <Button>View Card</Button>
+                                    </AccordionActions>
+                                </>
+                            )
+                        })}
+                    </AccordionDetails >
+                </Accordion>
             </React.Fragment>
         )
     }
@@ -59,8 +83,8 @@ export default function CreatePitchPage() {
             <button onClick={() => history.push("/reviewPitch")}>Create Pitch 🛒</button>
             <br /><br /><br />
             {categories.map((category) => (
-            <Category key={category.category_id} category={category} />
-          ))}
+                <Category key={category.category_id} category={category} />
+            ))}
             <br /><br /><br />
             <Accordion>
                 <AccordionSummary
