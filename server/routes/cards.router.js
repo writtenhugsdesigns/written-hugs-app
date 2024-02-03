@@ -109,19 +109,19 @@ router.get('/byCategory', (req, res) => {
     GROUP BY c.id
     ORDER BY c.id;
     `;
+    // FIRST QUERY gets cards and formats them
     pool.query(queryText)
         .then(result => {
-            let theCards = formatCards(result.rows)
-            console.log('the cards from first query', theCards);
+            const theCards = formatCards(result.rows)
             const sqlText = `
             SELECT * FROM "categories";
             `;
-            // SECOND QUERY ADDS categories FOR THAT NEW card
+            // SECOND QUERY gets categories
             pool.query(sqlText)
                 .then(result => {
                     const theCategories = result.rows
                     const cardsByCategory = formatCardsByCategory(theCards, theCategories)
-                    //Now that both are done, send back success!
+                    // Now that both are done, send back cards by category!
                     res.send(cardsByCategory);
                 }).catch(err => {
                     // catch for second query

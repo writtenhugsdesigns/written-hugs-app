@@ -12,7 +12,6 @@ import {
     from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-
 export default function CreatePitchPage() {
     const history = useHistory();
     const dispatch = useDispatch();
@@ -23,8 +22,6 @@ export default function CreatePitchPage() {
         dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
     }, []);
 
-    console.log(cardsByCategory);
-
     const categories =
         cardsByCategory.map((category) => {
             return category
@@ -32,7 +29,6 @@ export default function CreatePitchPage() {
 
     function Category(props) {
         const { category } = props;
-        console.log('category', category);
         return (
             <React.Fragment>
                 <Accordion>
@@ -85,51 +81,6 @@ export default function CreatePitchPage() {
             {categories.map((category) => (
                 <Category key={category.category_id} category={category} />
             ))}
-            <br /><br /><br />
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1-content"
-                    id="panel1-header"
-                >
-                    Accordion 1
-                </AccordionSummary>
-                <AccordionDetails>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </AccordionDetails>
-            </Accordion>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel2-content"
-                    id="panel2-header"
-                >
-                    Accordion 2
-                </AccordionSummary>
-                <AccordionDetails>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </AccordionDetails>
-            </Accordion>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel3-content"
-                    id="panel3-header"
-                >
-                    Accordion Actions
-                </AccordionSummary>
-                <AccordionDetails>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </AccordionDetails>
-                <AccordionActions>
-                    <Button>Cancel</Button>
-                    <Button>Agree</Button>
-                </AccordionActions>
-            </Accordion>
-
         </div>
     )
 }
