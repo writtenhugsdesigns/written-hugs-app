@@ -1,0 +1,32 @@
+.imgPageContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 10em;
+}
+
+.modalContainer {
+    padding: 20px;
+}
+
+.frontImg {
+    width: 40vw;
+}
+
+* {
+    color: #312e2e;
+}
+
+.tag {
+    border-radius: 25%;
+    background-color: rgb(231, 226, 216);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+    width: auto;
+}

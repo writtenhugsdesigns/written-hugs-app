@@ -4,8 +4,11 @@ const router = express.Router();
 const { google } = require('googleapis')
 const apikeys = require('../../googleDriveAPI.json')
 const SCOPE = ["https://www.googleapis.com/auth/drive"];
-const fs = require('fs')
-// const jwtClient = require('../modules/googleDriveAuth')
+const multer = require('multer');
+const uploadHandler = multer();
+const stream = require('stream')
+
+
 
 /** This function first authorizes to google drive using the JWT api method
  * Then it makes an api get call to google drive to fetch files of 
@@ -19,9 +22,9 @@ router.get('/folders', async (req, res) => {
         apikeys.private_key,
         SCOPE
     )
-    console.log("jwtClient before authorize", jwtClient);
+//     console.log("jwtClient before authorize", jwtClient);
     await jwtClient.authorize()
-    console.log("jwtClient after authorize", jwtClient);
+//     console.log("jwtClient after authorize", jwtClient);
     const drive = google.drive({ version: 'v3', auth: jwtClient });
     const folders = [];
     const results = await drive.files.list({
@@ -29,7 +32,7 @@ router.get('/folders', async (req, res) => {
         fields: 'nextPageToken, files(id, name)',
         spaces: 'drive',
     });
-    console.log("this is the result", results.data.files);
+    // console.log("this is the result", results.data.files);
     res.send(results.data.files);
 }
 )
@@ -134,50 +137,115 @@ router.get('/byCategory', (req, res) => {
         })
 })
 
-router.post('/', (req, res) => {
+
+
+router.post('/', uploadHandler.any(), async (req, res) => {
+    const folderName = req.body.vendor_style + " " + req.body.name;
+    const objectToSendToDB = 
+    {name: req.body.name,
+    upc: req.body.upc,
+    vendor_style: req.body.vendor_style,
+    front_img: '',
+    inner_img: '',
+    insert_img: '',
+    insert_ai: '',
+    sticker_jpeg: '',
+    sticker_pdf: '',
+    barcode: ''
+    };
+    // console.log(req.body);
+
+    //This creates an authentication token
+    const jwtClient = new google.auth.JWT(
+        apikeys.client_email,
+        null,
+        apikeys.private_key,
+        SCOPE
+        )
+      await jwtClient.authorize()
+    const drive = google.drive({version: 'v3', auth: jwtClient});
+    
+    //This is the metadata to setup the card variant folder
+    let fileMetaData = {
+            name: folderName,
+            parents: ["1wG6GeFUgvvh-8GOHw1NhlfRPUUDfP2H_"],
+            mimeType: 'application/vnd.google-apps.folder'
+        }
+
+    //This creates the folder for the card variant    
+    const folderResponse = await drive.files.create({
+            resource: fileMetaData,
+            fields: 'id'
+        })
+    const folderID = folderResponse.data.id
+    
+    const uploadFile = async (fileObject) => {
+        const bufferStream = new stream.PassThrough();
+        bufferStream.end(fileObject.buffer);
+        const { data } = await drive.files.create({
+            media: {
+                name: fileObject.mimeType,
+                body: bufferStream,
+            },
+            requestBody: {
+                name: fileObject.originalname,
+                parents: [folderID]
+            },
+            fileds: 'id.name'
+        })
+        objectToSendToDB[fileObject.fieldname] = data.id;
+        // console.log("fieldName:", fileObject.fieldname);
+        // console.log("dataID:", data.id);
+        console.log(objectToSendToDB);
+    };
+
+    const { body, files } = req;
+    for (let f=0; f < files.length; f++) {
+        await uploadFile(files[f])
+        }
+        // console.log(body);
+        res.status(200).send('Form Submitted');
+    
     const queryText = `
     INSERT INTO "cards" 
-    ("name", "vendor_style", "description", "upc", "sku", "barcode", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "raw_art", "sticker_id")
+    ("name", "upc", "vendor_style", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "sticker_jpeg", "sticker_pdf", "barcode")
     VALUES 
-      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING "id";
     `;
     const queryValues = [
-        req.body.name,
-        req.body.vendor_style,
-        req.body.description,
-        req.body.upc,
-        req.body.sku,
-        req.body.barcode,
-        req.body.front_img,
-        req.body.front_tiff,
-        req.body.inner_img,
-        req.body.insert_img,
-        req.body.insert_ai,
-        req.body.raw_art,
-        req.body.sticker_jpeg,
-        req.body.sticker_pdf
+        objectToSendToDB.name,
+        objectToSendToDB.upc,
+        objectToSendToDB.vendor_style,
+        objectToSendToDB.front_img,
+        objectToSendToDB.front_tiff,
+        objectToSendToDB.inner_img,
+        objectToSendToDB.insert_img,
+        objectToSendToDB.insert_ai,
+        objectToSendToDB.sticker_jpeg,
+        objectToSendToDB.sticker_pdf,
+        objectToSendToDB.barcode
     ];
     pool.query(queryText, queryValues)
-        .then(result => {
-            const card_id = result.rows[0].id
-            const categoriesArray = req.body.categoriesArray
-            const insertCardsCategoriesQuery = newCardsCategoriesQuery(categoriesArray, card_id);
-            // SECOND QUERY ADDS categories FOR THAT NEW card
-            pool.query(insertCardsCategoriesQuery)
-                .then(result => {
-                    //Now that both are done, send back success!
-                    res.sendStatus(201);
-                }).catch(err => {
-                    // catch for second query
-                    console.log(err);
-                    res.sendStatus(500)
-                })
-        }).catch(err => { // 👈 Catch for first query
-            console.log(err);
-            res.sendStatus(500)
+        .then((res) => {
+    //         const card_id = result.rows[0].id
+    //         const categoriesArray = req.body.categoriesArray
+    //         const insertCardsCategoriesQuery = newCardsCategoriesQuery(categoriesArray, card_id);
+    //         // SECOND QUERY ADDS categories FOR THAT NEW card
+    //         pool.query(insertCardsCategoriesQuery)
+    //             .then(result => {
+    //                 //Now that both are done, send back success!
+    //                 res.sendStatus(201);
+    //             }).catch(err => {
+    //                 // catch for second query
+    //                 console.log(err);
+                    res.sendStatus(201)
         })
-})
+        .catch((err) => {
+            // result.sendStatus(500)
+            console.log(err);
+        })
+
 
 router.put('/:id', (req, res) => {
     const queryText = `
@@ -247,6 +315,7 @@ router.put('/:id', (req, res) => {
             console.log(err);
             res.sendStatus(500)
         })
+})
 })
 
 router.get('/:id', (req, res) => {
