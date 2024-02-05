@@ -22,6 +22,13 @@ export default function CategoriesList() {
     dispatch({ type: "SAGA/FETCH_CATEGORIES" });
   }, []);
 
+  const deleteCategory = (id) => {
+    dispatch({
+      type: 'SAGA/DELETE_CATEGORY',
+      payload: id
+    })
+  }
+
   return (
     <div className="container">
       {/* MUI table within an MUI paper component */}
@@ -29,7 +36,7 @@ export default function CategoriesList() {
         <TableContainer>
           <Table stickyheader aria-label="sticky table">
             <TableHead>
-              <TableRow>
+              <TableRow sx={{backgroundColor: '#eeebe5'}}>
                 <TableCell style={{ minWidth: "50vw" }} key={"name"}>
                   Category Name
                 </TableCell>
@@ -44,7 +51,7 @@ export default function CategoriesList() {
                     <TableCell>
                       <Button variant="outlined">Edit</Button>
                       <span> </span>
-                      <Button variant="contained" color="error">
+                      <Button onClick = {() => deleteCategory(x.id)}variant="contained" color="error">
                         Delete
                       </Button>
                     </TableCell>
