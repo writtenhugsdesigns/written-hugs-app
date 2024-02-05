@@ -47,6 +47,30 @@ export default function WholesalersList(){
         handleOpen();
     }
 
+    const deleteWholesaler = (wholesaler) => {
+        Swal.fire({
+          title: `Are you sure you want to delete the ${wholesaler.company_name}?`,
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "The wholesaler has been deleted.",
+              icon: "success"
+            });
+            dispatch({
+              type: 'SAGA/DELETE_WHOLESALER',
+              payload: wholesaler.id
+            })
+          }
+        });
+    }
+
     return (
         <div className = 'container'>
             {/* MUI table within an MUI paper component */}
@@ -71,7 +95,7 @@ export default function WholesalersList(){
                                     <TableCell>
                                         <Button onClick = {() => editWholesaler(x)} variant='outlined'>Edit</Button>
                                         <span> </span>
-                                        <Button variant='contained' color='error'>Delete</Button>
+                                        <Button onClick = {() => deleteWholesaler(x)} variant='contained' color='error'>Delete</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}

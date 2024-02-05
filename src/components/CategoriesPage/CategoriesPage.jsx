@@ -23,7 +23,7 @@ export default function CategoriesPage() {
         height: "30vh",
         bgcolor: "background.paper",
         'border-radius': '5px'
-      };
+    };
 
     return (
         <>

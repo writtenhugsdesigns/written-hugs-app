@@ -62,7 +62,7 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
 router.delete("/:id", rejectUnauthenticated, (req, res) => {
   const sqlText = `
   DELETE FROM "wholesalers"
-  WHERE "id" = $1;`;
+    WHERE "id" = $1;`;
 
   const sqlValues = [req.params.id];
 

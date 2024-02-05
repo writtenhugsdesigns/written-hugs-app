@@ -1,36 +1,52 @@
-import { useHistory } from "react-router-dom"
 import { useState } from "react";
+import { Button, Alert } from "@mui/material";
+import { ArrowBackIos } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
 
 export default function CreateWholesaler({ handleClose }) {
-    const history = useHistory();
     let [wholesalerName, setWholesalerName] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
+    const dispatch = useDispatch();
 
-    // User hits submit button, POSTs a new wholesaler, closes modal
-    const handleSubmit = (e) => {
-        console.log("In handleSubmit");
+    // User hits submit button, POSTs a new wholesaler, alerts success
+    async function handleSubmit(e){
         e.preventDefault();
-        // Do the dispatch
-        handleClose()
+        await dispatch({
+            type: 'SAGA/POST_WHOLESALER',
+            payload: {company_name: wholesalerName}
+        })
+        setShowAlert(true);
         setWholesalerName('')
-        console.log(
-            wholesalerName,
-        );
     };
 
     return (
-        <div className='container'>
-            Create Wholesaler
-            <form>
-                <input
-                    value={wholesalerName}
-                    label="Wholesaler Name"
-                    placeholder="Wholesaler Name"
-                    onChange={() => setWholesalerName(event.target.value)}
-                    id="wholesaler"
-                />
-                <button type="reset" onClick={handleSubmit}>Add Wholesaler</button>
-                <button type="reset" onClick={handleClose}>Back</button>
-            </form>
+        <div className='modalContainerSmall'>
+            <div className = 'smallModalBar'>
+                <div className = 'modalBack'>
+                    <Button
+                        variant="outlined"
+                        startIcon={<ArrowBackIos />}
+                        onClick={handleClose}
+                    >
+                        Back
+                    </Button>
+                </div>
+                <h1>Add Wholesaler</h1>
+            </div>
+
+            {showAlert && <Alert severity='success'>Wholesaler successfully added</Alert>}
+            <div className = 'smallModalForm'>
+                <form>
+                    <input
+                        value={wholesalerName}
+                        label="Wholesaler Name"
+                        placeholder="Wholesaler Name"
+                        onChange={(event) => setWholesalerName(event.target.value)}
+                        id="wholesaler"
+                    />
+                    <Button variant='contained' type="submit" onClick={handleSubmit}>Add Wholesaler</Button>
+                </form>
+            </div>
         </div>
     )
 }
