@@ -105,6 +105,9 @@ export default function CreateCard() {
     setVendorStyle(null);
   };
 
+  const handleCancel = (e) => {
+    history.push("/cards")
+  }
   return (
     <div className="container">
       <Grid container sx={{m:3}}>
@@ -266,9 +269,19 @@ export default function CreateCard() {
           />
           </Grid>
         </Grid>
+        <Grid sx={{p:3}} container>
+        <Grid item lg={6}></Grid>
+        <Grid item lg={3}>
+        <button className="pageButton" onClick={handleCancel}>
+            Cancel
+        </button>
+        </Grid>
+        <Grid item lg={3}>
         <button className="pageButton" onClick={handleSubmit}>
             Submit
         </button>
+        </Grid>
+        </Grid>
       </form>
     </div>
   );
