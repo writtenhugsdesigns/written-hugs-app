@@ -6,7 +6,8 @@ const apikeys = require('../../googleDriveAPI.json')
 const SCOPE = ["https://www.googleapis.com/auth/drive"];
 const multer = require('multer');
 const uploadHandler = multer();
-const stream = require('stream')
+const stream = require('stream');
+const { log } = require('console');
 
 
 
@@ -145,13 +146,14 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     {name: req.body.name,
     upc: req.body.upc,
     vendor_style: req.body.vendor_style,
+    barcode: '',
     front_img: '',
     inner_img: '',
     insert_img: '',
     insert_ai: '',
     sticker_jpeg: '',
     sticker_pdf: '',
-    barcode: ''
+    front_tiff: ''
     };
     // console.log(req.body);
 
@@ -208,7 +210,7 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     
     const queryText = `
     INSERT INTO "cards" 
-    ("name", "upc", "vendor_style", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "sticker_jpeg", "sticker_pdf", "barcode")
+    ("name", "upc", "vendor_style", "barcode", "front_img", "inner_img", "insert_img", "insert_ai", "sticker_jpeg", "sticker_pdf", "front_tiff")
     VALUES 
       ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING "id";
@@ -217,17 +219,18 @@ router.post('/', uploadHandler.any(), async (req, res) => {
         objectToSendToDB.name,
         objectToSendToDB.upc,
         objectToSendToDB.vendor_style,
+        objectToSendToDB.barcode,
         objectToSendToDB.front_img,
-        objectToSendToDB.front_tiff,
         objectToSendToDB.inner_img,
         objectToSendToDB.insert_img,
         objectToSendToDB.insert_ai,
         objectToSendToDB.sticker_jpeg,
         objectToSendToDB.sticker_pdf,
-        objectToSendToDB.barcode
+        objectToSendToDB.front_tiff,
     ];
     pool.query(queryText, queryValues)
-        .then((res) => {
+        .then(res => {
+            res.sendStatus(201)})
     //         const card_id = result.rows[0].id
     //         const categoriesArray = req.body.categoriesArray
     //         const insertCardsCategoriesQuery = newCardsCategoriesQuery(categoriesArray, card_id);
@@ -239,8 +242,7 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     //             }).catch(err => {
     //                 // catch for second query
     //                 console.log(err);
-                    res.sendStatus(201)
-        })
+                    // res.send(201);
         .catch((err) => {
             // result.sendStatus(500)
             console.log(err);
@@ -362,13 +364,13 @@ function formatCards(all) {
         // After getting all cards in cardsArray, we must format the urls for displaying
         for (let i = 0; i < cardsArray.length; i++) {
             //front_img
-            cardsArray[i].front_img.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].front_img.raw)}`;
+            cardsArray[i].front_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].front_img}`;
             //inner_img
-            cardsArray[i].inner_img.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].inner_img.raw)}`;
+            cardsArray[i].inner_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].inner_img}`;
             //insert_img
-            cardsArray[i].insert_img.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].insert_img.raw)}`;
+            cardsArray[i].insert_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].insert_img}`;
             //sticker_jpeg
-            cardsArray[i].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].sticker_jpeg.raw)}`;
+            cardsArray[i].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].sticker_jpeg}`;
         }
     }
     return cardsArray
@@ -407,9 +409,9 @@ function formatCardsByCategory(incomingCardsArray, incomingCategoriesArray) {
  * this function takes in a file's raw google drive url, and extracts the file ID
  * returns a string representing the id
  */
-function extractID(rawURL) {
-    return rawURL.substring(32, rawURL.length - 17);
-}
+// function extractID(rawURL) {
+//     return rawURL.substring(32, rawURL.length - 17);
+// }
 
 /**  
  * this function takes in an array of categories 

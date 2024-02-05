@@ -45,7 +45,7 @@ function* editPitch(action) {
       url: `/api/pitches/${action.payload.id}`,
       data: action.payload.data,
     });
-    yield fetchPITCHES();
+    yield fetchPitches();
   } catch (error) {
     console.error("editPitch failed:", error);
   }
