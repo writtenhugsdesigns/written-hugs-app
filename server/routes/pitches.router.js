@@ -191,22 +191,37 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.delete("/:id", rejectUnauthenticated, (req, res) => {
-  const sqlText = `
-  DELETE FROM "pitches"
-  WHERE "id" = $1;`;
+router.delete("/:id", rejectUnauthenticated, async (req, res) => {
+  let connection;
+  try {
+    let pitches_cardsQueryText = `
+    DELETE FROM "pitches_cards"
+    WHERE "pitch_id" = $1;`;
 
-  const sqlValues = [req.params.id];
+    let pitchesQueryText = `
+    DELETE FROM "pitches"
+    WHERE "id" = $1;`;
 
-  pool
-    .query(sqlText, sqlValues)
-    .then((result) => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      console.log("Error in pitches DELETE route,", err);
-      res.sendStatus(500);
-    });
+    connection = await pool.connect();
+    connection.query("BEGIN;");
+
+    const pitchesCardsRes = await connection.query(pitches_cardsQueryText, [
+      req.params.id,
+    ]);
+    const partyCharacterRes = await connection.query(pitchesQueryText, [
+      req.params.id,
+    ]);
+
+    connection.query("COMMIT;");
+    connection.release();
+
+    res.sendStatus(201);
+  } catch (err) {
+    console.log("Error in pitches DELETE:", err);
+    connection.query("ROLLBACK;");
+    connection.release();
+    res.sendStatus(500);
+  }
 });
 
 module.exports = router;

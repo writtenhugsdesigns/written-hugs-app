@@ -127,10 +127,7 @@ export default function PitchList() {
       <p>
         Wholesaler:{" "}
         <span>
-          <select
-            onChange={() => filterWholesalersByName(event.target.value)}
-            id="framework"
-          >
+          <select onChange={() => filterWholesalersByName(event.target.value)}>
             <option value="0">All</option>
             {wholesalers &&
               wholesalers.map((wholesaler) => {
