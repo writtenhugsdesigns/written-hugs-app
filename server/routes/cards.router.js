@@ -228,7 +228,7 @@ router.post('/', uploadHandler.any(), async (req, res) => {
         objectToSendToDB.front_tiff,
     ];
     pool.query(queryText, queryValues)
-        .then((res) => {
+        .then(res => {
     //         const card_id = result.rows[0].id
     //         const categoriesArray = req.body.categoriesArray
     //         const insertCardsCategoriesQuery = newCardsCategoriesQuery(categoriesArray, card_id);
@@ -240,7 +240,7 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     //             }).catch(err => {
     //                 // catch for second query
     //                 console.log(err);
-                    res.sendStatus(201)
+                    res.sendStatus(201);
         })
         .catch((err) => {
             // result.sendStatus(500)
@@ -363,13 +363,13 @@ function formatCards(all) {
         // After getting all cards in cardsArray, we must format the urls for displaying
         for (let i = 0; i < cardsArray.length; i++) {
             //front_img
-            cardsArray[i].front_img.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].front_img.raw)}`;
+            cardsArray[i].front_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].front_img}`;
             //inner_img
-            cardsArray[i].inner_img.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].inner_img.raw)}`;
+            cardsArray[i].inner_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].inner_img}`;
             //insert_img
-            cardsArray[i].insert_img.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].insert_img.raw)}`;
+            cardsArray[i].insert_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].insert_img}`;
             //sticker_jpeg
-            cardsArray[i].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${extractID(cardsArray[i].sticker_jpeg.raw)}`;
+            cardsArray[i].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].sticker_jpeg}`;
         }
     }
     return cardsArray
@@ -408,9 +408,9 @@ function formatCardsByCategory(incomingCardsArray, incomingCategoriesArray) {
  * this function takes in a file's raw google drive url, and extracts the file ID
  * returns a string representing the id
  */
-function extractID(rawURL) {
-    return rawURL.substring(32, rawURL.length - 17);
-}
+// function extractID(rawURL) {
+//     return rawURL.substring(32, rawURL.length - 17);
+// }
 
 /**  
  * this function takes in an array of categories 
