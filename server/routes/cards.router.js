@@ -145,13 +145,14 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     {name: req.body.name,
     upc: req.body.upc,
     vendor_style: req.body.vendor_style,
+    barcode: '',
     front_img: '',
     inner_img: '',
     insert_img: '',
     insert_ai: '',
     sticker_jpeg: '',
     sticker_pdf: '',
-    barcode: ''
+    front_tiff: ''
     };
     // console.log(req.body);
 
@@ -208,7 +209,7 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     
     const queryText = `
     INSERT INTO "cards" 
-    ("name", "upc", "vendor_style", "front_img", "front_tiff", "inner_img", "insert_img", "insert_ai", "sticker_jpeg", "sticker_pdf", "barcode")
+    ("name", "upc", "vendor_style", "barcode", "front_img", "inner_img", "insert_img", "insert_ai", "sticker_jpeg", "sticker_pdf", "front_tiff")
     VALUES 
       ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING "id";
@@ -217,14 +218,14 @@ router.post('/', uploadHandler.any(), async (req, res) => {
         objectToSendToDB.name,
         objectToSendToDB.upc,
         objectToSendToDB.vendor_style,
+        objectToSendToDB.barcode,
         objectToSendToDB.front_img,
-        objectToSendToDB.front_tiff,
         objectToSendToDB.inner_img,
         objectToSendToDB.insert_img,
         objectToSendToDB.insert_ai,
         objectToSendToDB.sticker_jpeg,
         objectToSendToDB.sticker_pdf,
-        objectToSendToDB.barcode
+        objectToSendToDB.front_tiff,
     ];
     pool.query(queryText, queryValues)
         .then((res) => {
