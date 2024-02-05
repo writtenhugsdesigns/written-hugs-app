@@ -1,18 +1,51 @@
 import React, { useState, useEffect } from "react";
-import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow, TableContainer, TablePagination } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
+import {
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TableContainer,
+    TablePagination,
+    Modal,
+    Box
+} from "@mui/material";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import EditWholesaler from "../EditWholesaler/EditWholesaler";
+import Swal from "sweetalert2";
 
 export default function WholesalersList(){
-
-    const history = useHistory();
     const dispatch = useDispatch();
     const wholesalers = useSelector(store => store.wholesalersReducer.wholesalers);
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     
-    // Local state for the current page in the table, and the amount of data per page
-    const [page, setPage] = useState(0);
-
     useEffect(() => {dispatch({type: 'SAGA/FETCH_WHOLESALERS'})}, []);
+
+    const style = {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        overflow: "auto",
+        display: "block",
+        width: "60vw",
+        height: "30vh",
+        bgcolor: "background.paper",
+        borderRadius: '5px'
+    };
+
+    const editWholesaler = (wholesaler) => {
+        dispatch({
+            type: 'SET_CURRENT_WHOLESALER',
+            payload: wholesaler
+        })
+        handleOpen();
+    }
 
     return (
         <div className = 'container'>
@@ -36,7 +69,7 @@ export default function WholesalersList(){
                                         {x.company_name}
                                     </TableCell>
                                     <TableCell>
-                                        <Button variant='outlined'>Edit</Button>
+                                        <Button onClick = {() => editWholesaler(x)} variant='outlined'>Edit</Button>
                                         <span> </span>
                                         <Button variant='contained' color='error'>Delete</Button>
                                     </TableCell>
@@ -46,6 +79,17 @@ export default function WholesalersList(){
                     </Table>
                 </TableContainer>
             </Paper>
+
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <EditWholesaler handleClose = {handleClose}/>
+                </Box>
+            </Modal>
         </div>
     )
 }

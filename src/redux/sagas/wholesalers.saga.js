@@ -40,10 +40,11 @@ function* deleteWholesaler(action) {
 
 function* editWholesaler(action) {
   try {
+    console.log(action.payload.company_name);
     const response = yield axios({
       method: "PUT",
-      url: `/api/wholesaler/${action.payload.id}`,
-      data: action.payload.data,
+      url: `/api/wholesalers/${action.payload.id}`,
+      data: action.payload,
     });
     yield fetchWholesalers();
   } catch (error) {
