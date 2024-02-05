@@ -42,6 +42,7 @@ export default function CardList() {
     width: "90vw",
     height: "90vh",
     bgcolor: "background.paper",
+    'border-radius': '5px'
   };
 
   const viewCard = (x) => {

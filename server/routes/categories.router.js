@@ -40,12 +40,14 @@ router.post("/", rejectUnauthenticated, (req, res) => {
 });
 
 router.put("/:id", rejectUnauthenticated, (req, res) => {
+  console.log("Name:", req.body.name, "id", req.params.id);
+
   const sqlText = `
   UPDATE "categories"
-  SET "name" = $1,
-  WHERE "id" = $2;`;
+    SET "name" = $1
+    WHERE "id" = $2;`;
 
-  const sqlValues = [req.body.company_name, req.params.id];
+  const sqlValues = [req.body.name, req.params.id];
 
   pool
     .query(sqlText, sqlValues)

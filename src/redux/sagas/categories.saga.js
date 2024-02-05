@@ -32,7 +32,7 @@ function* deleteCategory(action) {
       method: "DELETE",
       url: `/api/categories/${action.payload}`,
     });
-    yield fetchcategories();
+    yield fetchCategories();
   } catch (error) {
     console.error("deleteCategory failed:", error);
   }
@@ -43,7 +43,7 @@ function* editCategory(action) {
     const response = yield axios({
       method: "PUT",
       url: `/api/categories/${action.payload.id}`,
-      data: action.payload.data,
+      data: action.payload,
     });
     yield fetchCategories();
   } catch (error) {
