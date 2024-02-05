@@ -2,15 +2,24 @@ import { useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ArrowBackIos } from "@mui/icons-material";
-import { Box, Button, Grid, TextField, Typography, FormControl } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  FormControl,
+} from "@mui/material";
 import "./CreateCard.css";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
+import MultipleSelect from "../MultiSelectCategories/MultiSelectCategories";
 // import '@sweetalert2/theme-material-ui'
 
 export default function CreateCard() {
   const history = useHistory();
   const dispatch = useDispatch();
   const newCardToSend = new FormData();
+
 
   //This use effect triggers the saga "getCurrentFolders"
   //After this is triggered a useSelector will get the current folders array
@@ -84,12 +93,9 @@ export default function CreateCard() {
 
       // Do the dispatch
       history.push("/cards");
-
     }
     // Clear fields
-    setVariationName(null);
-    setUPCNumber(null);
-    setVendorStyle(null);
+    handleClear(e);
   };
 
   // Clears form inputs when user hits the clear button
@@ -99,39 +105,42 @@ export default function CreateCard() {
     setUPCNumber(null);
     setVendorStyle(null);
   };
-
+  // console.log(databaseCategories.categories);
   const handleCancel = (e) => {
-Swal.fire({
-  title: "Are you sure?",
-  text: "Do you want to cancel this form and lose the information!",
-  icon: "question",
-  showCancelButton: true,
-  confirmButtonColor: "#f9b98c",
-  cancelButtonColor: "#d33",
-  confirmButtonText: "Yes"
-}).then((result) => {
-  if (result.isConfirmed) {
-    history.push("/cards")
-  }
-});
-    
-  }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to cancel this form and lose the information!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#f9b98c",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        history.push("/cards");
+      }
+    });
+  };
   return (
     <div className="container">
-      <Grid container sx={{m:3}}>
-      <Grid item lg={9}>
-        <Typography variant="h2" >New Card Variation Information</Typography>
+      <Grid container sx={{ m: 3 }}>
+        <Grid item lg={9}>
+          <Typography variant="h2">New Card Variation Information</Typography>
         </Grid>
         <Grid item lg={3}>
-        <button className="pageButton" justify="flex-end" onClick={() => history.push("/cards")}>
-          <ArrowBackIos />
-          Back
-        </button>
+          <button
+            className="pageButton"
+            justify="flex-end"
+            onClick={() => history.push("/cards")}
+          >
+            <ArrowBackIos />
+            Back
+          </button>
         </Grid>
       </Grid>
       <form>
-        <Grid container sx={{border:1}}>
-          <Grid item sx={{p:2}} xs={12} md={6} lg={3}>
+        <Grid container sx={{ border: 1 }}>
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
             <TextField
               value={variationName}
               label="Variation Name"
@@ -140,7 +149,7 @@ Swal.fire({
               id="variation"
             />
           </Grid>
-          <Grid item sx={{p:2}} xs={12} md={6} lg={3}>
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
             <TextField
               value={UPCNumber}
               label="UPC Number"
@@ -150,7 +159,7 @@ Swal.fire({
             />
           </Grid>
 
-          <Grid item sx={{p:2}} xs={12} md={6} lg={3}>
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
             <TextField
               value={vendorStyle}
               label="Vendor Style"
@@ -159,136 +168,122 @@ Swal.fire({
               id="vendorStyle"
             />
           </Grid>
-          <Grid item sx={{p:2}} lg={3}>
-            <p>Categories</p>
-            {databaseCategories.categories &&
-              databaseCategories.categories.map((category) => {
-                return (
-                  <div>
-                    {category.name}
-                    <input
-                      type="checkbox"
-                      name="categories"
-                      value={category.id}
-                      id={category.id}
-                    />
-                  </div>
-                );
-              })}
-          </Grid>
-          
-          <Grid sx={{p:2}} item xs={12} md={6} lg={3}>
-          <div>
-            <Typography variant="overline">Barcode Image</Typography>
-          </div>
-          <TextField
-            id="barcode"
-            name="Barcode Image"
-            type="file"
-            onChange={() => {
-              setBarcode(event.target.files);
-            }}
-          />
-          </Grid>
-          <Grid item sx={{p:2}} xs={12} md={6} lg={3}>
-          <div>
-            <Typography variant="overline">Front Image</Typography>
-          </div>
-          <TextField
-            id="front"
-            type="file"
-            onChange={() => {
-              setFront(event.target.files);
-            }}
-          />
-          </Grid>
-          <Grid item sx={{p:2}} xs={12} md={6} lg={3}>
-          <div>
-            <Typography variant="overline">Inside Image</Typography>
-          </div>
-          <TextField
-            id="insideInsertion"
-            type="file"
-            onChange={() => {
-              setInsideInsertion(event.target.files);
-            }}
-          />
-          </Grid>
-          <Grid item sx={{p:2}} xs={12} md={6} lg={3}>
-          <div>
-            <Typography variant="overline">Insert Image</Typography>
-          </div>
-          <TextField
-            id="insert"
-            type="file"
-            onChange={() => {
-              setInsert(event.target.files);
-            }}
-          />
-          </Grid>
-          <Grid item sx={{p:2}} xs={12} md={6} lg={3}>
-          <div>
-            <Typography variant="overline">Sticker Image</Typography>
-          </div>
-          <TextField
-            id="sticker"
-            type="file"
-            onChange={() => {
-              setSticker(event.target.files);
-            }}
-          />
-          </Grid>
-          <Grid item sx={{p:2}} xs={12} md={6} lg={3}>
-          <div>
-            <Typography variant="overline">Sticker PDF</Typography>
-          </div>
-          <TextField
-            id="stickerPdf"
-            type="file"
-            onChange={() => {
-              setStickerPdf(event.target.files);
-            }}
-          />
+          <Grid item sx={{ p: 2 }} lg={3}>
+            <MultipleSelect categories={databaseCategories.categories}/>
           </Grid>
 
-          <Grid item sx={{p:2}} xs={12} md={6} lg={3}>
-          <div>
-            <Typography variant="overline">TIFF File</Typography>
-          </div>
-          <TextField
-            id="tiffFile"
-            type="file"
-            onChange={() => {
-              setTIFFFile(event.target.files);
-            }}
-          />
+          <Grid sx={{ p: 2 }} item xs={12} md={6} lg={3}>
+            <div>
+              <Typography variant="overline">Barcode Image</Typography>
+            </div>
+            <TextField
+              id="barcode"
+              name="Barcode Image"
+              type="file"
+              onChange={() => {
+                setBarcode(event.target.files);
+              }}
+            />
+          </Grid>
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+            <div>
+              <Typography variant="overline">Front Image</Typography>
+            </div>
+            <TextField
+              id="front"
+              type="file"
+              onChange={() => {
+                setFront(event.target.files);
+              }}
+            />
+          </Grid>
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+            <div>
+              <Typography variant="overline">Inside Image</Typography>
+            </div>
+            <TextField
+              id="insideInsertion"
+              type="file"
+              onChange={() => {
+                setInsideInsertion(event.target.files);
+              }}
+            />
+          </Grid>
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+            <div>
+              <Typography variant="overline">Insert Image</Typography>
+            </div>
+            <TextField
+              id="insert"
+              type="file"
+              onChange={() => {
+                setInsert(event.target.files);
+              }}
+            />
+          </Grid>
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+            <div>
+              <Typography variant="overline">Sticker Image</Typography>
+            </div>
+            <TextField
+              id="sticker"
+              type="file"
+              onChange={() => {
+                setSticker(event.target.files);
+              }}
+            />
+          </Grid>
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+            <div>
+              <Typography variant="overline">Sticker PDF</Typography>
+            </div>
+            <TextField
+              id="stickerPdf"
+              type="file"
+              onChange={() => {
+                setStickerPdf(event.target.files);
+              }}
+            />
           </Grid>
 
-          <Grid item sx={{p:2}} xs={12} md={6} lg={3}>
-          <div>
-            <Typography variant="overline">AI File</Typography>
-          </div>
-          <TextField
-            id="AIfile"
-            type="file"
-            onChange={() => {
-              setAIFile(event.target.files);
-            }}
-          />
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+            <div>
+              <Typography variant="overline">TIFF File</Typography>
+            </div>
+            <TextField
+              id="tiffFile"
+              type="file"
+              onChange={() => {
+                setTIFFFile(event.target.files);
+              }}
+            />
+          </Grid>
+
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+            <div>
+              <Typography variant="overline">AI File</Typography>
+            </div>
+            <TextField
+              id="AIfile"
+              type="file"
+              onChange={() => {
+                setAIFile(event.target.files);
+              }}
+            />
           </Grid>
         </Grid>
-        <Grid sx={{p:3}} container>
-        <Grid item lg={6}></Grid>
-        <Grid item lg={3}>
-        <button className="pageButton" onClick={handleCancel}>
-            Cancel
-        </button>
-        </Grid>
-        <Grid item lg={3}>
-        <button className="pageButton" onClick={handleSubmit}>
-            Submit
-        </button>
-        </Grid>
+        <Grid sx={{ p: 3 }} container>
+          <Grid item lg={6}></Grid>
+          <Grid item lg={3}>
+            <button className="pageButton" onClick={handleCancel}>
+              Cancel
+            </button>
+          </Grid>
+          <Grid item lg={3}>
+            <button className="pageButton" onClick={handleSubmit}>
+              Submit
+            </button>
+          </Grid>
         </Grid>
       </form>
     </div>
