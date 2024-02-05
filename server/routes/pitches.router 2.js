@@ -13,7 +13,6 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     pitches.wholesaler_id,
     pitches.is_current,
     pitches.description,
-    pitches.updated_at,
     wholesalers.company_name as wholesaler_company_name,
     "user".username as wholesaler_user,
     pitches_cards.ordered as card_ordered,
@@ -73,7 +72,6 @@ router.get("/", rejectUnauthenticated, (req, res) => {
             wholesaler_id: input.wholesaler_id,
             wholesaler_company_name: input.wholesaler_company_name,
             wholesaler_name: input.wholesaler_user,
-            date: input.updated_at,
             is_current: input.is_current,
             description: input.description,
             cards: [
@@ -191,37 +189,22 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.delete("/:id", rejectUnauthenticated, async (req, res) => {
-  let connection;
-  try {
-    let pitches_cardsQueryText = `
-    DELETE FROM "pitches_cards"
-    WHERE "pitch_id" = $1;`;
+router.delete("/:id", rejectUnauthenticated, (req, res) => {
+  const sqlText = `
+  DELETE FROM "pitches"
+  WHERE "id" = $1;`;
 
-    let pitchesQueryText = `
-    DELETE FROM "pitches"
-    WHERE "id" = $1;`;
+  const sqlValues = [req.params.id];
 
-    connection = await pool.connect();
-    connection.query("BEGIN;");
-
-    const pitchesCardsRes = await connection.query(pitches_cardsQueryText, [
-      req.params.id,
-    ]);
-    const partyCharacterRes = await connection.query(pitchesQueryText, [
-      req.params.id,
-    ]);
-
-    connection.query("COMMIT;");
-    connection.release();
-
-    res.sendStatus(201);
-  } catch (err) {
-    console.log("Error in pitches DELETE:", err);
-    connection.query("ROLLBACK;");
-    connection.release();
-    res.sendStatus(500);
-  }
+  pool
+    .query(sqlText, sqlValues)
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.log("Error in pitches DELETE route,", err);
+      res.sendStatus(500);
+    });
 });
 
 module.exports = router;

@@ -37,9 +37,13 @@ function* fetchAllCardsByCategory() {
  */
 function* postCard(action) {
     try {
+        const headers = {
+          'content-type' : 'multipart/form-data'
+        }
         const response = yield axios({
             method: 'POST',
             url: '/api/cards',
+            headers: headers,
             data: action.payload
         })
         yield fetchAllCards()
