@@ -35,6 +35,7 @@ export default function CreateCard() {
   let [insideInsertion, setInsideInsertion] = useState([]);
   let [insert, setInsert] = useState([]);
   let [sticker, setSticker] = useState([]);
+  let [stickerPdf, setStickerPdf] = useState([]);
   let [TIFFFile, setTIFFFile] = useState([]);
   let [AIFile, setAIFile] = useState([]);
 
@@ -65,13 +66,14 @@ export default function CreateCard() {
     if (sameName) {
       alert("same name!");
     } else {
+    newCardToSend.append("barcode", barcode[0]);
     newCardToSend.append("front_img", front[0]);
-    newCardToSend.append("front_tiff", TIFFFile[0]);
     newCardToSend.append("inner_img", insideInsertion[0]);
     newCardToSend.append("insert_img", insert[0]);
-    newCardToSend.append("sticker_jpeg", sticker[0]);
-    newCardToSend.append("barcode", barcode[0]);
     newCardToSend.append("insert_ai", AIFile[0]);
+    newCardToSend.append("sticker_jpeg", sticker[0]);
+    newCardToSend.append("sticker_pdf", stickerPdf[0])
+    newCardToSend.append("front_tiff", TIFFFile[0]);
     newCardToSend.append("upc", UPCNumber);
     newCardToSend.append("vendor_style", vendorStyle);
     newCardToSend.append("name", variationName);
@@ -192,6 +194,14 @@ export default function CreateCard() {
           type="file"
           onChange={() => {
             setSticker(event.target.files);
+          }}
+        />
+                <label for="sticker_pdf">sticker pdf: </label>
+        <input
+          id="stickerpdf"
+          type="file"
+          onChange={() => {
+            setStickerPdf(event.target.files);
           }}
         />
         <label for="tiffFile">TIFF File: </label>
