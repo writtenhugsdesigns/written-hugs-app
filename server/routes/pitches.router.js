@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/", rejectUnauthenticated, (req, res) => {
   const sqlText = `
   SELECT
-    pitches.id,
+    pitches.id as pitches_id,
     pitches.wholesaler_id,
     pitches.is_current,
     pitches.description,
@@ -47,7 +47,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     ON cards_categories.card_id = cards.id
     LEFT JOIN categories
     ON cards_categories.category_id = categories.id
-    ORDER BY id, card_id, category_id;`;
+    ORDER BY pitches_id, card_id, category_id;`;
 
   pool
     .query(sqlText)
@@ -65,11 +65,13 @@ router.get("/", rejectUnauthenticated, (req, res) => {
         }
         if (
           newInput[0] === undefined ||
-          (newInput[0] && newInput[newInputLength - 1].id != result.rows[i].id)
+          (newInput[0] &&
+            newInput[newInputLength - 1].pitches_id !=
+              result.rows[i].pitches_id)
         ) {
           input = result.rows[i];
           newInput.push({
-            id: input.id,
+            pitches_id: input.pitches_id,
             wholesaler_id: input.wholesaler_id,
             wholesaler_company_name: input.wholesaler_company_name,
             wholesaler_name: input.wholesaler_user,

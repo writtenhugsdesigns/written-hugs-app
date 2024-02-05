@@ -1,43 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   HashRouter as Router,
   Redirect,
   Route,
   Switch,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
-import Nav from '../Nav/Nav';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import Nav from "../Nav/Nav";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 // Unprotected Routes
-import AboutPage from '../AboutPage/AboutPage';
-import LoginPage from '../LoginPage/LoginPage';
+import AboutPage from "../AboutPage/AboutPage";
+import LoginPage from "../LoginPage/LoginPage";
 
 // Protected Routes
-import AdminHome from '../AdminHome/AdminHome';
-import InfoPage from '../InfoPage/InfoPage';
-import PitchPage from '../PitchPage/PitchPage';
-import CreatePitchPage from '../CreatePitchPage/CreatePitchPage';
-import ReviewPitch from '../ReviewPitch/ReviewPitch';
-import CardPage from '../CardPage/CardPage';
-import CreateCard from '../CreateCard/CreateCard';
-import WholesalersPage from '../WholesalersPage/WholesalersPage';
-import CreateWholesaler from '../CreateWholesaler/CreateWholesaler';
-import CategoriesPage from '../CategoriesPage/CategoriesPage';
-import CreateCategory from '../CreateCategory/CreateCategory';
-import ViewPitch from '../ViewPitch/ViewPitch';
+import AdminHome from "../AdminHome/AdminHome";
+import InfoPage from "../InfoPage/InfoPage";
+import PitchPage from "../PitchPage/PitchPage";
+import CreatePitchPage from "../CreatePitchPage/CreatePitchPage";
+import ReviewPitch from "../ReviewPitch/ReviewPitch";
+import CardPage from "../CardPage/CardPage";
+import CreateCard from "../CreateCard/CreateCard";
+import WholesalersPage from "../WholesalersPage/WholesalersPage";
+import CreateWholesaler from "../CreateWholesaler/CreateWholesaler";
+import CategoriesPage from "../CategoriesPage/CategoriesPage";
+import CreateCategory from "../CreateCategory/CreateCategory";
+import ViewPitch from "../ViewPitch/ViewPitch";
 
-import './App.css';
+import "./App.css";
+import EditPitch from "../EditPitch/EditPitch";
 
 function App() {
   const dispatch = useDispatch();
 
-  const user = useSelector(store => store.user);
+  const user = useSelector((store) => store.user);
 
   useEffect(() => {
-    dispatch({ type: 'FETCH_USER' });
+    dispatch({ type: "FETCH_USER" });
   }, [dispatch]);
 
   return (
@@ -54,25 +55,25 @@ function App() {
           </Route>
 
           <Route exact path="/login">
-            {user.id ?
-              // If the user is already logged in, 
+            {user.id ? (
+              // If the user is already logged in,
               // redirect to the /user page
               <Redirect to="/user" />
-              :
+            ) : (
               // Otherwise, show the login page
               <LoginPage />
-            }
+            )}
           </Route>
 
           <Route exact path="/home">
-            {user.id ?
-              // If the user is already logged in, 
+            {user.id ? (
+              // If the user is already logged in,
               // redirect them to the /user page
               <Redirect to="/admin" />
-              :
+            ) : (
               // Otherwise, show the Login page
               <LoginPage />
-            }
+            )}
           </Route>
 
           {/* For protected routes, the view could show one of several things on the same route.
@@ -82,52 +83,55 @@ function App() {
           <ProtectedRoute exact path="/admin">
             <AdminHome />
           </ProtectedRoute>
-          
+
           <ProtectedRoute exact path="/cards">
-            <CardPage/>
+            <CardPage />
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/createCard">
-            <CreateCard/>
+            <CreateCard />
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/pitches">
-            <PitchPage/>
+            <PitchPage />
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/createPitch">
-            <CreatePitchPage/>
+            <CreatePitchPage />
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/reviewPitch">
-            <ReviewPitch/>
+            <ReviewPitch />
           </ProtectedRoute>
 
-          <ProtectedRoute exact path="/viewPitch">
-            <ViewPitch/>
+          <ProtectedRoute exact path="/viewPitch/:id">
+            <ViewPitch />
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/editPitch/:id">
+            <EditPitch />
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/wholesalers">
-            <WholesalersPage/>
+            <WholesalersPage />
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/createWholesaler">
-            <CreateWholesaler/>
+            <CreateWholesaler />
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/categories">
-            <CategoriesPage/>
+            <CategoriesPage />
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/createCategory">
-            <CreateCategory/>
+            <CreateCategory />
           </ProtectedRoute>
 
           {/* If none of the other routes matched, we will show a 404. */}
           <Route>
             <h1>404</h1>
           </Route>
-
         </Switch>
       </div>
     </Router>
