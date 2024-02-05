@@ -68,16 +68,16 @@ export default function ViewPitch() {
                   <td>{card.vendor_style}</td>
                   <td>{card.name}</td>
                   <td>
-                    <img src={card.front_img} />
+                    <img src={card.front_img.display} />
                   </td>
                   <td>
-                    <img src={card.inner_img} />
+                    <img src={card.inner_img.display} />
                   </td>
                   <td>
-                    <img src={card.insert_img} />
+                    <img src={card.insert_img.display} />
                   </td>
                   <td>
-                    <img src={card.sticker_jpeg} />
+                    <img src={card.sticker_jpeg.display} />
                   </td>
                   <td>
                     {card.categories.map((category) => {
