@@ -6,7 +6,7 @@ const pool = require("../modules/pool");
 
 const router = express.Router();
 
-router.get("/", rejectUnauthenticated, (req, res) => {
+router.get("/", (req, res) => {
   const sqlText = `
   SELECT
     pitches.id as pitches_id,
@@ -67,7 +67,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
           newInput[0] === undefined ||
           (newInput[0] &&
             newInput[newInputLength - 1].pitches_id !=
-              result.rows[i].pitches_id)
+            result.rows[i].pitches_id)
         ) {
           input = result.rows[i];
           newInput.push({
@@ -87,10 +87,11 @@ router.get("/", rejectUnauthenticated, (req, res) => {
                 upc: input.upc,
                 sku: input.sku,
                 barcode: input.barcode,
-                front_img: input.front_img,
-                inner_img: input.inner_img,
-                insert_img: input.insert_img,
-                sticker_jpeg: input.sticker_jpeg,
+                front_img: { raw: input.front_img, display: ''},
+                inner_img: { raw: input.inner_img, display: '' },
+                insert_img: { raw: input.insert_img, display: '' },
+                sticker_jpeg: { raw: input.sticker_jpeg, display: '' },
+                sticker_pdf: input.sticker_pdf,
                 categories: [
                   {
                     category_name: input.category_name,
@@ -103,7 +104,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
         } else if (
           newInput[0] &&
           newInput[newInputLength - 1].cards[cardsLength - 1].id !=
-            result.rows[i].card_id
+          result.rows[i].card_id
         ) {
           input = result.rows[i];
           newInput[newInputLength - 1].cards.push({
@@ -114,10 +115,10 @@ router.get("/", rejectUnauthenticated, (req, res) => {
             upc: input.upc,
             sku: input.sku,
             barcode: input.barcode,
-            front_img: input.front_img,
-            inner_img: input.inner_img,
-            insert_img: input.insert_img,
-            sticker_jpeg: input.sticker_jpeg,
+            inner_img: { raw: input.inner_img, display: '' },
+            insert_img: { raw: input.insert_img, display: '' },
+            sticker_jpeg: { raw: input.sticker_jpeg, display: '' },
+            sticker_pdf: input.sticker_pdf,
             categories: [
               {
                 category_name: input.category_name,
@@ -138,7 +139,8 @@ router.get("/", rejectUnauthenticated, (req, res) => {
           });
         }
       }
-      res.send(newInput);
+      const thePitches = formatPitches(newInput)
+      res.send(thePitches);
     })
     .catch((err) => {
       console.log("Error in pitches GET router,", err);
@@ -225,5 +227,21 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+function extractID(rawURL) {
+  return rawURL.substring(32, rawURL.length - 17);
+}
+
+function formatPitches(pitches) {
+  for (let i = 0; i < pitches.length; i++) {
+    for (let j = 0; j < pitches[i].cards.length; j++) {
+      pitches[i].cards[j].front_img.display = `https://drive.google.com/thumbnail?id=${extractID(pitches[i].cards[j].front_img.raw)}`;
+      pitches[i].cards[j].inner_img.display = `https://drive.google.com/thumbnail?id=${extractID(pitches[i].cards[j].inner_img.raw)}`;
+      pitches[i].cards[j].insert_img.display = `https://drive.google.com/thumbnail?id=${extractID(pitches[i].cards[j].insert_img.raw)}`;
+      pitches[i].cards[j].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${extractID(pitches[i].cards[j].sticker_jpeg.raw)}`;
+    }
+  }
+  return pitches
+}
 
 module.exports = router;
