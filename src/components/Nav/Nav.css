@@ -30,7 +30,7 @@
 .navLink {
   display: inline-block;
   color: #312e2e;
-  background-color: rgb(249, 247, 243);
+  background-color: #f9f7f3;
   text-align: center;
   padding: 15px 5px;
   text-decoration: none;
@@ -45,7 +45,7 @@
 }
 
 .navLink:hover {
-  background-color: rgb(238, 235, 229);
+  background-color: #eeebe5;
 }
 
 

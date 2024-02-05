@@ -17,14 +17,33 @@ function* fetchAllCards() {
 }
 
 /**
+ * Send a get request to receive all categories and thier corresponding cards and set the cardsByCategory reducer
+ */
+function* fetchAllCardsByCategory() {
+  try {
+    const AllCardsByCategory = yield axios.get('/api/cards/byCategory');
+    yield put({
+      type: 'SET_CARDS_BY_CATEGORY',
+      payload: AllCardsByCategory.data
+    });
+  } catch (error) {
+    console.log('AllCardsByCategory error:', error);
+  }
+}
+
+/**
  * Send a post request to create a new card and then fetch all cards
  * @param {*} action action.payload containing new card data is sent to the router
  */
 function* postCard(action) {
     try {
+        const headers = {
+          'content-type' : 'multipart/form-data'
+        }
         const response = yield axios({
             method: 'POST',
             url: '/api/cards',
+            headers: headers,
             data: action.payload
         })
         yield fetchAllCards()
@@ -105,6 +124,7 @@ function* getCurrentFolders() {
 function* cardSaga() {
   yield takeLatest('SAGA/POST_CARD', postCard);
   yield takeLatest('SAGA/FETCH_CARDS', fetchAllCards);
+  yield takeLatest('SAGA/FETCH_CARDS_BY_CATEGORY', fetchAllCardsByCategory);
   yield takeLatest('SAGA/DELETE_CARD', deleteCard);
   yield takeLatest('SAGA/EDIT_CARD', editCard);
   yield takeLatest('SAGA/GET_FOLDERS', getCurrentFolders)
