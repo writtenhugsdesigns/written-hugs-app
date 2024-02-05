@@ -1,86 +1,90 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
-    Accordion,
-    AccordionActions,
-    AccordionSummary,
-    AccordionDetails,
-    Button
-}
-    from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardMedia
+} from '@mui/material';
+import './CreatePitchPage.css';
 
 export default function CreatePitchPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
+    const newPitch = useSelector(store => store.pitches.newPitch);
+    const [isHoveredId, setIsHoveredId] = useState('');
 
     useEffect(() => {
-        // dispatch({ type: "SAGA/FETCH_CARDS" });
         dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
     }, []);
 
-    const categories =
-        cardsByCategory.map((category) => {
-            return category
-        });
-
-    function Category(props) {
-        const { category } = props;
-        return (
-            <React.Fragment>
-                <Accordion>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1-content"
-                        id={category.category_id}
-                    >
-                        {category.category_name}
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <AccordionActions>
-                            <Button>Add All to pitch</Button>
-                        </AccordionActions>
-                        {category.cardsArray.map((card) => {
-                            return (
-                                <>
-                                    <p>{card.name}</p>
-                                    <div className="imgPageContainer">
-                                        <div className="imgLeft">
-                                            <img className="frontImg" src={card.front_img.display} />
-                                        </div>
-                                        <div className="imgRight">
-                                            <p>Inner Image:</p>
-                                            <img src={card.inner_img.display} />
-                                            <p>Insert Image:</p>
-                                            <img src={card.insert_img.display} />
-                                            <p>Sticker Image:</p>
-                                            <img src={card.sticker_jpeg.display} />
-                                        </div>
-                                    </div>
-                                    <AccordionActions>
-                                        <Button>Add to pitch</Button>
-                                        <Button>View Card</Button>
-                                    </AccordionActions>
-                                </>
-                            )
-                        })}
-                    </AccordionDetails >
-                </Accordion>
-            </React.Fragment>
-        )
+    const addButton = (card) => {
+        dispatch({
+            type: 'ADD_CARD_TO_PITCH',
+            payload: card
+        })
+    }
+    const removeButton = (card) => {
+        dispatch({
+            type: 'REMOVE_CARD_FROM_PITCH',
+            payload: card
+        })
+    }
+    const toReview = () => {
+        history.push("/reviewPitch")
     }
 
     return (
         <div className='container'>
             Create Pitch Page
-            <button onClick={() => history.push("/reviewPitch")}>Create Pitch 🛒</button>
+            <button onClick={toReview}>Create Pitch 🛒</button>
             <br /><br /><br />
-            {categories.map((category) => (
-                <Category key={category.category_id} category={category} />
-            ))}
+            {cardsByCategory.map((category) => {
+                return (
+                    <>
+                        <p>{category.category_name}</p>
+                        {category.cardsArray.map((card) => {
+                            return (
+                                <div className="accordianRow">
+                                    <Card
+                                        sx={{ maxWidth: 345 }}
+                                        variant="outlined"
+                                        onMouseOver={() => setIsHoveredId(card.card_id)}
+                                        onMouseOut={() => setIsHoveredId('')}>
+                                        {isHoveredId == card.card_id ?
+                                            <CardMedia
+                                                component="img"
+                                                alt={card.name}
+                                                height="140"
+                                                image={card.inner_img.display}
+                                            />
+                                            :
+                                            <CardMedia
+                                                component="img"
+                                                alt={card.name}
+                                                height="140"
+                                                image={card.front_img.display}
+                                            />
+                                        }
+                                        <CardContent>
+                                            <p>{card.name}</p>
+                                            <p>{card.description}</p>
+                                        </CardContent>
+                                        <CardActions>
+                                            <Button onClick={()=>addButton(card)}>Add to pitch</Button>
+                                            <Button onClick={()=>removeButton(card)}>Remove from pitch</Button>
+                                            <Button>View Card</Button>
+                                        </CardActions>
+                                    </Card>
+                                </div>
+                            )
+                        })}
+                    </>
+                )
+            })}
         </div>
     )
 }
