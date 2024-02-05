@@ -6,8 +6,10 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
+/** This function creates a multiselect dropdown.
+ * 
+ */
 export default function MultipleSelect({categories}) {
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -21,8 +23,6 @@ const MenuProps = {
 };
 const theme = useTheme();
 const [personName, setPersonName] = useState([]);
-const [names, setNames] = useState([]);
-const dispatch = useDispatch();
 
 const getStyles = (name, personName, theme) => {
   return {
@@ -46,10 +46,10 @@ const getStyles = (name, personName, theme) => {
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-name-label">Name</InputLabel>
+        <InputLabel id="categoriesInput">Categories</InputLabel>
         <Select
-          labelId="demo-multiple-name-label"
-          id="demo-multiple-name"
+          labelId="categoriesInput"
+          id="categoriesSelector"
           multiple
           value={personName}
           onChange={handleChange}

@@ -9,7 +9,10 @@ import {
   TextField,
   Typography,
   FormControl,
+  Icon,
 } from "@mui/material";
+import { green } from '@mui/material/colors'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
 import "./CreateCard.css";
 import Swal from "sweetalert2";
 import MultipleSelect from "../MultiSelectCategories/MultiSelectCategories";
@@ -19,6 +22,7 @@ export default function CreateCard() {
   const history = useHistory();
   const dispatch = useDispatch();
   const newCardToSend = new FormData();
+  const [newCategory, setNewCategory] = useState('')
 
 
   //This use effect triggers the saga "getCurrentFolders"
@@ -41,6 +45,7 @@ export default function CreateCard() {
   let [variationName, setVariationName] = useState(null);
   let [UPCNumber, setUPCNumber] = useState(null);
   let [vendorStyle, setVendorStyle] = useState(null);
+  let [description, setDescription] = useState(null);
   let [barcode, setBarcode] = useState([]);
   let [front, setFront] = useState([]);
   let [insideInsertion, setInsideInsertion] = useState([]);
@@ -86,6 +91,7 @@ export default function CreateCard() {
       newCardToSend.append("upc", UPCNumber);
       newCardToSend.append("vendor_style", vendorStyle);
       newCardToSend.append("name", variationName);
+      newCardToSend.append("description", description)
       dispatch({
         type: "SAGA/POST_CARD",
         payload: newCardToSend,
@@ -121,6 +127,24 @@ export default function CreateCard() {
       }
     });
   };
+
+  const createCategory = () => {
+    const inputValue = ('');
+    Swal.fire({
+      input: "text",
+      inputLabel: "New Category Name",
+      inputPlaceholder: "Type your cateory here",
+      inputValue,
+      inputAttributes: {
+        "aria-label": "Type your category here"
+      },
+      showCancelButton: true,
+      confirmButtonText: "Submit"
+    }).then((result) => {
+    if (result.isConfirmed) {
+      console.log(inputValue);
+    }})
+  }
   return (
     <div className="container">
       <Grid container sx={{ m: 3 }}>
@@ -140,18 +164,20 @@ export default function CreateCard() {
       </Grid>
       <form>
         <Grid container sx={{ border: 1 }}>
-          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={4}>
             <TextField
               value={variationName}
+              fullWidth
               label="Variation Name"
               placeholder="Variation Name"
               onChange={() => setVariationName(event.target.value)}
               id="variation"
             />
           </Grid>
-          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={4}>
             <TextField
               value={UPCNumber}
+              fullWidth
               label="UPC Number"
               placeholder="UPC Number"
               onChange={() => setUPCNumber(event.target.value)}
@@ -159,17 +185,34 @@ export default function CreateCard() {
             />
           </Grid>
 
-          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+          <Grid item sx={{ p: 2 }} xs={12} md={6} lg={4}>
             <TextField
               value={vendorStyle}
+              fullWidth
               label="Vendor Style"
               placeholder="Vendor Style"
               onChange={() => setVendorStyle(event.target.value)}
               id="vendorStyle"
             />
           </Grid>
-          <Grid item sx={{ p: 2 }} lg={3}>
+          <Grid item sx={{ p: 2 }} lg={4}>
             <MultipleSelect categories={databaseCategories.categories}/>
+            {/* <Button onClick={createCategory}>
+            <Typography variant='body2'>New Category</Typography>
+            <AddCircleIcon/>
+            </Button> */}
+          </Grid>
+          <Grid item sx={{ p: 2 }} lg={8}>
+          <TextField
+              value={description}
+              multiline
+              fullWidth
+              minRows={4}
+              label="Card Varient Description"
+              placeholder="Card Varient Description"
+              onChange={() => setDescription(event.target.value)}
+              id="description"
+            />
           </Grid>
 
           <Grid sx={{ p: 2 }} item xs={12} md={6} lg={3}>
