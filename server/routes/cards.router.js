@@ -146,6 +146,7 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     {name: req.body.name,
     upc: req.body.upc,
     vendor_style: req.body.vendor_style,
+    description: req.body.description,
     barcode: '',
     front_img: '',
     inner_img: '',
@@ -210,15 +211,16 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     
     const queryText = `
     INSERT INTO "cards" 
-    ("name", "upc", "vendor_style", "barcode", "front_img", "inner_img", "insert_img", "insert_ai", "sticker_jpeg", "sticker_pdf", "front_tiff")
+    ("name", "upc", "vendor_style", "description", "barcode", "front_img", "inner_img", "insert_img", "insert_ai", "sticker_jpeg", "sticker_pdf", "front_tiff")
     VALUES 
-      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       RETURNING "id";
     `;
     const queryValues = [
         objectToSendToDB.name,
         objectToSendToDB.upc,
         objectToSendToDB.vendor_style,
+        objectToSendToDB.description,
         objectToSendToDB.barcode,
         objectToSendToDB.front_img,
         objectToSendToDB.inner_img,
