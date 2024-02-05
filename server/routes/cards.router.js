@@ -6,7 +6,8 @@ const apikeys = require('../../googleDriveAPI.json')
 const SCOPE = ["https://www.googleapis.com/auth/drive"];
 const multer = require('multer');
 const uploadHandler = multer();
-const stream = require('stream')
+const stream = require('stream');
+const { log } = require('console');
 
 
 
@@ -229,6 +230,7 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     ];
     pool.query(queryText, queryValues)
         .then(res => {
+            res.sendStatus(201)})
     //         const card_id = result.rows[0].id
     //         const categoriesArray = req.body.categoriesArray
     //         const insertCardsCategoriesQuery = newCardsCategoriesQuery(categoriesArray, card_id);
@@ -240,8 +242,7 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     //             }).catch(err => {
     //                 // catch for second query
     //                 console.log(err);
-                    res.sendStatus(201);
-        })
+                    // res.send(201);
         .catch((err) => {
             // result.sendStatus(500)
             console.log(err);
