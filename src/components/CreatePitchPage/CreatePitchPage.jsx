@@ -14,17 +14,33 @@ export default function CreatePitchPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
+    const newPitch = useSelector(store => store.pitches.newPitch);
     const [isHoveredId, setIsHoveredId] = useState('');
 
     useEffect(() => {
-        // dispatch({ type: "SAGA/FETCH_CATEGORIES" });
         dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
     }, []);
+
+    const addButton = (card) => {
+        dispatch({
+            type: 'ADD_CARD_TO_PITCH',
+            payload: card
+        })
+    }
+    const removeButton = (card) => {
+        dispatch({
+            type: 'REMOVE_CARD_FROM_PITCH',
+            payload: card
+        })
+    }
+    const toReview = () => {
+        history.push("/reviewPitch")
+    }
 
     return (
         <div className='container'>
             Create Pitch Page
-            <button onClick={() => history.push("/reviewPitch")}>Create Pitch 🛒</button>
+            <button onClick={toReview}>Create Pitch 🛒</button>
             <br /><br /><br />
             {cardsByCategory.map((category) => {
                 return (
@@ -43,7 +59,7 @@ export default function CreatePitchPage() {
                                                 component="img"
                                                 alt={card.name}
                                                 height="140"
-                                                image='https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*'
+                                                image={card.inner_img.display}
                                             />
                                             :
                                             <CardMedia
@@ -58,7 +74,8 @@ export default function CreatePitchPage() {
                                             <p>{card.description}</p>
                                         </CardContent>
                                         <CardActions>
-                                            <Button>Add to pitch</Button>
+                                            <Button onClick={()=>addButton(card)}>Add to pitch</Button>
+                                            <Button onClick={()=>removeButton(card)}>Remove from pitch</Button>
                                             <Button>View Card</Button>
                                         </CardActions>
                                     </Card>
