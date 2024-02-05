@@ -12,14 +12,19 @@ export default function CategoriesPage() {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    
     const style = {
-        position: 'absolute',
-        overflow: 'scroll',
-        display: 'block',
-        width: '100%',
-        height: '100%',
-        bgcolor: 'background.paper',
-    };
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        overflow: "auto",
+        display: "block",
+        width: "60vw",
+        height: "30vh",
+        bgcolor: "background.paper",
+        'border-radius': '5px'
+      };
 
     return (
         <>
