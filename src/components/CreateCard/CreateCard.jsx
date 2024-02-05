@@ -170,7 +170,7 @@ export default function CreateCard() {
             setFront(event.target.files);
           }}
         />
-        <label for="insideInsertion">Inside Insertion: </label>
+        <label for="insideInsertion">Inside Image: </label>
         <input
           id="insideInsertion"
           type="file"
@@ -210,8 +210,8 @@ export default function CreateCard() {
             setAIFile(event.target.files);
           }}
         />
-        Create Card
-        <button onClick={handleSubmit}>Submit</button>
+
+        <button className = 'pageButton' onClick={handleSubmit}>Submit</button>
       </form>
 
     </div>

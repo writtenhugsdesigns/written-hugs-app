@@ -88,7 +88,6 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     upc: req.body.upc,
     vendor_style: req.body.vendor_style,
     front_img: '',
-    front_tiff: '',
     inner_img: '',
     insert_img: '',
     insert_ai: '',
@@ -170,7 +169,7 @@ router.post('/', uploadHandler.any(), async (req, res) => {
         objectToSendToDB.barcode
     ];
     pool.query(queryText, queryValues)
-        .then((result) => {
+        .then((res) => {
     //         const card_id = result.rows[0].id
     //         const categoriesArray = req.body.categoriesArray
     //         const insertCardsCategoriesQuery = newCardsCategoriesQuery(categoriesArray, card_id);
@@ -182,7 +181,7 @@ router.post('/', uploadHandler.any(), async (req, res) => {
     //             }).catch(err => {
     //                 // catch for second query
     //                 console.log(err);
-                    result.sendStatus(201)
+                    res.sendStatus(201)
         })
         .catch((err) => {
             // result.sendStatus(500)
