@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { ArrowBackIos } from "@mui/icons-material";
 import { Box, Button, Grid, TextField, Typography, FormControl } from "@mui/material";
 import "./CreateCard.css";
+import Swal from 'sweetalert2'
+// import '@sweetalert2/theme-material-ui'
 
 export default function CreateCard() {
   const history = useHistory();
@@ -63,7 +65,7 @@ export default function CreateCard() {
     );
 
     if (sameName) {
-      alert("same name!");
+      Swal.fire("This card variant already exists. Choose a different name.");
     } else {
       newCardToSend.append("front_img", front[0]);
       newCardToSend.append("front_tiff", TIFFFile[0]);
@@ -81,15 +83,8 @@ export default function CreateCard() {
       });
 
       // Do the dispatch
-      // history.push("/cards");
-      // console.log(
-      //   currentFoldersArray,
-      //   variationName,
-      //   UPCNumber,
-      //   vendorStyle,
-      //   barcode,
-      //   getCategories()
-      // );
+      history.push("/cards");
+
     }
     // Clear fields
     setVariationName(null);
@@ -106,7 +101,20 @@ export default function CreateCard() {
   };
 
   const handleCancel = (e) => {
+Swal.fire({
+  title: "Are you sure?",
+  text: "Do you want to cancel this form and lose the information!",
+  icon: "question",
+  showCancelButton: true,
+  confirmButtonColor: "#f9b98c",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes"
+}).then((result) => {
+  if (result.isConfirmed) {
     history.push("/cards")
+  }
+});
+    
   }
   return (
     <div className="container">
