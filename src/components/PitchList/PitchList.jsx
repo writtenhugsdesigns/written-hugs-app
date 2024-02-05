@@ -221,14 +221,6 @@ export default function PitchList() {
           </Table>
         </TableContainer>
       </Paper>
-      {/* <div className="container">
-        <button onClick={() => history.push("/createPitch")}>New Pitch</button>
-        Pitch Page
-        {pitches[0] &&
-          pitches.map((pitch) => {
-            return <PitchList pitch={pitch} />;
-          })}
-      </div> */}
     </div>
   );
 }
