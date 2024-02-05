@@ -23,7 +23,6 @@ export default function CardList() {
 
   // const cards = useSelector(store => store.cardsReducer.cardsList);
   const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
-  console.log(cardsByCategory);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -104,6 +103,7 @@ export default function CardList() {
                       <TableRow key={x.id}>
                         <TableCell>{x.name}</TableCell>
                         <TableCell>{x.description}</TableCell>
+                        <TableCell>{x.categories_array.map((y) => (<span className='tag'>{y.category_name}</span>))}</TableCell>
                         <TableCell>
                           <img width='180em' src={x.front_img.display} />
                         </TableCell>

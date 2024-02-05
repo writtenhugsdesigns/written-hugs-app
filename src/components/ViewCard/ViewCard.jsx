@@ -32,7 +32,7 @@ export default function ViewCard({ handleClose }) {
       <p>{selectedCard.description}</p>
       <p>
         Categories:
-        {selectedCard.categoriesArray.map((x) => {
+        {selectedCard.categories_array.map((x) => {
           return <span className="tag">{x.category_name}</span>;
         })}
         <Button>
