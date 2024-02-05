@@ -345,6 +345,7 @@ function formatCards(all) {
         cardsArray.push({
             card_id: all[i].id,
             name: all[i].name,
+            description: all[i].description,
             vendor_style: all[i].vendor_style,
             upc: all[i].upc,
             sku: all[i].sku,
