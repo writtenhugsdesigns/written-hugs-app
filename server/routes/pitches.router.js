@@ -6,13 +6,14 @@ const pool = require("../modules/pool");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", rejectUnauthenticated, (req, res) => {
   const sqlText = `
   SELECT
     pitches.id as pitches_id,
     pitches.wholesaler_id,
     pitches.is_current,
     pitches.description,
+    pitches.name,
     pitches.updated_at,
     wholesalers.company_name as wholesaler_company_name,
     "user".username as wholesaler_user,
@@ -77,6 +78,7 @@ router.get("/", (req, res) => {
             wholesaler_name: input.wholesaler_user,
             date: input.updated_at,
             is_current: input.is_current,
+            name: input.name,
             description: input.description,
             cards: [
               {
@@ -87,7 +89,7 @@ router.get("/", (req, res) => {
                 upc: input.upc,
                 sku: input.sku,
                 barcode: input.barcode,
-                front_img: { raw: input.front_img, display: ''},
+                front_img: { raw: input.front_img, display: '' },
                 inner_img: { raw: input.inner_img, display: '' },
                 insert_img: { raw: input.insert_img, display: '' },
                 sticker_jpeg: { raw: input.sticker_jpeg, display: '' },
@@ -115,6 +117,7 @@ router.get("/", (req, res) => {
             upc: input.upc,
             sku: input.sku,
             barcode: input.barcode,
+            front_img: { raw: input.front_img, display: '' },
             inner_img: { raw: input.inner_img, display: '' },
             insert_img: { raw: input.insert_img, display: '' },
             sticker_jpeg: { raw: input.sticker_jpeg, display: '' },
@@ -149,23 +152,39 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", rejectUnauthenticated, (req, res) => {
+
   const sqlText = `
   INSERT INTO "pitches"
-    ("wholesaler_id", "is_current", "description")
+    ("wholesaler_id", "is_current", "description", "name")
   VALUES
-    ($1, $2, $3);`;
+    ($1, true, $2, $3)
+    RETURNING "id";`;
   pool
     .query(sqlText, [
       req.body.wholesaler_id,
-      req.body.is_current,
-      req.body.description,
+      req.body.pitchDescription,
+      req.body.pitchName
     ])
     .then((result) => {
       res.sendStatus(201);
-    })
-    .catch((err) => {
-      console.log("Error in pitches POST route,", err);
-      res.sendStatus(500);
+      const pitch_id = result.rows[0].id
+      const cardsArray = req.body.newPitch
+      const insertPitchesCardsQuery = newPitchesCardsQuery(cardsArray, pitch_id);
+      // SECOND QUERY ADDS categories FOR THAT NEW card
+      pool.query(insertPitchesCardsQuery)
+        .then(result => {
+          //Now that both are done, send back success!
+          res.sendStatus(201);
+        }).catch(err => {
+          // catch for second query
+          console.log("Error in pitches_cards POST route,", err);
+          res.sendStatus(500);
+        })
+        .catch((err) => {
+          // catch for the first query
+          console.log("Error in pitches POST route,", err);
+          res.sendStatus(500);
+        });
     });
 });
 
@@ -228,20 +247,43 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
-function extractID(rawURL) {
-  return rawURL.substring(32, rawURL.length - 17);
-}
-
 function formatPitches(pitches) {
   for (let i = 0; i < pitches.length; i++) {
     for (let j = 0; j < pitches[i].cards.length; j++) {
-      pitches[i].cards[j].front_img.display = `https://drive.google.com/thumbnail?id=${extractID(pitches[i].cards[j].front_img.raw)}`;
-      pitches[i].cards[j].inner_img.display = `https://drive.google.com/thumbnail?id=${extractID(pitches[i].cards[j].inner_img.raw)}`;
-      pitches[i].cards[j].insert_img.display = `https://drive.google.com/thumbnail?id=${extractID(pitches[i].cards[j].insert_img.raw)}`;
-      pitches[i].cards[j].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${extractID(pitches[i].cards[j].sticker_jpeg.raw)}`;
+      pitches[i].cards[j].front_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].front_img.raw}`;
+      pitches[i].cards[j].inner_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].inner_img.raw}`;
+      pitches[i].cards[j].insert_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].insert_img.raw}`;
+      pitches[i].cards[j].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].sticker_jpeg.raw}`;
     }
   }
   return pitches
+}
+
+/**  
+* this function takes in an array of cards 
+* it's goal is to create a query to insert multiple rows in the pitches_cards table
+* since a single pitch could have multiple cards
+* */
+function newPitchesCardsQuery(cardsArray, pitch_id) {
+  let pitchesCardsQuery = `
+  INSERT INTO "pitches_cards"
+  ("pitch_id", "category_id")
+  VALUES
+  `
+  for (let i = 0; i < cardsArray.length; i++) {
+    // adds the appropriate ids
+    if (i < cardsArray.length - 1) {
+      pitchesCardsQuery += `
+      (${pitch_id}, ${cardsArray[i].card_id}),
+    `
+      // adds the appropriate ids and a semi colon
+    } else if (i === cardsArray.length - 1) {
+      pitchesCardsQuery += `
+      (${pitch_id}, ${cardsArray[i].card_id});
+      `
+    }
+  }
+  return pitchesCardsQuery;
 }
 
 module.exports = router;
