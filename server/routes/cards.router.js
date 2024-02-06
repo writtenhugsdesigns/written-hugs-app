@@ -395,19 +395,19 @@ function formatCards(all) {
       //front_img
       cardsArray[
         i
-      ].front_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].front_img}`;
+      ].front_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].front_img.raw}`;
       //inner_img
       cardsArray[
         i
-      ].inner_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].inner_img}`;
+      ].inner_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].inner_img.raw}`;
       //insert_img
       cardsArray[
         i
-      ].insert_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].insert_img}`;
+      ].insert_img.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].insert_img.raw}`;
       //sticker_jpeg
       cardsArray[
         i
-      ].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].sticker_jpeg}`;
+      ].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].sticker_jpeg.raw}`;
     }
   }
   return cardsArray;
