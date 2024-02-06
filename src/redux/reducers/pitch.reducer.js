@@ -15,7 +15,7 @@ const newPitch = (state = [], action) => {
   }
   if (action.type === 'REMOVE_CARD_FROM_PITCH') {
     return state.filter((card) => {
-      return card.id != action.payload.id
+      return card.card_id != action.payload.card_id
     })
   }
   if (action.type === 'CLEAR_PITCH') {

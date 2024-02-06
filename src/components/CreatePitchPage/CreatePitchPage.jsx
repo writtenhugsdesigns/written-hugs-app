@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import './CreatePitchPage.css';
 
-export default function CreatePitchPage() {
+export default function CreatePitchPage({handleClose}) {
     const history = useHistory();
     const dispatch = useDispatch();
     const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
@@ -34,13 +34,16 @@ export default function CreatePitchPage() {
         })
     }
     const toReview = () => {
+        dispatch({
+            type: "SAGA/GET_WHOLESALERS",
+          });
         history.push("/reviewPitch")
     }
 
     return (
         <div className='container'>
             Create Pitch Page
-            <button onClick={toReview}>Create Pitch 🛒</button>
+            <button onClick={()=>toReview(handleClose)}>Create Pitch 🛒</button>
             <br /><br /><br />
             {cardsByCategory.map((category) => {
                 return (
