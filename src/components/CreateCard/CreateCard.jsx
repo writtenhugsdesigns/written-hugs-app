@@ -60,16 +60,16 @@ export default function CreateCard() {
    * Get  the user selected category ids
    * @returns an array of the ids of the checked categories
    */
-  const getCategories = () => {
-    let checkboxes = document.querySelectorAll(
-      'input[name="categories"]:checked'
-    );
-    let values = [];
-    checkboxes.forEach((checkbox) => {
-      values.push(checkbox.value);
-    });
-    return values;
-  };
+  // const getCategories = () => {
+  //   let checkboxes = document.querySelectorAll(
+  //     'input[name="categories"]:checked'
+  //   );
+  //   let values = [];
+  //   checkboxes.forEach((checkbox) => {
+  //     values.push(checkbox.value);
+  //   });
+  //   return values;
+  // };
 
   // User hits submit button, checks if the variant name matches current folders in google drive,
   //POSTs a new card, redirects back to /cards
