@@ -1,4 +1,17 @@
 import React, { useRef } from "react";
+import {
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  TablePagination,
+  Modal,
+  Box
+} from "@mui/material";
 import { CSVLink } from "react-csv";
 import print from "print-js";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,49 +59,72 @@ export default function ViewPitch() {
 
   return (
     <div className="container">
-      <table id="pitchTable">
-        <tbody>
-          <tr>
-            <th>UPC#</th>
-            <th>Barcode</th>
-            <th>Vendor Stlye</th>
-            <th>Variation Name</th>
-            <th>Front</th>
-            <th>Inside Inscription</th>
-            <th>Insert</th>
-            <th>Sticker</th>
-            <th>Categories</th>
-          </tr>
-          {selectedPitch[0] &&
-            selectedPitch[0].cards.map((card) => {
-              return (
-                <tr>
-                  <td>{card.upc}</td>
-                  <td>{card.barcode}</td>
-                  <td>{card.vendor_style}</td>
-                  <td>{card.name}</td>
-                  <td>
-                    <img src={card.front_img.display} />
-                  </td>
-                  <td>
-                    <img src={card.inner_img.display} />
-                  </td>
-                  <td>
-                    <img src={card.insert_img.display} />
-                  </td>
-                  <td>
-                    <img src={card.sticker_jpeg.display} />
-                  </td>
-                  <td>
-                    {card.categories.map((category) => {
-                      return <p>{category.category_name}</p>;
-                    })}
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer>
+          <Table stickyheader aria-label="sticky table">
+            <TableHead>
+              <TableRow sx={{backgroundColor: '#eeebe5'}}>
+                <TableCell style={{ minWidth: "5vw" }} key={"upc"}>
+                  UPC#
+                </TableCell>
+                <TableCell style={{ minWidth: "5vw" }} key={"barcode"}>
+                  Barcode
+                </TableCell>
+                <TableCell style={{ minWidth: "8vw" }} key={"vendor_style"}>
+                  Vendor Style
+                </TableCell>
+                <TableCell style={{ minWidth: "8vw" }} key={"name"}>
+                  Variation Name
+                </TableCell>
+                <TableCell style={{ minWidth: "8vw" }} key={"front_img"}>
+                  Front
+                </TableCell>
+                <TableCell style={{ minWidth: "8vw" }} key={"inner_img"}>
+                  Inside Inscription
+                </TableCell>
+                <TableCell style={{ minWidth: "8vw" }} key={"insert_img"}>
+                  Insert
+                </TableCell>
+                <TableCell style={{ minWidth: "8vw" }} key={"sticker_jpeg"}>
+                  Sticker
+                </TableCell>
+                <TableCell style={{ minWidth: "8vw" }} key={"categories"}>
+                  Categories
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+            {selectedPitch[0] &&
+                selectedPitch[0].cards.map((card) => (
+                  <TableRow>
+
+                    <TableCell>{card.upc}</TableCell>
+                    <TableCell>{card.barcode}</TableCell>
+                    <TableCell>{card.vendor_style}</TableCell>
+                    <TableCell>{card.name}</TableCell>
+                    <TableCell>
+                      <img src={card.front_img.display} />
+                    </TableCell>
+                    <TableCell>
+                      <img src={card.inner_img.display} />
+                    </TableCell>
+                    <TableCell>
+                      <img src={card.insert_img.display} />
+                    </TableCell>
+                    <TableCell>
+                      <img src={card.sticker_jpeg.display} />
+                    </TableCell>
+                    <TableCell>
+                      {card.categories.map((category) => {
+                        return <p>{category.category_name}</p>;
+                      })}
+                    </TableCell>
+                  </TableRow>
+                  ))}
+
+            </TableBody>
+          </Table>
+        </TableContainer>
       <br />
       <br />
       <button onClick={editPitch}>Edit Pitch</button>
@@ -102,6 +138,7 @@ export default function ViewPitch() {
       <br />
       <br />
       <button onClick={() => print("pitchTable", "html")}>Print To PDF</button>
+      </Paper>
     </div>
   );
 }
