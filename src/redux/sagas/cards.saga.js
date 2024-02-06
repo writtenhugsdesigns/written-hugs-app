@@ -46,6 +46,7 @@ function* postCard(action) {
             headers: headers,
             data: action.payload
         })
+        
         yield fetchAllCards()
     }
     catch (error) {

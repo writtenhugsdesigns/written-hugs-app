@@ -39,7 +39,7 @@ const getStyles = (category, categoriesValue, theme) => {
     } = event;
     setCategories(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
+      typeof value === 'number' ? value.split(',') : value,
     );
   };
 

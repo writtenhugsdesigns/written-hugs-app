@@ -161,7 +161,7 @@ router.post("/", uploadHandler.any(), async (req, res) => {
     front_tiff: "",
   };
   // console.log(req.body);
-
+  console.log("did this array work?:" , req.body.categoriesArray.split(",").map(Number));
   //This creates an authentication token
   const jwtClient = new google.auth.JWT(
     apikeys.client_email,
@@ -234,18 +234,20 @@ router.post("/", uploadHandler.any(), async (req, res) => {
     objectToSendToDB.sticker_pdf,
     objectToSendToDB.front_tiff,
   ];
-  pool.query(queryText, queryValues)
-    .then(() => {
+    await pool.query(queryText, queryValues)
+    .then((result) => {
         console.log("did I make it this far?");
     const card_id = result.rows[0].id;
-    const categoriesArray = req.body.categoriesArray;
+    console.log("this is the card_id:", card_id);
+    const categoriesArray = req.body.categoriesArray.split(",").map(Number);
+    console.log("this is the categories array:", req.body);
     const insertCardsCategoriesQuery = newCardsCategoriesQuery(
         categoriesArray,
         card_id
     )
   // SECOND QUERY ADDS categories FOR THAT NEW card
   pool
-    .query(insertCardsCategoriesQuery)})
+    .query(insertCardsCategoriesQuery)
     .then((results) => {
       //Now that both are done, send back success!
       res.sendStatus(201);
@@ -253,7 +255,8 @@ router.post("/", uploadHandler.any(), async (req, res) => {
     .catch((err) => {
       // catch for second query
       console.log(err);
-    });
+    })});
+})
 
   router.put("/:id", (req, res) => {
     const queryText = `
@@ -334,7 +337,7 @@ router.post("/", uploadHandler.any(), async (req, res) => {
         res.sendStatus(500);
       });
   });
-});
+
 
 router.get("/:id", (req, res) => {
   const queryText = `

@@ -78,7 +78,7 @@ export default function CreateCard() {
     const sameName = currentFoldersArray.find(
       (index) => index.name === folderName
     );
-
+    
     if (sameName) {
       Swal.fire("This card variant already exists. Choose a different name.");
     } else {
@@ -98,7 +98,7 @@ export default function CreateCard() {
         type: "SAGA/POST_CARD",
         payload: newCardToSend,
       });
-
+      console.log("categories array:", categoriesInput);
       // Do the dispatch
       history.push("/cards");
     }
@@ -147,7 +147,7 @@ export default function CreateCard() {
       console.log(inputValue);
     }})
   }
-
+  console.log(categoriesInput);
   return (
     <div className="container">
       <Grid container sx={{ m: 3 }}>
