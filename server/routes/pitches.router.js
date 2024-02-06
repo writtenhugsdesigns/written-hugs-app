@@ -166,7 +166,6 @@ router.post("/", rejectUnauthenticated, (req, res) => {
       req.body.pitchName
     ])
     .then((result) => {
-      res.sendStatus(201);
       const pitch_id = result.rows[0].id
       const cardsArray = req.body.newPitch
       const insertPitchesCardsQuery = newPitchesCardsQuery(cardsArray, pitch_id);
@@ -267,19 +266,19 @@ function formatPitches(pitches) {
 function newPitchesCardsQuery(cardsArray, pitch_id) {
   let pitchesCardsQuery = `
   INSERT INTO "pitches_cards"
-  ("pitch_id", "category_id")
+  ("pitch_id", "card_id", "ordered")
   VALUES
   `
   for (let i = 0; i < cardsArray.length; i++) {
     // adds the appropriate ids
     if (i < cardsArray.length - 1) {
       pitchesCardsQuery += `
-      (${pitch_id}, ${cardsArray[i].card_id}),
+      (${pitch_id}, ${cardsArray[i].card_id}, false),
     `
       // adds the appropriate ids and a semi colon
     } else if (i === cardsArray.length - 1) {
       pitchesCardsQuery += `
-      (${pitch_id}, ${cardsArray[i].card_id});
+      (${pitch_id}, ${cardsArray[i].card_id}, false);
       `
     }
   }

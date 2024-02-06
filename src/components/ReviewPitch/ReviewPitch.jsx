@@ -27,15 +27,21 @@ export default function ReviewPitch() {
 
     // When user clicks the create pitch button, POST new pitch, then redirect user to view the pitch
     const handleCreate = () => {
-        console.log('new pitch', {
-            pitchName: name,
-            pitchDescription: description,
-            newPitch: newPitch
-        });
-        // dispatch({
-        //     type: "SAGA/POST_PITCH",
-        //     payload: newPitch
-        // })
+        // console.log('new pitch', {
+        //     pitchName: name,
+        //     pitchDescription: description,
+        //     wholesaler_id: 1,
+        //     newPitch: newPitch
+        // });
+        dispatch({
+            type: "SAGA/POST_PITCH",
+            payload: {
+                pitchName: name,
+                pitchDescription: description,
+                wholesaler_id: 1,
+                newPitch: newPitch
+            }
+        })
     }
     const removeButton = (card) => {
         dispatch({
