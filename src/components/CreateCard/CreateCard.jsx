@@ -53,6 +53,7 @@ export default function CreateCard() {
   let [sticker, setSticker] = useState([]);
   let [TIFFFile, setTIFFFile] = useState([]);
   let [AIFile, setAIFile] = useState([]);
+  let [categoriesInput, setCategoriesInput] = useState([]);
 
   const folderName = vendorStyle + " " + variationName;
   /**
@@ -92,6 +93,7 @@ export default function CreateCard() {
       newCardToSend.append("vendor_style", vendorStyle);
       newCardToSend.append("name", variationName);
       newCardToSend.append("description", description)
+      newCardToSend.append("categoriesArray", categoriesInput)
       dispatch({
         type: "SAGA/POST_CARD",
         payload: newCardToSend,
@@ -145,6 +147,7 @@ export default function CreateCard() {
       console.log(inputValue);
     }})
   }
+
   return (
     <div className="container">
       <Grid container sx={{ m: 3 }}>
@@ -196,7 +199,7 @@ export default function CreateCard() {
             />
           </Grid>
           <Grid item sx={{ p: 2 }} lg={4}>
-            <MultipleSelect categories={databaseCategories.categories}/>
+            <MultipleSelect categories={databaseCategories.categories} categoriesValue={categoriesInput} setCategories={setCategoriesInput}/>
             {/* <Button onClick={createCategory}>
             <Typography variant='body2'>New Category</Typography>
             <AddCircleIcon/>

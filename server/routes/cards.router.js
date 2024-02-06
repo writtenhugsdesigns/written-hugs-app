@@ -211,7 +211,7 @@ router.post("/", uploadHandler.any(), async (req, res) => {
     await uploadFile(files[f]);
   }
   // console.log(body);
-//   res.status(200).send("Form Submitted");
+  //   res.status(200).send("Form Submitted");
 
   const queryText = `
     INSERT INTO "cards" 
@@ -234,25 +234,23 @@ router.post("/", uploadHandler.any(), async (req, res) => {
     objectToSendToDB.sticker_pdf,
     objectToSendToDB.front_tiff,
   ];
-   pool
-    .query(queryText, queryValues)
-    .then((result) => {
-            res.sendStatus(201);
+  pool.query(queryText, queryValues)
+    .then(() => {
+    const card_id = result.rows[0].id;
+    const categoriesArray = req.body.categoriesArray;
+    const insertCardsCategoriesQuery = newCardsCategoriesQuery(
+        categoriesArray,
+        card_id
+    )
+  // SECOND QUERY ADDS categories FOR THAT NEW card
+  pool
+    .query(insertCardsCategoriesQuery)})
+    .then((results) => {
+      //Now that both are done, send back success!
+      res.sendStatus(201);
     })
-    //         const card_id = result.rows[0].id
-    //         const categoriesArray = req.body.categoriesArray
-    //         const insertCardsCategoriesQuery = newCardsCategoriesQuery(categoriesArray, card_id);
-    //         // SECOND QUERY ADDS categories FOR THAT NEW card
-    //         pool.query(insertCardsCategoriesQuery)
-    //             .then(result => {
-    //                 //Now that both are done, send back success!
-    //                 res.sendStatus(201);
-    //             }).catch(err => {
-    //                 // catch for second query
-    //                 console.log(err);
-    // res.send(201);
     .catch((err) => {
-      // result.sendStatus(500)
+      // catch for second query
       console.log(err);
     });
 

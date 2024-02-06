@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 /** This function creates a multiselect dropdown.
  * 
  */
-export default function MultipleSelect({categories}) {
+export default function MultipleSelect({categories, categoriesValue, setCategories}) {
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -22,12 +22,12 @@ const MenuProps = {
   },
 };
 const theme = useTheme();
-const [personName, setPersonName] = useState([]);
+// const [categoriesValue, setPersonName] = useState([]);
 
-const getStyles = (name, personName, theme) => {
+const getStyles = (category, categoriesValue, theme) => {
   return {
     fontWeight:
-      personName.indexOf(name) === -1
+      categoriesValue.indexOf(category) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
@@ -37,7 +37,7 @@ const getStyles = (name, personName, theme) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
+    setCategories(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
@@ -51,7 +51,7 @@ const getStyles = (name, personName, theme) => {
           labelId="categoriesInput"
           id="categoriesSelector"
           multiple
-          value={personName}
+          value={categoriesValue}
           onChange={handleChange}
           input={<OutlinedInput label="Categories" />}
           MenuProps={MenuProps}
@@ -59,8 +59,8 @@ const getStyles = (name, personName, theme) => {
           {categories.map((category) => (
             <MenuItem
               key={category.id}
-              value={category.name}
-              style={getStyles(category.name, personName, theme)}
+              value={category.id}
+              style={getStyles(category.name, categoriesValue, theme)}
             >
               {category.name}
             </MenuItem>
