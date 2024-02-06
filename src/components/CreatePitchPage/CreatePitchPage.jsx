@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PitchCategory from "../PitchCategory/PitchCategory";
 import './CreatePitchPage.css';
 
-export default function CreatePitchPage() {
+export default function CreatePitchPage({handleClose}) {
     const history = useHistory();
     const dispatch = useDispatch();
     const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);

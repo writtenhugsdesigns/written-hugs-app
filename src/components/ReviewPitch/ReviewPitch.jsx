@@ -1,26 +1,104 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import {
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TableContainer,
+    TablePagination,
+    Modal,
+    Box
+} from "@mui/material";
 
-export default function ReviewPitch(){
-    const pitches = useSelector(store => store.pitches.pitches);
+export default function ReviewPitch() {
+    let [description, setDescription] = useState('');
+    let [name, setName] = useState('');
+    let [wholesaler_id, setWholesaler_id] = useState('');
+    const newPitch = useSelector(store => store.pitches.newPitch);
+    const wholesalers = useSelector(store => store.wholesalersReducer.wholesalers);
     const history = useHistory();
+    const dispatch = useDispatch();
+
 
     // When user clicks the create pitch button, POST new pitch, then redirect user to view the pitch
     const handleCreate = () => {
-        console.log("Will do something eventually");
+        // console.log('new pitch', {
+        //     pitchName: name,
+        //     pitchDescription: description,
+        //     wholesaler_id: 1,
+        //     newPitch: newPitch
+        // });
         dispatch({
             type: "SAGA/POST_PITCH",
-            payload: newPitch
+            payload: {
+                pitchName: name,
+                pitchDescription: description,
+                wholesaler_id: 1,
+                newPitch: newPitch
+            }
         })
     }
-    
-console.log('pitches', pitches);
+    const removeButton = (card) => {
+        dispatch({
+            type: 'REMOVE_CARD_FROM_PITCH',
+            payload: card
+        })
+    }
+
     return (
-        <div className = 'container'>
+        <div className='container'>
             Review Pitch
-            <button onClick = {() => history.push("/createPitch")}>Back</button>
-            <button onClick = {handleCreate}>Create</button>
+            <input
+                value={name}
+                label="Pitch Name"
+                placeholder="Pitch Name"
+                onChange={(event) => setName(event.target.value)}
+                id="pitchName"
+            />
+            <input
+                value={description}
+                label="Pitch Description"
+                placeholder="Pitch Description"
+                onChange={(event) => setDescription(event.target.value)}
+                id="pitchDescription"
+            />
+            WHOLESALER PLACEHOLDER
+            <button onClick={() => history.push("/")}>Back</button>
+            <button onClick={handleCreate}>Create</button>
+            {/* MUI table within an MUI paper component */}
+            <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                <TableContainer>
+                    <Table stickyheader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow sx={{ backgroundColor: '#eeebe5' }}>
+                                <TableCell>Card Name</TableCell>
+                                <TableCell>Categories</TableCell>
+                                <TableCell></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {newPitch &&
+                                newPitch.map((card) => (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={card.id}>
+                                        <TableCell>{card.name}</TableCell>
+                                        <TableCell>{card.categories_array.map((category) => (<span className='tag'>{category.category_name}</span>))}</TableCell>
+                                        <TableCell>
+                                            <Button onClick={() => removeButton(card)} variant="contained" color="error">
+                                                Remove from pitch
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+
         </div>
     )
 }
