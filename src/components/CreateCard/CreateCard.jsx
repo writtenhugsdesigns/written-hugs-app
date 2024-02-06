@@ -43,7 +43,7 @@ export default function CreateCard() {
   const databaseCategories = useSelector((store) => store.categoriesReducer);
 
   let [variationName, setVariationName] = useState(null);
-  let [UPCNumber, setUPCNumber] = useState(null);
+  let [UPCNumber, setUPCNumber] = useState('');
   let [vendorStyle, setVendorStyle] = useState(null);
   let [description, setDescription] = useState(null);
   let [barcode, setBarcode] = useState([]);
@@ -181,6 +181,7 @@ export default function CreateCard() {
             <TextField
               value={UPCNumber}
               fullWidth
+              required
               label="UPC Number"
               placeholder="UPC Number"
               onChange={() => setUPCNumber(event.target.value)}

@@ -236,6 +236,7 @@ router.post("/", uploadHandler.any(), async (req, res) => {
   ];
   pool.query(queryText, queryValues)
     .then(() => {
+        console.log("did I make it this far?");
     const card_id = result.rows[0].id;
     const categoriesArray = req.body.categoriesArray;
     const insertCardsCategoriesQuery = newCardsCategoriesQuery(
