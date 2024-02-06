@@ -19,7 +19,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     "user".username as wholesaler_user,
     pitches_cards.ordered as card_ordered,
     cards.id as card_id,
-    cards.name,
+    cards.name as card_name,
     cards.vendor_style,
     cards.description as cards_description,
     cards.upc,
@@ -83,7 +83,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
             cards: [
               {
                 id: input.card_id,
-                name: input.name,
+                card_name: input.card_name,
                 vendor_style: input.vendor_style,
                 description: input.cards_description,
                 upc: input.upc,
@@ -111,7 +111,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
           input = result.rows[i];
           newInput[newInputLength - 1].cards.push({
             id: input.card_id,
-            name: input.name,
+            card_name: input.card_name,
             vendor_style: input.vendor_style,
             description: input.cards_description,
             upc: input.upc,
@@ -152,7 +152,6 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 });
 
 router.post("/", rejectUnauthenticated, (req, res) => {
-
   const sqlText = `
   INSERT INTO "pitches"
     ("wholesaler_id", "is_current", "description", "name")
@@ -191,25 +190,48 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
   const sqlText = `
   UPDATE "pitches"
   SET "wholesaler_id" = $1,
-      "is_current" = $2,
-      "description" = $3
+      "description" = $2,
+      "name" = $3
   WHERE "id" = $4;`;
 
   const sqlValues = [
     req.body.wholesaler_id,
-    req.body.is_current,
-    req.body.description,
+    req.body.pitchDescription,
+    req.body.pitchName,
     req.params.id,
   ];
-
   pool
     .query(sqlText, sqlValues)
-    .then((result) => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      console.log("Error in pitches PUT route,", err);
-      res.sendStatus(500);
+    .then(result => {
+      const queryDeleteText = `
+      DELETE FROM pitches_cards
+        WHERE pitch_id=${req.params.id};
+      `;
+      // second QUERY removes cards FOR THAT pitch
+      pool.query(queryDeleteText)
+        .then(result => {
+          const cardsArray = req.body.newPitch
+          const pitch_id = req.params.id
+          const insertEditPitchesCardsQuery = newPitchesCardsQuery(cardsArray, pitch_id);
+          // Third QUERY ADDS cards FOR THAT pitch
+          pool.query(insertEditPitchesCardsQuery)
+            .then(result => {
+              res.sendStatus(201);
+            }).catch(err => {
+              // catch for third query
+              console.log(err);
+              res.sendStatus(500)
+            })
+        }).catch(err => {
+          // catch for second query
+          console.log(err);
+          res.sendStatus(500)
+        })
+        .catch((err) => {
+          // catch for second query
+          console.log("Error in pitches PUT route,", err);
+          res.sendStatus(500);
+        });
     });
 });
 
