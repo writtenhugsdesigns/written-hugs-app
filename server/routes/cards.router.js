@@ -144,8 +144,19 @@ router.get("/byCategory", (req, res) => {
     });
 });
 
+/**
+ * This post router takes in a new card formdata object.  It then passes it through multer.
+ * The function does a few things:
+ * 1) Authenticates to Google Drive
+ * 2) Creates a folder for the new card
+ * 3) Creates a file for each file that was uploaded, and return the id
+ * 4) Sends the card information to the database
+ * 5) Sends the categories information to the card - categories database table
+ */
 router.post("/", uploadHandler.any(), async (req, res) => {
   const folderName = req.body.vendor_style + " " + req.body.name;
+
+  //This creates an object to be populated with the file ids
   const objectToSendToDB = {
     name: req.body.name,
     upc: req.body.upc,
@@ -160,9 +171,8 @@ router.post("/", uploadHandler.any(), async (req, res) => {
     sticker_pdf: "",
     front_tiff: "",
   };
-  // console.log(req.body);
-  console.log("did this array work?:" , req.body.categoriesArray.split(",").map(Number));
-  //This creates an authentication token
+
+  //This creates an authentication token with google
   const jwtClient = new google.auth.JWT(
     apikeys.client_email,
     null,
@@ -186,6 +196,7 @@ router.post("/", uploadHandler.any(), async (req, res) => {
   });
   const folderID = folderResponse.data.id;
 
+  //This creates a function called uploadFile which sends each file to google drive
   const uploadFile = async (fileObject) => {
     const bufferStream = new stream.PassThrough();
     bufferStream.end(fileObject.buffer);
@@ -205,14 +216,12 @@ router.post("/", uploadHandler.any(), async (req, res) => {
     // console.log("dataID:", data.id);
     console.log(objectToSendToDB);
   };
-
   const { body, files } = req;
   for (let f = 0; f < files.length; f++) {
     await uploadFile(files[f]);
   }
-  // console.log(body);
-  //   res.status(200).send("Form Submitted");
 
+  //This setups the DB queryText and queryValues to send to DB
   const queryText = `
     INSERT INTO "cards" 
     ("name", "upc", "vendor_style", "description", "barcode", "front_img", "inner_img", "insert_img", "insert_ai", "sticker_jpeg", "sticker_pdf", "front_tiff")
@@ -234,13 +243,13 @@ router.post("/", uploadHandler.any(), async (req, res) => {
     objectToSendToDB.sticker_pdf,
     objectToSendToDB.front_tiff,
   ];
+
+  //This sends the card to the DB, and then the categories array is prepared
+  //to send items to the card - categories table.
     await pool.query(queryText, queryValues)
     .then((result) => {
-        console.log("did I make it this far?");
     const card_id = result.rows[0].id;
-    console.log("this is the card_id:", card_id);
     const categoriesArray = req.body.categoriesArray.split(",").map(Number);
-    console.log("this is the categories array:", req.body);
     const insertCardsCategoriesQuery = newCardsCategoriesQuery(
         categoriesArray,
         card_id

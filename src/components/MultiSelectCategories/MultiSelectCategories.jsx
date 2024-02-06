@@ -5,10 +5,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { useState, useEffect } from 'react';
 
 /** This function creates a multiselect dropdown.
- * 
+ * It takes in the current array of categories, the current selected categories, 
+ * and a function to set the categories.
  */
 export default function MultipleSelect({categories, categoriesValue, setCategories}) {
 const ITEM_HEIGHT = 48;
@@ -22,8 +22,6 @@ const MenuProps = {
   },
 };
 const theme = useTheme();
-// const [categoriesValue, setPersonName] = useState([]);
-
 const getStyles = (category, categoriesValue, theme) => {
   return {
     fontWeight:
