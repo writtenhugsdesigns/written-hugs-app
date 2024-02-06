@@ -145,11 +145,11 @@ VALUES
 ('more goats because I need them', 2);
 
 INSERT INTO "pitches"
-("wholesaler_id", "is_current", "name" "description")
+("wholesaler_id", "is_current", "name", "description")
 VALUES
-(1, TRUE, "God's perfect creation", 'This be goats wow much amaze');
-(2, FALSE, "pitch to test2? amazing", 'Test2 ordered goats, but this isnt current so not important.'),
-(1, FALSE, "oops duplicate? Actually no", 'Test1 Order 2 for this be goats wow much amaze');
+(1, TRUE, 'Gods perfect creation', 'This be goats wow much amaze'),
+(2, FALSE, 'pitch to test2? amazing', 'Test2 ordered goats, but this isnt current so not important.'),
+(1, FALSE, 'oops duplicate? Actually no', 'Test1 Order 2 for this be goats wow much amaze');
 
 INSERT INTO "pitches_cards"
 ("pitch_id", "card_id", "ordered")
