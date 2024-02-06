@@ -1,0 +1,29 @@
+.pitchCategoryContainer {
+    box-shadow: 3px 3px 5px 2px rgb(198, 196, 196);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2em;
+    margin-top: 0.5em;
+}
+
+.pitchCategoryHeader{
+  background-color: #eeebe5;
+  
+  padding-right: 1em;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pitchH2 {
+    margin-right: auto;
+    margin-left: 1em;
+}
+
+.categoryCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 15px;
+    gap: 1em;
+    background-color: rgb(249, 247, 243);
+}

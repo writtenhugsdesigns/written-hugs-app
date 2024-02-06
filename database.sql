@@ -67,7 +67,7 @@ create table "categories" (
 create table "cards_categories" (
 	"id" serial primary key,
 	"card_id" integer references "cards",
-	"category_id" integer references "categories",
+	"category_id" integer references "categories" ON DELETE CASCADE,
     "inserted_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
