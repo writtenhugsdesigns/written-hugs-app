@@ -3,13 +3,25 @@
     border-radius: 4px;
     display: flex;
     flex-direction: column;
-
+    margin-bottom: 2em;
+    margin-top: 0.5em;
 }
 
 .pitchCategoryHeader{
   background-color: #eeebe5;
+  margin-bottom: 1em;
+  padding-right: 1em;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .pitchH2 {
+    margin-right: auto;
     margin-left: 1em;
+}
+
+.categoryCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 15px;
 }

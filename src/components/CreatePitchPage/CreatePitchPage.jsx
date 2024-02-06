@@ -24,8 +24,8 @@ export default function CreatePitchPage() {
                 <h1>Create New Pitch</h1>
                 <button className='pageButton' onClick = {toReview}> 🛒 Review Pitch (#)</button>
             </div>
-            {cardsByCategory.map((x) => {
-                return <PitchCategory categoryContents={x}/>
+            {cardsByCategory.map((x, i) => {
+                return <PitchCategory key={i} categoryContents={x}/>
             })}
         </div>
     )
