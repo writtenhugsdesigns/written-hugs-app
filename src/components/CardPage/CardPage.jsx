@@ -4,6 +4,7 @@ import { AddCircleOutline } from "@mui/icons-material";
 
 export default function CardPage() {
   const history = useHistory();
+  
   let dummyCards = [
     {
       id: 1,
