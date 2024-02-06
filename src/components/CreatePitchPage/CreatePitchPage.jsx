@@ -8,7 +8,6 @@ export default function CreatePitchPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
-    const newPitch = useSelector(store => store.pitches.newPitch);
 
     useEffect(() => {
         dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
