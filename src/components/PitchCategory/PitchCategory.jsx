@@ -30,7 +30,7 @@ export default function PitchCategory({categoryContents}){
             </div>
             <div className = 'categoryCardContainer'>
                 {categoryContents.cardsArray.map((x) => {
-                    return <PitchCard key={x.id} card={x}/>
+                    return <PitchCard key={x.card_id} card={x}/>
                 })
                 }
             </div>

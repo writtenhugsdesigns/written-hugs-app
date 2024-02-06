@@ -4,6 +4,7 @@ import { Card, CardActions, CardContent, CardMedia, Button, Typography } from "@
 export default function PitchCard({card}){
 
     const [addToggle, setAddToggle] = useState(true);
+    const [isHoveredID, setIsHoveredID] = useState('');
 
     /**
      * Toggle the add button depending on if the card is in the cart or not
@@ -30,21 +31,28 @@ export default function PitchCard({card}){
     }
 
     return (
-        <Card sx={{height: '25em', width: '15em'}}>
+        <Card sx={{height: '25em', width: '15em', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <CardMedia
                 height='20em'
+                onMouseOver={() => setIsHoveredID(card.card_id)}
+                onMouseOut={() => setIsHoveredID('')}
             >
-                <img src={`${card.front_img.display}`}></img>
+                {isHoveredID == '' ?
+                    <img height={'200'} src={`${card.front_img.display}`}/>
+                    :
+                    <img height={'200'} src={`${card.inner_img.display}`}/>
+                }
+                
             </CardMedia>
-            <CardContent sx={{backgroundColor: 'gray'}}>
-                <Typography gutterBottom variant='h5' component='div'>
+            <CardContent>
+                <Typography sx={{textAlign: 'center'}} gutterBottom variant='h5' component='div'>
                     {card.name}
                 </Typography>
-                <Typography variant='body2' color='text.secondary'>
+                <Typography sx={{overflowY: 'auto', height: '4em'}}variant='body2' color='text.secondary'>
                     {card.description}
                 </Typography>
             </CardContent>
-            <CardActions sx={{display: 'flex', justifyContent: 'center'}}>
+            <CardActions sx={{marginTop: 'auto', marginBottom: '3px', justifyContent: 'center'}}>
                 <Button variant='outlined' size='medium'>View</Button>
                 {addToggle && 
                     <Button variant='contained' size='medium' onClick={handleToggle}>Add</Button>
