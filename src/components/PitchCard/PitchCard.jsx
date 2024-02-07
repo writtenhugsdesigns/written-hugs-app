@@ -7,6 +7,7 @@ import {
   CardMedia,
   Button, Box, Modal,
   Typography,
+  Alert
 } from "@mui/material";
 import ViewCard from "../ViewCard/ViewCard";
 
@@ -59,12 +60,12 @@ export default function PitchCard({ card, isInCart }) {
     <>
       <Card
         sx={{
-          height: "25em",
-          width: "15em",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+        height: "25em",
+        width: "15em",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
       >
         <CardMedia
           height="20em"
@@ -101,7 +102,7 @@ export default function PitchCard({ card, isInCart }) {
             justifyContent: "center",
           }}
         >
-          <Button variant="outlined" size="medium" onClick={()=>viewCard(card)}>
+          <Button variant="outlined" size="medium" onClick={viewCard}>
             View
           </Button>
           {!isInCart(card) && (
