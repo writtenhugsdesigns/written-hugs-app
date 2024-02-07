@@ -1,33 +1,43 @@
-import React, { useState } from "react"
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from "@mui/material"
+import React, { useState,  useEffect } from "react"
+import { Card, CardActions, CardContent, CardMedia, Button, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function PitchCard({card}){
 
-    const [addToggle, setAddToggle] = useState(true);
     const [isHoveredID, setIsHoveredID] = useState('');
+    const dispatch = useDispatch();
+    const cart = useSelector(store => store.cartReducer.cart);
 
-    /**
-     * Toggle the add button depending on if the card is in the cart or not
-     * @param {*} e 
-     */
-    const handleToggle = (e) => {
-        e.preventDefault();
-        if(addToggle){
-            // Add the card to the cart
-            addCardToCart();
-        } else {
-            // Remove card from cart
-            removeCardFromCart();
-        }
-        setAddToggle(!addToggle);
-    }
+    useEffect(() => {
+        dispatch({type: 'GET_CART'});
+    }, []);
 
     const removeCardFromCart = () => { 
-
+        dispatch({
+            type: 'REMOVE_FROM_CART',
+            payload: card
+        })
     }
 
     const addCardToCart = () => {
+        dispatch({
+            type: 'ADD_TO_CART',
+            payload: card
+        })
+    }
 
+    /**
+     * 
+     * @returns a boolean value indicating whether a specific card has been added
+     * to the pitch cart
+     */
+    const isInCart = () => {
+        for(let object of cart){
+            if(object.card_id == card.card_id){
+                return true;
+            }
+        }
+        return false;
     }
 
     return (
@@ -54,11 +64,11 @@ export default function PitchCard({card}){
             </CardContent>
             <CardActions sx={{marginTop: 'auto', marginBottom: '3px', justifyContent: 'center'}}>
                 <Button variant='outlined' size='medium'>View</Button>
-                {addToggle && 
-                    <Button variant='contained' size='medium' onClick={handleToggle}>Add</Button>
+                {!isInCart() && 
+                    <Button variant='contained' size='medium' onClick={addCardToCart}>Add</Button>
                 }
-                {!addToggle &&
-                    <Button variant='contained' color='error' onClick={handleToggle}>Remove</Button>
+                {isInCart() &&
+                    <Button variant='contained' color='error' onClick={removeCardFromCart}>Remove</Button>
                 }
             </CardActions>
         </Card>
