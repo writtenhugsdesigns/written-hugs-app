@@ -11,8 +11,8 @@ import {
   FormControl,
   Icon,
 } from "@mui/material";
-import { green } from '@mui/material/colors'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
+import { green } from "@mui/material/colors";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import "./CreateCard.css";
 import Swal from "sweetalert2";
 import MultipleSelect from "../MultiSelectCategories/MultiSelectCategories";
@@ -22,8 +22,7 @@ export default function CreateCard() {
   const history = useHistory();
   const dispatch = useDispatch();
   const newCardToSend = new FormData();
-  const [newCategory, setNewCategory] = useState('')
-
+  const [newCategory, setNewCategory] = useState("");
 
   //This use effect triggers the saga "getCurrentFolders"
   //After this is triggered a useSelector will get the current folders array
@@ -43,7 +42,7 @@ export default function CreateCard() {
   const databaseCategories = useSelector((store) => store.categoriesReducer);
 
   let [variationName, setVariationName] = useState(null);
-  let [UPCNumber, setUPCNumber] = useState(null);
+  let [UPCNumber, setUPCNumber] = useState("");
   let [vendorStyle, setVendorStyle] = useState(null);
   let [description, setDescription] = useState(null);
   let [barcode, setBarcode] = useState([]);
@@ -53,22 +52,23 @@ export default function CreateCard() {
   let [sticker, setSticker] = useState([]);
   let [TIFFFile, setTIFFFile] = useState([]);
   let [AIFile, setAIFile] = useState([]);
+  let [categoriesInput, setCategoriesInput] = useState([]);
 
   const folderName = vendorStyle + " " + variationName;
   /**
    * Get  the user selected category ids
    * @returns an array of the ids of the checked categories
    */
-  const getCategories = () => {
-    let checkboxes = document.querySelectorAll(
-      'input[name="categories"]:checked'
-    );
-    let values = [];
-    checkboxes.forEach((checkbox) => {
-      values.push(checkbox.value);
-    });
-    return values;
-  };
+  // const getCategories = () => {
+  //   let checkboxes = document.querySelectorAll(
+  //     'input[name="categories"]:checked'
+  //   );
+  //   let values = [];
+  //   checkboxes.forEach((checkbox) => {
+  //     values.push(checkbox.value);
+  //   });
+  //   return values;
+  // };
 
   // User hits submit button, checks if the variant name matches current folders in google drive,
   //POSTs a new card, redirects back to /cards
@@ -91,12 +91,13 @@ export default function CreateCard() {
       newCardToSend.append("upc", UPCNumber);
       newCardToSend.append("vendor_style", vendorStyle);
       newCardToSend.append("name", variationName);
-      newCardToSend.append("description", description)
+      newCardToSend.append("description", description);
+      newCardToSend.append("categoriesArray", categoriesInput);
       dispatch({
         type: "SAGA/POST_CARD",
         payload: newCardToSend,
       });
-
+      console.log("categories array:", categoriesInput);
       // Do the dispatch
       history.push("/cards");
     }
@@ -111,8 +112,9 @@ export default function CreateCard() {
     setUPCNumber(null);
     setVendorStyle(null);
   };
-  // console.log(databaseCategories.categories);
-  const handleCancel = (e) => {
+
+  //This function verifies a users desire to leave the page, and lose information
+  const handleCancel = () => {
     Swal.fire({
       title: "Are you sure?",
       text: "Do you want to cancel this form and lose the information!",
@@ -128,39 +130,44 @@ export default function CreateCard() {
     });
   };
 
+  //Still under development, used to create a new category
   const createCategory = () => {
-    const inputValue = ('');
+    const inputValue = "";
     Swal.fire({
       input: "text",
       inputLabel: "New Category Name",
       inputPlaceholder: "Type your cateory here",
       inputValue,
       inputAttributes: {
-        "aria-label": "Type your category here"
+        "aria-label": "Type your category here",
       },
       showCancelButton: true,
-      confirmButtonText: "Submit"
+      confirmButtonText: "Submit",
     }).then((result) => {
-    if (result.isConfirmed) {
-      console.log(inputValue);
-    }})
-  }
+      if (result.isConfirmed) {
+        console.log(inputValue);
+      }
+    });
+  };
+
+  //This form is divided using MUI Grid elements inside of a form div
   return (
     <div className="container">
       <Grid container sx={{ m: 3 }}>
-        <Grid item lg={9}>
-          <Typography variant="h2">New Card Variation Information</Typography>
+        <Grid item lg={6}>
+          <Typography variant="h2">New Card Variation</Typography>
         </Grid>
         <Grid item lg={3}>
-          <button
-            className="pageButton"
-            justify="flex-end"
-            onClick={() => history.push("/cards")}
-          >
+          <button className="pageButton" onClick={handleCancel}>
             <ArrowBackIos />
             Back
           </button>
         </Grid>
+        <Grid item lg={3}>
+            <button className="pageButton" onClick={handleSubmit}>
+              Submit
+            </button>
+          </Grid>
       </Grid>
       <form>
         <Grid container sx={{ border: 1 }}>
@@ -178,6 +185,7 @@ export default function CreateCard() {
             <TextField
               value={UPCNumber}
               fullWidth
+              required
               label="UPC Number"
               placeholder="UPC Number"
               onChange={() => setUPCNumber(event.target.value)}
@@ -196,14 +204,18 @@ export default function CreateCard() {
             />
           </Grid>
           <Grid item sx={{ p: 2 }} lg={4}>
-            <MultipleSelect categories={databaseCategories.categories}/>
+            <MultipleSelect
+              categories={databaseCategories.categories}
+              categoriesValue={categoriesInput}
+              setCategories={setCategoriesInput}
+            />
             {/* <Button onClick={createCategory}>
             <Typography variant='body2'>New Category</Typography>
             <AddCircleIcon/>
             </Button> */}
           </Grid>
           <Grid item sx={{ p: 2 }} lg={8}>
-          <TextField
+            <TextField
               value={description}
               multiline
               fullWidth
@@ -319,7 +331,8 @@ export default function CreateCard() {
           <Grid item lg={6}></Grid>
           <Grid item lg={3}>
             <button className="pageButton" onClick={handleCancel}>
-              Cancel
+            <ArrowBackIos />
+              Back
             </button>
           </Grid>
           <Grid item lg={3}>

@@ -15,11 +15,16 @@ import {
 import { CSVLink } from "react-csv";
 import print from "print-js";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
+import "./ViewPitch.css"
+
+
 
 export default function ViewPitch() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { id } = useParams();
   const pitches = useSelector((store) => store.pitches.pitches);
 
@@ -41,27 +46,44 @@ export default function ViewPitch() {
     return cardsArray;
   };
 
-  const tableRef = useRef(null);
-
-  // const { onDownload } = useDownloadExcel({
-  //     currentTableRef: tableRef.current,
-  //     filename: "Pitch table",
-  //     sheet: "Pitch"
-  // });
-
   const editPitch = () => {
-    console.log("This will do pop up stuff for edit.");
+    history.push(`/editPitch/${id}`);
   };
 
   const deletePitch = () => {
-    console.log("BEGONE THINGY WITH Pitch", id);
-  };
+      Swal.fire({
+        title: "Are you sure you want to delete this pitch?",
+        showCancelButton: true,
+        confirmButtonText: "Delete",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("Deleted!", "", "success");
+          dispatch({
+            type: "SAGA/DELETE_PITCH",
+            payload: id,
+          });
+          history.push("/pitches")
+        }
+      });
+    };
 
   return (
     <div className="container">
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <div className="viewPitchButtons">
+          <h3>Pitch Name: {selectedPitch[0] && selectedPitch[0].name}</h3>
+          <div>
+            <p>
+              <CSVLink className="viewPitchGroup" data={getCards(selectedPitch[0])}>Download CSV</CSVLink>
+              <Button className="viewPitchGroup" variant={"outlined"} onClick={() => print("pitchTable", "html")}>Print To PDF</Button>
+            </p>
+          </div>
+        </div>
+        <div className="viewPitchButtons">
+          <h3>Description: {selectedPitch[0] && selectedPitch[0].description}</h3>
+        </div>
         <TableContainer>
-          <Table stickyheader aria-label="sticky table">
+          <Table id="pitchTable" stickyheader aria-label="sticky table">
             <TableHead>
               <TableRow sx={{backgroundColor: '#eeebe5'}}>
                 <TableCell style={{ minWidth: "5vw" }} key={"upc"}>
@@ -125,19 +147,10 @@ export default function ViewPitch() {
             </TableBody>
           </Table>
         </TableContainer>
-      <br />
-      <br />
-      <button onClick={editPitch}>Edit Pitch</button>
-      <button onClick={deletePitch}>Delete</button>
-      <br />
-      <br />
-      {/* <button onClick={onDownload}>Download as excel</button> */}
-      <br />
-      <br />
-      <CSVLink data={getCards(selectedPitch[0])}>Download CSV</CSVLink>;
-      <br />
-      <br />
-      <button onClick={() => print("pitchTable", "html")}>Print To PDF</button>
+      <div className="viewPitchButtons">
+        <Button onClick={editPitch}>Edit Pitch</Button>
+        <Button variant={"contained"} color={"error"} onClick={deletePitch}>Delete</Button>
+      </div>
       </Paper>
     </div>
   );
