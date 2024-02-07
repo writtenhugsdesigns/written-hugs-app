@@ -13,6 +13,34 @@ export default function PitchCard({ card, isInCart }) {
   const [isHoveredID, setIsHoveredID] = useState("");
   const dispatch = useDispatch();
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
+
+
+  const viewCard = (card) => {
+    handleOpen();
+    dispatch({
+      type: "SET_CARD",
+      payload: card,
+    });
+  };
+
+    // Style for MUI box in Modal
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    overflow: "auto",
+    display: "block",
+    width: "90vw",
+    height: "90vh",
+    bgcolor: "background.paper",
+    'border-radius': '5px'
+  };
+
   const removeCardFromCart = () => {
     dispatch({
       type: "REMOVE_CARD_FROM_CART",
@@ -28,6 +56,7 @@ export default function PitchCard({ card, isInCart }) {
   };
 
   return (
+    <>
     <Card
       sx={{
         height: "25em",
@@ -91,5 +120,16 @@ export default function PitchCard({ card, isInCart }) {
         )}
       </CardActions>
     </Card>
+            <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <ViewCard handleClose={handleClose} />
+        </Box>
+      </Modal>
+    </>
   );
 }
