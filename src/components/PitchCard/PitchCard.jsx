@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Card,
   CardActions,
   CardContent,
   CardMedia,
-  Button,
+  Button, Box, Modal,
   Typography,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
+import ViewCard from "../ViewCard/ViewCard";
 
 export default function PitchCard({ card, isInCart }) {
   const [isHoveredID, setIsHoveredID] = useState("");
@@ -26,7 +27,7 @@ export default function PitchCard({ card, isInCart }) {
     });
   };
 
-    // Style for MUI box in Modal
+  // Style for MUI box in Modal
   const style = {
     position: "absolute",
     top: "50%",
@@ -56,70 +57,70 @@ export default function PitchCard({ card, isInCart }) {
 
   return (
     <>
-    <Card
-      sx={{
-        height: "25em",
-        width: "15em",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <CardMedia
-        height="20em"
-        onMouseOver={() => setIsHoveredID(card.card_id)}
-        onMouseOut={() => setIsHoveredID("")}
-      >
-        {isHoveredID == "" ? (
-          <img height={"200"} src={`${card.front_img.display}`} />
-        ) : (
-          <img height={"200"} src={`${card.inner_img.display}`} />
-        )}
-      </CardMedia>
-      <CardContent>
-        <Typography
-          sx={{ textAlign: "center" }}
-          gutterBottom
-          variant="h5"
-          component="div"
-        >
-          {card.name}
-        </Typography>
-        <Typography
-          sx={{ overflowY: "auto", height: "4em" }}
-          variant="body2"
-          color="text.secondary"
-        >
-          {card.description}
-        </Typography>
-      </CardContent>
-      <CardActions
+      <Card
         sx={{
-          marginTop: "auto",
-          marginBottom: "3px",
-          justifyContent: "center",
+          height: "25em",
+          width: "15em",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Button variant="outlined" size="medium">
-          View
-        </Button>
-        {!isInCart(card) && (
-          <Button variant="contained" size="medium" onClick={addCardToCart}>
-            Add
-          </Button>
-        )}
-        {isInCart(card) && (
-          <Button
-            variant="contained"
-            color="error"
-            onClick={removeCardFromCart}
+        <CardMedia
+          height="20em"
+          onMouseOver={() => setIsHoveredID(card.card_id)}
+          onMouseOut={() => setIsHoveredID("")}
+        >
+          {isHoveredID == "" ? (
+            <img height={"200"} src={`${card.front_img.display}`} />
+          ) : (
+            <img height={"200"} src={`${card.inner_img.display}`} />
+          )}
+        </CardMedia>
+        <CardContent>
+          <Typography
+            sx={{ textAlign: "center" }}
+            gutterBottom
+            variant="h5"
+            component="div"
           >
-            Remove
+            {card.name}
+          </Typography>
+          <Typography
+            sx={{ overflowY: "auto", height: "4em" }}
+            variant="body2"
+            color="text.secondary"
+          >
+            {card.description}
+          </Typography>
+        </CardContent>
+        <CardActions
+          sx={{
+            marginTop: "auto",
+            marginBottom: "3px",
+            justifyContent: "center",
+          }}
+        >
+          <Button variant="outlined" size="medium" onClick={viewCard}>
+            View
           </Button>
-        )}
-      </CardActions>
-    </Card>
-            <Modal
+          {!isInCart(card) && (
+            <Button variant="contained" size="medium" onClick={addCardToCart}>
+              Add
+            </Button>
+          )}
+          {isInCart(card) && (
+            <Button
+              variant="contained"
+              color="error"
+              onClick={removeCardFromCart}
+            >
+              Remove
+            </Button>
+          )}
+        </CardActions>
+      </Card>
+      <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
