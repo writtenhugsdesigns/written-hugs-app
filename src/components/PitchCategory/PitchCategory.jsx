@@ -16,7 +16,10 @@ export default function PitchCategory({categoryContents}){
     }
 
     const removeCategoryFromCart = () => {
-        
+        dispatch({
+            type: 'REMOVE_CATEGORY_FROM_CART',
+            payload: categoryContents.cardsArray
+        })
     }
 
     /**

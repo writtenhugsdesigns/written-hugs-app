@@ -26,7 +26,14 @@ const cart = (state = [], action) => {
         });
         return [...state, ...cards];
     } else if(action.type === 'REMOVE_CATEGORY_FROM_CART'){
-
+        const cards = action.payload;
+        let filteredState = [...state];
+        for(let card of cards){
+            filteredState = filteredState.filter((cartItem) => {
+                return card.card_id !== cartItem.card_id;
+            })
+        }
+        return filteredState;
     } else if(action.type === 'GET_CART'){
         return state;
     } else if(action.type === 'CLEAR_CART'){
