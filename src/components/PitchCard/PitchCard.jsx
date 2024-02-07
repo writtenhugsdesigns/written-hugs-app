@@ -60,13 +60,14 @@ export default function PitchCard({ card, isInCart }) {
     <>
       <Card
         sx={{
-        height: "25em",
+        height: "27em",
         width: "15em",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
       }}
       >
+        {isInCart(card) && <Alert>Added!</Alert>}
         <CardMedia
           height="20em"
           onMouseOver={() => setIsHoveredID(card.card_id)}

@@ -54,7 +54,7 @@ export default function CategoriesList() {
       if (result.isConfirmed) {
         Swal.fire({
           title: "Deleted!",
-          text: "The categoryy has been deleted.",
+          text: "The category has been deleted.",
           icon: "success"
         });
         dispatch({
