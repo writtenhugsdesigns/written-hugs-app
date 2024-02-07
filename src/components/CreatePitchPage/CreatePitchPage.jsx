@@ -8,10 +8,15 @@ export default function CreatePitchPage({handleClose}) {
     const history = useHistory();
     const dispatch = useDispatch();
     const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
+    const cartSize = useSelector(store => store.cartReducer.cart).length;
 
     useEffect(() => {
         dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
     }, []);
+
+    useEffect(() => {
+        dispatch({type: "GET_CART"});
+    }, [cartSize])
 
     const toReview = () => {
         history.push("/reviewPitch");
@@ -21,7 +26,7 @@ export default function CreatePitchPage({handleClose}) {
         <div className='container'>
             <div className='wholesalerBar'>
                 <h1>Create New Pitch</h1>
-                <button className='pageButton' onClick = {toReview}> 🛒 Review Pitch (#)</button>
+                <button className='pageButton' onClick = {toReview}> 🛒 Review Pitch ({cartSize})</button>
             </div>
             {cardsByCategory.map((x, i) => {
                 return <PitchCategory key={i} categoryContents={x}/>

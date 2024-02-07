@@ -24,6 +24,11 @@ export default function ReviewPitch() {
     const history = useHistory();
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch({ 
+        type: 'SAGA/FETCH_WHOLESALERS'
+        });
+      }, []);
 
     // When user clicks the create pitch button, POST new pitch, then redirect user to view the pitch
     const handleCreate = () => {
@@ -32,7 +37,7 @@ export default function ReviewPitch() {
             payload: {
                 pitchName: name,
                 pitchDescription: description,
-                wholesaler_id: 1,
+                wholesaler_id: wholesaler_id,
                 newPitch: newPitch
             }
         })
@@ -62,7 +67,16 @@ export default function ReviewPitch() {
                 onChange={(event) => setDescription(event.target.value)}
                 id="pitchDescription"
             />
-            WHOLESALER PLACEHOLDER
+            <select
+                name="type"
+                onChange={(e) => setWholesaler_id(e.target.value)}
+                required='required'
+                defaultValue=''>
+                <option value='' disabled="disabled">Choose a wholesaler</option>
+                {wholesalers.map(wholesaler => {
+                    return <option key={wholesaler.id} value={wholesaler.id}>{wholesaler.company_name}</option>
+                })}
+            </select>
             <button onClick={() => history.push("/")}>Back</button>
             <button onClick={handleCreate}>Create</button>
             {/* MUI table within an MUI paper component */}
