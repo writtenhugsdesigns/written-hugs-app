@@ -155,7 +155,7 @@ export default function EditCard() {
       <div className="container">
         <Grid container sx={{ m: 3 }}>
           <Grid item lg={6}>
-            <Typography variant="h2">New Card Variation</Typography>
+            <Typography variant="h2">Edit Card Variation</Typography>
           </Grid>
           <Grid item lg={3}>
             <button className="pageButton" onClick={handleCancel}>
