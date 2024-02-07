@@ -6,6 +6,7 @@ import {
   CardMedia,
   Button,
   Typography,
+  Alert
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 
@@ -30,22 +31,23 @@ export default function PitchCard({ card, isInCart }) {
   return (
     <Card
       sx={{
-        height: "25em",
+        height: "27em",
         width: "15em",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
       }}
     >
+      {isInCart(card) && <Alert severity='success'>Added!</Alert>}
       <CardMedia
         height="20em"
         onMouseOver={() => setIsHoveredID(card.card_id)}
         onMouseOut={() => setIsHoveredID("")}
-      >
+        >
         {isHoveredID == "" ? (
-          <img height={"200"} src={`${card.front_img.display}`} />
+          <img height={"200"} width={'auto'} src={`${card.front_img.display}`} />
         ) : (
-          <img height={"200"} src={`${card.inner_img.display}`} />
+          <img height={"200"} width={'auto'} src={`${card.inner_img.display}`} />
         )}
       </CardMedia>
       <CardContent>
@@ -58,7 +60,7 @@ export default function PitchCard({ card, isInCart }) {
           {card.name}
         </Typography>
         <Typography
-          sx={{ overflowY: "auto", height: "4em" }}
+          sx={{ overflowY: "auto", height: "3em" }}
           variant="body2"
           color="text.secondary"
         >
