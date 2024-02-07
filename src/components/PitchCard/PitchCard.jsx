@@ -20,11 +20,11 @@ export default function PitchCard({ card, isInCart }) {
 
 
   const viewCard = (card) => {
-    handleOpen();
     dispatch({
       type: "SET_CARD",
-      payload: card,
+      payload: card
     });
+    handleOpen();
   };
 
   // Style for MUI box in Modal
@@ -101,7 +101,7 @@ export default function PitchCard({ card, isInCart }) {
             justifyContent: "center",
           }}
         >
-          <Button variant="outlined" size="medium" onClick={viewCard}>
+          <Button variant="outlined" size="medium" onClick={()=>viewCard(card)}>
             View
           </Button>
           {!isInCart(card) && (
