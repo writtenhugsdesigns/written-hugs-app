@@ -1,21 +1,4 @@
-import { useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { ArrowBackIos } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Grid,
-  TextField,
-  Typography,
-  FormControl,
-  Icon,
-} from "@mui/material";
-import { green } from "@mui/material/colors";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import "./CreateCard.css";
-import Swal from "sweetalert2";
-import MultipleSelect from "../MultiSelectCategories/MultiSelectCategories";
+
 // import '@sweetalert2/theme-material-ui'
 
 export default function CreateCard() {

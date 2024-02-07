@@ -113,7 +113,7 @@ export default function CardList() {
                             View
                           </Button>
                           <span> </span>
-                          <Button variant="outlined">Edit</Button>
+                          <Button variant="outlined" onClick={() => history.pushState(`/editcard/${x.id}`)}>Edit</Button>
                           <span> </span>
                           <Button variant="contained" color="error">
                             Delete

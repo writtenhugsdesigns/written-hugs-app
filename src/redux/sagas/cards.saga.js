@@ -31,6 +31,16 @@ function* fetchAllCardsByCategory() {
   }
 }
 
+function* fetchCardByID(action) {
+  try{
+    const response = yield axios({
+      method: "GET",
+      url: `/api/cards/${action.payload.id}`
+    });
+    
+  }
+}
+
 /**
  * Send a post request to create a new card and then fetch all cards
  * @param {*} action action.payload containing new card data is sent to the router
@@ -126,6 +136,7 @@ function* cardSaga() {
   yield takeLatest('SAGA/POST_CARD', postCard);
   yield takeLatest('SAGA/FETCH_CARDS', fetchAllCards);
   yield takeLatest('SAGA/FETCH_CARDS_BY_CATEGORY', fetchAllCardsByCategory);
+  yield takeLatest('SAGA/FETCH_CARD_BY_ID', fetchCardByID)
   yield takeLatest('SAGA/DELETE_CARD', deleteCard);
   yield takeLatest('SAGA/EDIT_CARD', editCard);
   yield takeLatest('SAGA/GET_FOLDERS', getCurrentFolders)
