@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux";
 
 export default function PitchCard({ card, isInCart }) {
   const [isHoveredID, setIsHoveredID] = useState("");
-  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
