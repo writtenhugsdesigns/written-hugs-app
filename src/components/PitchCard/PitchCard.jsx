@@ -21,11 +21,11 @@ export default function PitchCard({ card, isInCart }) {
 
 
   const viewCard = (card) => {
-    handleOpen();
     dispatch({
       type: "SET_CARD",
-      payload: card,
+      payload: card
     });
+    handleOpen();
   };
 
   // Style for MUI box in Modal
@@ -67,61 +67,61 @@ export default function PitchCard({ card, isInCart }) {
         alignItems: "center",
       }}
       >
-      <CardMedia
-        height="20em"
-        onMouseOver={() => setIsHoveredID(card.card_id)}
-        onMouseOut={() => setIsHoveredID("")}
-      >
-        {isHoveredID == "" ? (
-          <img height={"200"} src={`${card.front_img.display}`} />
-        ) : (
-          <img height={"200"} src={`${card.inner_img.display}`} />
-        )}
-      </CardMedia>
-      <CardContent>
-        <Typography
-          sx={{ textAlign: "center" }}
-          gutterBottom
-          variant="h5"
-          component="div"
+        <CardMedia
+          height="20em"
+          onMouseOver={() => setIsHoveredID(card.card_id)}
+          onMouseOut={() => setIsHoveredID("")}
         >
-          {card.name}
-        </Typography>
-        <Typography
-          sx={{ overflowY: "auto", height: "4em" }}
-          variant="body2"
-          color="text.secondary"
-        >
-          {card.description}
-        </Typography>
-      </CardContent>
-      <CardActions
-        sx={{
-          marginTop: "auto",
-          marginBottom: "3px",
-          justifyContent: "center",
-        }}
-      >
-        <Button variant="outlined" size="medium">
-          View
-        </Button>
-        {!isInCart(card) && (
-          <Button variant="contained" size="medium" onClick={addCardToCart}>
-            Add
-          </Button>
-        )}
-        {isInCart(card) && (
-          <Button
-            variant="contained"
-            color="error"
-            onClick={removeCardFromCart}
+          {isHoveredID == "" ? (
+            <img height={"200"} src={`${card.front_img.display}`} />
+          ) : (
+            <img height={"200"} src={`${card.inner_img.display}`} />
+          )}
+        </CardMedia>
+        <CardContent>
+          <Typography
+            sx={{ textAlign: "center" }}
+            gutterBottom
+            variant="h5"
+            component="div"
           >
-            Remove
+            {card.name}
+          </Typography>
+          <Typography
+            sx={{ overflowY: "auto", height: "4em" }}
+            variant="body2"
+            color="text.secondary"
+          >
+            {card.description}
+          </Typography>
+        </CardContent>
+        <CardActions
+          sx={{
+            marginTop: "auto",
+            marginBottom: "3px",
+            justifyContent: "center",
+          }}
+        >
+          <Button variant="outlined" size="medium" onClick={viewCard}>
+            View
           </Button>
-        )}
-      </CardActions>
-    </Card>
-    <Modal
+          {!isInCart(card) && (
+            <Button variant="contained" size="medium" onClick={addCardToCart}>
+              Add
+            </Button>
+          )}
+          {isInCart(card) && (
+            <Button
+              variant="contained"
+              color="error"
+              onClick={removeCardFromCart}
+            >
+              Remove
+            </Button>
+          )}
+        </CardActions>
+      </Card>
+      <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
