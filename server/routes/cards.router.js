@@ -350,12 +350,15 @@ router.post("/", uploadHandler.any(), async (req, res) => {
 
 router.get("/:id", (req, res) => {
   const queryText = `
-    SELECT * FROM "cards";
-    `;
+    SELECT * FROM "cards"
+    WHERE "id" = $1;`;
+
+  const queryValues = [req.params.id]
 
   pool
-    .query(queryText)
+    .query(queryText, queryValues)
     .then((result) => {
+      console.log(result.rows);
       res.send(result.rows);
     })
     .catch((error) => {

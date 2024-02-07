@@ -20,6 +20,7 @@ const cardsListByCategory = (state = [], action) => {
 
 const selectedCard = (state = {}, action) => {
   if (action.type === 'SET_CARD') {
+    console.log("this is the card to be added in reducer:", action.payload);
     return action.payload
   } else if (action.type === 'MODIFY_CARD') {
     const editedProperty = action.payload.property

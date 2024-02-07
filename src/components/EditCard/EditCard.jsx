@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { green } from "@mui/material/colors";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import "./CreateCard.css";
 import Swal from "sweetalert2";
 import MultipleSelect from "../MultiSelectCategories/MultiSelectCategories";
 import { useParams } from "react-router-dom/";
@@ -30,21 +29,17 @@ export default function EditCard() {
     //and save it in a local array
     useEffect(() => {
         dispatch({
-            type: "SAGA/FETCH_CARD_BY_ID",
+        type: "SAGA/FETCH_CATEGORIES",
+        });
+        dispatch({
+            type: "SAGA/FETCH_CARD",
             payload: params.id
         })
-    //   dispatch({
-    //     type: "SAGA/GET_FOLDERS",
-    //   });
-    //   dispatch({
-    //     type: "SAGA/FETCH_CATEGORIES",
-    //   });
     }, []);
-  
-    const currentFoldersArray = useSelector(
-      (store) => store.cardsReducer.currentFolders
-    );
+
     const databaseCategories = useSelector((store) => store.categoriesReducer);
+    const selectedCard = useSelector((store) => store.selectedCard);
+    console.log("this is the current selected card object:", selectedCard);
   
     let [variationName, setVariationName] = useState(null);
     let [UPCNumber, setUPCNumber] = useState("");
