@@ -144,6 +144,47 @@ router.get("/byCategory", (req, res) => {
     });
 });
 
+router.post("/newCategory", (req, res) => {
+  const queryText = `
+  INSERT INTO "categories"
+  ("name")
+  VALUES
+  ($1)
+    RETURNING "id";`;
+  const queryValues = [req.body.name];
+
+  // FIRST QUERY posts the category
+  pool
+    .query(queryText, queryValues)
+    .then((result) => {
+      const sqlText = `
+      INSERT INTO "cards_categories"
+      ("card_id", "category_id")
+      VALUES
+      ($1, $2)`;
+      console.log('card_id', req.body);
+      console.log('category_id', result.rows[0].id);
+      const sqlValues = [req.body.card.card_id, result.rows[0].id];
+      // SECOND QUERY posts into the cards_categories table
+      pool
+        .query(sqlText, sqlValues)
+        .then((result) => {
+          // Now that both are done, send back card to be fetched!
+          res.send({ id: req.body.card.card_id });
+        })
+        .catch((err) => {
+          // catch for second query
+          console.log('problem posting new category on cards_categories table', err);
+          res.sendStatus(500);
+        });
+    })
+    .catch((err) => {
+      // 👈 Catch for first query
+      console.log('problem posting new category', err);
+      res.sendStatus(500);
+    });
+});
+
 /**
  * This post router takes in a new card formdata object.  It then passes it through multer.
  * The function does a few things:
@@ -246,29 +287,30 @@ router.post("/", uploadHandler.any(), async (req, res) => {
 
   //This sends the card to the DB, and then the categories array is prepared
   //to send items to the card - categories table.
-    await pool.query(queryText, queryValues)
+  await pool.query(queryText, queryValues)
     .then((result) => {
-    const card_id = result.rows[0].id;
-    const categoriesArray = req.body.categoriesArray.split(",").map(Number);
-    const insertCardsCategoriesQuery = newCardsCategoriesQuery(
+      const card_id = result.rows[0].id;
+      const categoriesArray = req.body.categoriesArray.split(",").map(Number);
+      const insertCardsCategoriesQuery = newCardsCategoriesQuery(
         categoriesArray,
         card_id
-    )
-  // SECOND QUERY ADDS categories FOR THAT NEW card
-  pool
-    .query(insertCardsCategoriesQuery)
-    .then((results) => {
-      //Now that both are done, send back success!
-      res.sendStatus(201);
-    })
-    .catch((err) => {
-      // catch for second query
-      console.log(err);
-    })});
+      )
+      // SECOND QUERY ADDS categories FOR THAT NEW card
+      pool
+        .query(insertCardsCategoriesQuery)
+        .then((results) => {
+          //Now that both are done, send back success!
+          res.sendStatus(201);
+        })
+        .catch((err) => {
+          // catch for second query
+          console.log(err);
+        })
+    });
 })
 
-  router.put("/:id", (req, res) => {
-    const queryText = `
+router.put("/:id", (req, res) => {
+  const queryText = `
       UPDATE "cards"
         SET 
           "name"=$1, 
@@ -288,75 +330,107 @@ router.post("/", uploadHandler.any(), async (req, res) => {
         WHERE
           id=$15;
     `;
-    console.log("req.body:", req.body);
-    const queryValues = [
-      req.body.card.name,
-      req.body.card.vendor_style,
-      req.body.card.description,
-      req.body.card.upc,
-      req.body.card.sku,
-      req.body.card.barcode,
-      req.body.card.front_img,
-      req.body.card.front_tiff,
-      req.body.card.inner_img,
-      req.body.card.insert_img,
-      req.body.card.insert_ai,
-      req.body.card.raw_art,
-      req.body.card.sticker_jpeg,
-      req.body.card.sticker_pdf,
-      req.params.id,
-    ];
-    pool
-      .query(queryText, queryValues)
-      .then((result) => {
-        const queryDeleteText = `
+  console.log("req.body:", req.body);
+  const queryValues = [
+    req.body.card.name,
+    req.body.card.vendor_style,
+    req.body.card.description,
+    req.body.card.upc,
+    req.body.card.sku,
+    req.body.card.barcode,
+    req.body.card.front_img,
+    req.body.card.front_tiff,
+    req.body.card.inner_img,
+    req.body.card.insert_img,
+    req.body.card.insert_ai,
+    req.body.card.raw_art,
+    req.body.card.sticker_jpeg,
+    req.body.card.sticker_pdf,
+    req.params.id,
+  ];
+  pool
+    .query(queryText, queryValues)
+    .then((result) => {
+      const queryDeleteText = `
       DELETE FROM cards_categories
         WHERE cards_id=${req.params.id};
     `;
-        // second QUERY removes categories FOR THAT card
-        pool
-          .query(queryDeleteText)
-          .then((result) => {
-            const categoriesArray = req.body.categoriesArrayForQuery;
-            const editCardsCategoriesQuery = editCardsCategoriesQuery(
-              categoriesArray,
-              req.params.id
-            );
-            // Third QUERY ADDS categories FOR THAT card
-            pool
-              .query(editCardsCategoriesQuery)
-              .then((result) => {
-                res.sendStatus(201);
-              })
-              .catch((err) => {
-                // catch for third query
-                console.log(err);
-                res.sendStatus(500);
-              });
-          })
-          .catch((err) => {
-            // catch for second query
-            console.log(err);
-            res.sendStatus(500);
-          });
-      })
-      .catch((err) => {
-        // 👈 Catch for first query
-        console.log(err);
-        res.sendStatus(500);
-      });
-  });
+      // second QUERY removes categories FOR THAT card
+      pool
+        .query(queryDeleteText)
+        .then((result) => {
+          const categoriesArray = req.body.categoriesArrayForQuery;
+          const editCardsCategoriesQuery = editCardsCategoriesQuery(
+            categoriesArray,
+            req.params.id
+          );
+          // Third QUERY ADDS categories FOR THAT card
+          pool
+            .query(editCardsCategoriesQuery)
+            .then((result) => {
+              res.sendStatus(201);
+            })
+            .catch((err) => {
+              // catch for third query
+              console.log(err);
+              res.sendStatus(500);
+            });
+        })
+        .catch((err) => {
+          // catch for second query
+          console.log(err);
+          res.sendStatus(500);
+        });
+    })
+    .catch((err) => {
+      // 👈 Catch for first query
+      console.log(err);
+      res.sendStatus(500);
+    });
+});
 
 
 router.get("/:id", (req, res) => {
   const queryText = `
-    SELECT * FROM "cards";
-    `;
+      SELECT
+      c.id,
+      c.name,
+      c.description, 
+      c.vendor_style, 
+      c.upc, 
+      c.sku, 
+      c.barcode, 
+      c.front_img, 
+      c.front_tiff, 
+      c.inner_img, 
+      c.insert_img, 
+      c.insert_ai, 
+      c.raw_art, 
+      c.sticker_jpeg, 
+      c.sticker_pdf,
+      json_agg(
+          json_build_object(
+              'category_id',
+              cat.id,
+              'category_name',
+              cat.name
+          )
+      ) categories_array
+      FROM cards c
+      LEFT JOIN cards_categories cc ON c.id = cc.card_id
+      LEFT JOIN categories cat ON cc.category_id = cat.id
+      WHERE c.id = $1
+      GROUP BY c.id
+      ORDER BY c.id
+    ;`;
+
+  const sqlValues = [req.params.id];
 
   pool
-    .query(queryText)
+    .query(queryText, sqlValues)
     .then((result) => {
-      res.send(result.rows);
+      const theCards = formatCards(result.rows);
+      res.send(theCards);
     })
     .catch((error) => {
       console.log("Error in GET /api/cards/:id:", error);

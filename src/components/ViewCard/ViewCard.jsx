@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Button } from "@mui/material";
-import { ArrowBackIos, AddCircleOutline } from "@mui/icons-material";
+import { Button,  Box,
+  Modal,} from "@mui/material";
+import { ArrowBackIos, AddCircleOutline, } from "@mui/icons-material";
 import "./ViewCard.css";
+import CreateCategoryForCard from "../CreateCategory/CreateCategoryForCard";
 
 export default function ViewCard({ handleClose }) {
   const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
+  const [openNewCategory, setOpenNewCategory] = useState(false);
+  const handleOpenNewCategory = () => setOpenNewCategory(true);
+  const handleCloseNewCategory = () => setOpenNewCategory(false);
+
+    // Style for MUI box in Modal
+    const style = {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      overflow: "auto",
+      display: "block",
+      width: "80vw",
+      height: "80vh",
+      bgcolor: "background.paper",
+      'border-radius': '5px'
+    };
 
   const editCardText = () => {
     console.log("This will do pop up stuff for edit.");
@@ -35,7 +54,7 @@ export default function ViewCard({ handleClose }) {
         {selectedCard.categories_array.map((x) => {
           return <span className="tag">{x.category_name}</span>;
         })}
-        <Button>
+        <Button onClick={handleOpenNewCategory}>
           <AddCircleOutline />
         </Button>
       </p>
@@ -65,6 +84,16 @@ export default function ViewCard({ handleClose }) {
       <Button variant="contained" color="error" onClick={deleteCard}>
         Delete Card
       </Button>
+      <Modal
+        open={openNewCategory}
+        onClose={handleCloseNewCategory}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <CreateCategoryForCard card={selectedCard} handleClose={handleCloseNewCategory} />
+        </Box>
+      </Modal>
     </div>
   );
 }
