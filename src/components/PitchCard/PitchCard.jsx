@@ -8,13 +8,10 @@ import {
   Button, Box, Modal,
   Typography,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
 import ViewCard from "../ViewCard/ViewCard";
 
-export default function PitchCard({ card }) {
-
-  const [addToggle, setAddToggle] = useState(true);
-  const [isHoveredID, setIsHoveredID] = useState('');
+export default function PitchCard({ card, isInCart }) {
+  const [isHoveredID, setIsHoveredID] = useState("");
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -43,22 +40,6 @@ export default function PitchCard({ card }) {
     bgcolor: "background.paper",
     'border-radius': '5px'
   };
-
-  /**
-   * Toggle the add button depending on if the card is in the cart or not
-   * @param {*} e 
-   */
-  const handleToggle = (e) => {
-    e.preventDefault();
-    if (addToggle) {
-      // Add the card to the cart
-      addCardToCart();
-    } else {
-      // Remove card from cart
-      removeCardFromCart();
-    }
-    setAddToggle(!addToggle);
-  }
 
   const removeCardFromCart = () => {
     dispatch({
@@ -120,7 +101,7 @@ export default function PitchCard({ card }) {
             justifyContent: "center",
           }}
         >
-          <Button variant="outlined" size="medium">
+          <Button variant="outlined" size="medium" onClick={viewCard}>
             View
           </Button>
           {!isInCart(card) && (
