@@ -5,6 +5,7 @@ import cardsReducer from "./cards.reducer";
 import wholesalersReducer from "./wholesalers.reducer";
 import categoriesReducer from "./categories.reducer";
 import pitches from "./pitch.reducer";
+import cartReducer from "./cart.reducer";
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   wholesalersReducer,
   categoriesReducer,
   pitches,
+  cartReducer
 });
 
 export default rootReducer;
