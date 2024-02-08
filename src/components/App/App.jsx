@@ -31,6 +31,7 @@ import ViewPitch from "../ViewPitch/ViewPitch";
 
 import "./App.css";
 import EditPitch from "../EditPitch/EditPitch";
+import EditCard from "../EditCard/EditCard";
 
 function App() {
   const dispatch = useDispatch();
@@ -90,6 +91,10 @@ function App() {
 
           <ProtectedRoute exact path="/createCard">
             <CreateCard />
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/editcard/:id">
+            <EditCard />
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/pitches">
