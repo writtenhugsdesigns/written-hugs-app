@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom/";
 import {
   Button,
   Paper,
@@ -20,6 +21,7 @@ import { Category } from "@mui/icons-material";
 
 export default function CardList() {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // const cards = useSelector(store => store.cardsReducer.cardsList);
   const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
@@ -54,8 +56,12 @@ export default function CardList() {
     });
   };
 
-  const editCard = () => {
-    console.log("This will do pop up stuff for edit.");
+  const editCard = (x) => {
+    dispatch({
+      type: "SET_CARD",
+      payload: x,
+    });
+    history.push(`/editcard/${x.card_id}`)
   };
 
   const deleteCard = () => {
@@ -102,7 +108,7 @@ export default function CardList() {
 
                   <TableBody>
                     {row.cardsArray.map((x) => (
-                      <TableRow key={x.id}>
+                      <TableRow key={x.card_id}>
                         <TableCell>{x.name}</TableCell>
                         <TableCell>{x.description}</TableCell>
                         <TableCell>{x.categories_array.map((y) => (<span className='tag'>{y.category_name}</span>))}</TableCell>
@@ -114,7 +120,7 @@ export default function CardList() {
                             View
                           </Button>
                           <span> </span>
-                          <Button variant="outlined">Edit</Button>
+                          <Button variant="outlined" onClick={() => editCard(x)}>Edit</Button>
                           <span> </span>
                           <Button variant="contained" color="error">
                             Delete

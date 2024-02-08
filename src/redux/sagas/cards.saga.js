@@ -97,10 +97,12 @@ function* fetchCard(action) {
   try {
     const cardID = action.payload;
     const card = yield axios.get(`/api/cards/${cardID}`);
-    yield put({
+    yield 
+    put({
       type: 'SET_CARD',
       payload: card.data
     });
+    console.log(card.data);
   } catch (error) {
     console.log('error in fetchCard:', error);
   }

@@ -49,6 +49,7 @@ export default function CreateCard() {
   let [insideInsertion, setInsideInsertion] = useState([]);
   let [insert, setInsert] = useState([]);
   let [sticker, setSticker] = useState([]);
+  let [stickerPdf, setStickerPdf] = useState([]);
   let [TIFFFile, setTIFFFile] = useState([]);
   let [AIFile, setAIFile] = useState([]);
   let [categoriesInput, setCategoriesInput] = useState([]);

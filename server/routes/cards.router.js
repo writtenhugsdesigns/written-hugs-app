@@ -412,6 +412,7 @@ router.put("/:id", (req, res) => {
 
 router.get("/:id", (req, res) => {
   const queryText = `
+
       SELECT
       c.id,
       c.name,
@@ -451,6 +452,7 @@ router.get("/:id", (req, res) => {
     .then((result) => {
       const theCards = formatCards(result.rows);
       res.send(theCards[0]);
+
     })
     .catch((error) => {
       console.log("Error in GET /api/cards/:id:", error);
