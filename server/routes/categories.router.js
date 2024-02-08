@@ -22,7 +22,6 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 });
 
 router.post("/", rejectUnauthenticated, (req, res) => {
-  console.log('incoming new category', req.body.name);
   const sqlText = `
   INSERT INTO "categories"
   ("name")

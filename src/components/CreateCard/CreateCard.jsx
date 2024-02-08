@@ -129,7 +129,7 @@ export default function CreateCard() {
     });
   };
 
-  //Still under development, used to create a new category
+  // This function is used to create a new category
   const createCategory = () => {
     Swal.fire({
       input: "text",
