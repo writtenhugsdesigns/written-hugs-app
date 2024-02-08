@@ -23,23 +23,10 @@ export default function EditCard() {
     const dispatch = useDispatch();
     const newCardToSend = new FormData();
     const [newCategory, setNewCategory] = useState("");
-  
-    //This use effect triggers the saga "getCurrentFolders"
-    //After this is triggered a useSelector will get the current folders array
-    //and save it in a local array
-    useEffect(() => {
-        dispatch({
-        type: "SAGA/FETCH_CATEGORIES",
-        });
-        dispatch({
-            type: "SAGA/FETCH_CARD",
-            payload: params.id
-        })
-    }, []);
 
     const databaseCategories = useSelector((store) => store.categoriesReducer);
-    const selectedCard = useSelector((store) => store.selectedCard);
-    console.log("this is the current selected card object:", selectedCard);
+    const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
+    // console.log("this is the current selected card object:", selectedCard);
   
     let [variationName, setVariationName] = useState(null);
     let [UPCNumber, setUPCNumber] = useState("");

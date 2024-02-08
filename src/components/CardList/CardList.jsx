@@ -55,6 +55,14 @@ export default function CardList() {
     });
   };
 
+  const editCard = (x) => {
+    dispatch({
+      type: "SET_CARD",
+      payload: x,
+    });
+    history.push(`/editcard/${x.card_id}`)
+  };
+
   const deleteCard = () => {
     console.log("BEGONE THINGY WITH card", card.id);
   };
@@ -111,7 +119,7 @@ export default function CardList() {
                             View
                           </Button>
                           <span> </span>
-                          <Button variant="outlined" onClick={() => history.push(`/editcard/${x.card_id}`)}>Edit</Button>
+                          <Button variant="outlined" onClick={() => editCard(x)}>Edit</Button>
                           <span> </span>
                           <Button variant="contained" color="error">
                             Delete

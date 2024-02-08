@@ -102,6 +102,7 @@ function* fetchCard(action) {
       type: 'SET_CARD',
       payload: card.data
     });
+    console.log(card.data);
   } catch (error) {
     console.log('error in fetchCard:', error);
   }
