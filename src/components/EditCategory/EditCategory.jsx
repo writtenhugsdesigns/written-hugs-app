@@ -10,7 +10,8 @@ export default function EditCategory({handleClose}){
     const [showAlert, setShowAlert] = useState(false);
     const dispatch = useDispatch();
 
-    async function editCategory(){
+    async function editCategory(e){
+        e.preventDefault();
         await dispatch({
             type: 'SAGA/EDIT_CATEGORY',
             payload: {name: categoryName, id: currentCategory.id}

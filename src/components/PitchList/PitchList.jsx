@@ -31,6 +31,7 @@ export default function PitchList() {
 
   const [dateSort, setDateSort] = useState(false);
   const [renderList, setRenderList] = useState(false);
+  const [wholesalerSort, setWholesalerSort] = useState(false);
 
   /**
    * This function allows you to sort pitches based off of oldest to newest.
@@ -98,6 +99,66 @@ export default function PitchList() {
       });
     }
     setDateSort(true);
+  };
+
+  const sortPitchByWholesalerNameDesc = () => {
+    pitches.sort((a, b) => {
+      const wholesalerA = a.wholesaler_company_name.toLowerCase();
+      const wholesalerB = b.wholesaler_company_name.toLowerCase();
+      if (wholesalerA > wholesalerB) {
+        return 1;
+      }
+      if (wholesalerA < wholesalerB) {
+        return -1;
+      }
+      // dates must be equal
+      return 0;
+    });
+    if (renderList) {
+      renderList.sort((a, b) => {
+        const wholesalerA = a.wholesaler_company_name.toLowerCase();
+      const wholesalerB = b.wholesaler_company_name.toLowerCase();
+        if (wholesalerA > wholesalerB) {
+          return 1;
+        }
+        if (wholesalerA < wholesalerB) {
+          return -1;
+        }
+        // dates must be equal
+        return 0;
+      });
+    }
+    setWholesalerSort(false);
+  };
+
+  const sortPitchByWholesalerNameAsc = () => {
+    pitches.sort((a, b) => {
+      const wholesalerA = a.wholesaler_company_name.toLowerCase();
+      const wholesalerB = b.wholesaler_company_name.toLowerCase();
+      if (wholesalerA < wholesalerB) {
+        return 1;
+      }
+      if (wholesalerA > wholesalerB) {
+        return -1;
+      }
+      // dates must be equal
+      return 0;
+    });
+    if (renderList) {
+      renderList.sort((a, b) => {
+        const wholesalerA = a.wholesaler_company_name.toLowerCase();
+      const wholesalerB = b.wholesaler_company_name.toLowerCase();
+        if (wholesalerA < wholesalerB) {
+          return 1;
+        }
+        if (wholesalerA > wholesalerB) {
+          return -1;
+        }
+        // dates must be equal
+        return 0;
+      });
+    }
+    setWholesalerSort(true);
   };
 
   let result = false;
@@ -174,7 +235,12 @@ export default function PitchList() {
             <TableHead>
               <TableRow>
                 <TableCell style={{ maxWidth: "10vw" }} key={"wholesaler"}>
-                  Wholesaler
+                {!wholesalerSort && (
+                    <span onClick={sortPitchByWholesalerNameAsc}>Wholesaler ▽</span>
+                  )}
+                  {wholesalerSort && (
+                    <span onClick={sortPitchByWholesalerNameDesc}>Wholesaler △</span>
+                  )}
                 </TableCell>
                 <TableCell style={{ maxWidth: "10vw" }} key={"date"}>
                   {!dateSort && (

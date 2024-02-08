@@ -19,11 +19,16 @@ export default function ReviewPitch() {
     let [description, setDescription] = useState('');
     let [name, setName] = useState('');
     let [wholesaler_id, setWholesaler_id] = useState('');
-    const newPitch = useSelector(store => store.pitches.newPitch);
+    const cart = useSelector(store => store.cartReducer.cart);
     const wholesalers = useSelector(store => store.wholesalersReducer.wholesalers);
     const history = useHistory();
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch({ 
+        type: 'SAGA/FETCH_WHOLESALERS'
+        });
+      }, []);
 
     // When user clicks the create pitch button, POST new pitch, then redirect user to view the pitch
     const handleCreate = () => {
@@ -32,15 +37,15 @@ export default function ReviewPitch() {
             payload: {
                 pitchName: name,
                 pitchDescription: description,
-                wholesaler_id: 1,
-                newPitch: newPitch
+                wholesaler_id: wholesaler_id,
+                newPitch: cart
             }
         })
         history.push("/pitches");
     }
     const removeButton = (card) => {
         dispatch({
-            type: 'REMOVE_CARD_FROM_PITCH',
+            type: 'REMOVE_CARD_FROM_CART',
             payload: card
         })
     }
@@ -62,7 +67,16 @@ export default function ReviewPitch() {
                 onChange={(event) => setDescription(event.target.value)}
                 id="pitchDescription"
             />
-            WHOLESALER PLACEHOLDER
+            <select
+                name="type"
+                onChange={(e) => setWholesaler_id(e.target.value)}
+                required='required'
+                defaultValue=''>
+                <option value='' disabled="disabled">Choose a wholesaler</option>
+                {wholesalers.map(wholesaler => {
+                    return <option key={wholesaler.id} value={wholesaler.id}>{wholesaler.company_name}</option>
+                })}
+            </select>
             <button onClick={() => history.push("/")}>Back</button>
             <button onClick={handleCreate}>Create</button>
             {/* MUI table within an MUI paper component */}
@@ -77,14 +91,14 @@ export default function ReviewPitch() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {newPitch &&
-                                newPitch.map((card) => (
+                            {cart &&
+                                cart.map((card) => (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={card.id}>
                                         <TableCell>{card.name}</TableCell>
                                         <TableCell>{card.categories_array.map((category) => (<span className='tag'>{category.category_name}</span>))}</TableCell>
                                         <TableCell>
                                             <Button onClick={() => removeButton(card)} variant="contained" color="error">
-                                                Remove from pitch
+                                                Remove
                                             </Button>
                                         </TableCell>
                                     </TableRow>
@@ -93,7 +107,6 @@ export default function ReviewPitch() {
                     </Table>
                 </TableContainer>
             </Paper>
-
         </div>
     )
 }
