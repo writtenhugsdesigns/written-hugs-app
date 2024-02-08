@@ -9,7 +9,7 @@ import {
   TableRow,
   TableContainer,
   Modal,
-  Box,
+  Box
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
