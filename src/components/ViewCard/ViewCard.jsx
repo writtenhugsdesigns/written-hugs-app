@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Button } from "@mui/material";
-import { ArrowBackIos, AddCircleOutline } from "@mui/icons-material";
+import { Button,  Box,
+  Modal,} from "@mui/material";
+import { ArrowBackIos, AddCircleOutline, } from "@mui/icons-material";
 import "./ViewCard.css";
+import CreateCategoryForCard from "../CreateCategory/CreateCategoryForCard";
 
 export default function ViewCard({ handleClose }) {
   const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
+  const [openNewCategory, setOpenNewCategory] = useState(false);
+  const handleOpenNewCategory = () => setOpenNewCategory(true);
+  const handleCloseNewCategory = () => setOpenNewCategory(false);
+
+    // Style for MUI box in Modal
+    const style = {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      overflow: "auto",
+      display: "block",
+      width: "80vw",
+      height: "80vh",
+      bgcolor: "background.paper",
+      'border-radius': '5px'
+    };
 
   const editCardText = () => {
     console.log("This will do pop up stuff for edit.");
@@ -28,14 +47,14 @@ export default function ViewCard({ handleClose }) {
       >
         Back
       </Button>
-      <h1>{selectedCard.name}</h1>
-      <p>{selectedCard.description}</p>
+      <h1>{selectedCard && selectedCard.name}</h1>
+      <p>{selectedCard && selectedCard.description}</p>
       <p>
         Categories:
-        {selectedCard.categories_array.map((x) => {
+        {selectedCard && selectedCard.categories_array.map((x) => {
           return <span className="tag">{x.category_name}</span>;
         })}
-        <Button>
+        <Button onClick={handleOpenNewCategory}>
           <AddCircleOutline />
         </Button>
       </p>
@@ -45,11 +64,11 @@ export default function ViewCard({ handleClose }) {
         </div>
         <div className="imgRight">
           <p>Inner Image:</p>
-          <img src={selectedCard.inner_img.display} />
+          <img src={selectedCard && selectedCard.inner_img.display} />
           <p>Insert Image:</p>
-          <img src={selectedCard.insert_img.display} />
+          <img src={selectedCard && selectedCard.insert_img.display} />
           <p>Sticker Image:</p>
-          <img src={selectedCard.sticker_jpeg.display} />
+          <img src={selectedCard && selectedCard.sticker_jpeg.display} />
         </div>
       </div>
       <div>
@@ -65,6 +84,16 @@ export default function ViewCard({ handleClose }) {
       <Button variant="contained" color="error" onClick={deleteCard}>
         Delete Card
       </Button>
+      <Modal
+        open={openNewCategory}
+        onClose={handleCloseNewCategory}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <CreateCategoryForCard card={selectedCard} handleClose={handleCloseNewCategory} />
+        </Box>
+      </Modal>
     </div>
   );
 }
