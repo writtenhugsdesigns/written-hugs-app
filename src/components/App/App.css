@@ -5,7 +5,7 @@ body,
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Open Sans Light";
   margin: 0px;
 }
 
@@ -20,6 +20,8 @@ Container
 
 .container {
   padding: 20px;
+  margin-left: 1vw;
+  margin-right: 1vw;
 }
 
 /* --------------------------------------------------------------------------------
@@ -29,14 +31,13 @@ Button
 .btn {
   display: inline-block;
   padding: 10px 20px;
-  border-color: #014041;
-  border-width: 1px 1px 3px;
   border-radius: 4px;
-  background-color: #00acb0;
+  background-color: darkgray;
   color: #f8f8f8;
   font-size: 1.1rem;
   outline: 0;
   cursor: pointer;
+  font-family: "Open Sans Regular";
 }
 
 .btn_sizeMin {
@@ -54,10 +55,7 @@ Button
   width: 100%;
 }
 
-.btn:hover {
-  background-color: #008183;
-  text-decoration: none;
-}
+
 
 /* This line makes the "Register" and "Login" buttons look like links */
 .btn_asLink {
@@ -101,12 +99,33 @@ Form Treatment
   max-width: 100%;
   padding: 25px;
   margin: 0 auto 20px;
-  background-color: #efefef;
+  
   border-radius: 3px;
-  box-shadow: 0 1px 2px rgb(0, 0, 0, 0.4);
+  box-shadow: 2px 2px 10px rgb(219, 218, 218);
+  
+  transform: scale(1.2);
+  margin-top: 4em;
+  margin-bottom: 4em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 input {
   margin: 5px;
   margin-bottom: 10px;
+  font-family: "Open Sans Light";
+  height: 2em;
+  font-size: 17px;
+}
+
+@font-face {
+  font-family: "Open Sans Light";
+  src: url('/OpenSans-Light.ttf');
+}
+
+@font-face {
+  font-family: "Open Sans Regular";
+  src: url('/OpenSans-Regular.ttf');
 }

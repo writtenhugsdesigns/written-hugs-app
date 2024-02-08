@@ -1,8 +1,8 @@
 .wholesalerBar {
     display: flex;
     justify-content: space-between;
-    margin-left: 2em;
-    margin-right: 2em;
+    margin-left: 2vw;
+    margin-right: 2vw;
 }
 
 .pageButton {
@@ -10,10 +10,11 @@
     border-radius: 2px;
     width: 15vw;
     height: 3rem;
-    background-color: #f9b98c;
-    box-shadow: 3px 5px 5px rgb(198, 196, 196);
+    background-color: white;
+    box-shadow: 2px 2px 10px rgb(219, 218, 218);
+    font-family: "Open Sans Regular";
     align-self: center;
-    font-size: large;
+    font-size: 22px;
     justify-content: center;
     align-items: center;
     display: flex;
