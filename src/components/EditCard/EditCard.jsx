@@ -45,26 +45,33 @@ export default function EditCard() {
     let [AIFile, setAIFile] = useState([]);
     let [categoriesInput, setCategoriesInput] = useState([]);
       
-    const handVariationNameChange = (newName) => {
+    const handleVariationNameChange = (newName) => {
       dispatch({
         type: "VARIATION_NAME_CHANGE",
         payload: newName
       })
     }
 
-    const handVariationUpcChange = (newName) => {
+    const handleVariationUPCChange = (newUPC) => {
       dispatch({
         type: "VARIATION_NAME_CHANGE",
-        payload: newName
+        payload: newUPC
       })
     }
 
-    // const handVariationNameChange = (newName) => {
-    //   dispatch({
-    //     type: "VARIATION_NAME_CHANGE",
-    //     payload: newName
-    //   })
-    // }
+    const handleVariationDescriptionChange = (newDescription) => {
+      dispatch({
+        type: "VARIATION_DESCRIPTION_CHANGE",
+        payload: newDescription
+      })
+    }
+
+    const handleVariationVendorStyleChange = (newVendorStyle) => {
+      dispatch({
+        type: "VARIATION_VENDOR_STYLE_CHANGE",
+        payload: newVendorStyle
+      })
+    }
 
     /**
      * Get  the user selected category ids
@@ -187,29 +194,27 @@ export default function EditCard() {
                 value={selectedCard.name || ""}
                 fullWidth
                 label="Variation Name"
-                onChange={(event) => handVariationNameChange(event.target.value)}
+                onChange={(event) => handleVariationNameChange(event.target.value)}
                 id="variation"
               />
             </Grid>
             <Grid item sx={{ p: 2 }} xs={12} md={6} lg={4}>
               <TextField
-                value={UPCNumber}
+                value={selectedCard.upc || ""}
                 fullWidth
                 required
                 label="UPC Number"
-                placeholder="UPC Number"
-                onChange={() => setUPCNumber(event.target.value)}
+                onChange={() => handleVariationUPCChange(event.target.value)}
                 id="UPCNumber"
               />
             </Grid>
   
             <Grid item sx={{ p: 2 }} xs={12} md={6} lg={4}>
               <TextField
-                value={vendorStyle}
+                value={selectedCard.vendor_style || ""}
                 fullWidth
                 label="Vendor Style"
-                placeholder="Vendor Style"
-                onChange={() => setVendorStyle(event.target.value)}
+                onChange={() => handleVariationVendorStyleChange(event.target.value)}
                 id="vendorStyle"
               />
             </Grid>
