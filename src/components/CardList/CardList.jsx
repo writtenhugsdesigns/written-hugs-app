@@ -31,6 +31,7 @@ export default function CardList() {
 
   useEffect(() => {
     dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
+    dispatch({ type: "SAGA/FETCH_CATEGORIES" });
   }, []);
 
   // Style for MUI box in Modal

@@ -5,15 +5,15 @@ import axios from 'axios';
  * Send a get request to receive all cards and set the cards reducer
  */
 function* fetchAllCards() {
-    try {
-      const AllCards = yield axios.get('/api/cards');
-      yield put({
-        type: 'SET_CARDS',
-        payload: AllCards.data
-      });
-    } catch (error) {
-      console.log('fetchAllCards error:', error);
-    }
+  try {
+    const AllCards = yield axios.get('/api/cards');
+    yield put({
+      type: 'SET_CARDS',
+      payload: AllCards.data
+    });
+  } catch (error) {
+    console.log('fetchAllCards error:', error);
+  }
 }
 
 /**
@@ -36,22 +36,22 @@ function* fetchAllCardsByCategory() {
  * @param {*} action action.payload containing new card data is sent to the router
  */
 function* postCard(action) {
-    try {
-        const headers = {
-          'content-type' : 'multipart/form-data'
-        }
-        const response = yield axios({
-            method: 'POST',
-            url: '/api/cards',
-            headers: headers,
-            data: action.payload
-        })
-        
-        yield fetchAllCards()
+  try {
+    const headers = {
+      'content-type': 'multipart/form-data'
     }
-    catch (error) {
-        console.error('Card POST failed:', error)
-    }
+    const response = yield axios({
+      method: 'POST',
+      url: '/api/cards',
+      headers: headers,
+      data: action.payload
+    })
+
+    yield fetchAllCards()
+  }
+  catch (error) {
+    console.error('Card POST failed:', error)
+  }
 }
 
 /**
@@ -59,16 +59,16 @@ function* postCard(action) {
  * @param {*} action action.payload containing the card id is sent to the router
  */
 function* deleteCard(action) {
-    try {
-        const response = yield axios({
-            method: 'DELETE',
-            url: `/api/cards/${action.payload}`
-        })
-        yield fetchAllCards()
-    }
-    catch (error) {
-        console.error('Card DELETE failed:', error)
-    }
+  try {
+    const response = yield axios({
+      method: 'DELETE',
+      url: `/api/cards/${action.payload}`
+    })
+    yield fetchAllCards()
+  }
+  catch (error) {
+    console.error('Card DELETE failed:', error)
+  }
 }
 
 /**
@@ -76,17 +76,17 @@ function* deleteCard(action) {
  * @param {*} action action.payload contains data and an id property for the card to update
  */
 function* editCard(action) {
-    try {
-        const response = yield axios({
-            method: 'PUT',
-            url: `/api/cards/${action.payload.id}`,
-            data: action.payload.data
-        })
-        yield fetchAllCards()
-    }
-    catch (error) {
-        console.error('Card EDIT failed:', error)
-    }
+  try {
+    const response = yield axios({
+      method: 'PUT',
+      url: `/api/cards/${action.payload.id}`,
+      data: action.payload.data
+    })
+    yield fetchAllCards()
+  }
+  catch (error) {
+    console.error('Card EDIT failed:', error)
+  }
 }
 
 /**
@@ -106,7 +106,7 @@ function* fetchCard(action) {
   } catch (error) {
     console.log('error in fetchCard:', error);
   }
-    }
+}
 
 
 /** This saga function sends a get for all current folders in google drive
@@ -124,8 +124,44 @@ function* getCurrentFolders() {
   }
 }
 
+function* postCardCategory(action) {
+  try {
+    const response = yield axios({
+      method: "POST",
+      url: "/api/cards/newCategory",
+      data: action.payload,
+    });
+    yield put({
+      type: 'SAGA/FETCH_CARD',
+      payload: response.data.id
+    });
+    // yield fetchAllCards();
+  } catch (error) {
+    console.error("postCardCategory failed:", error);
+  }
+}
+
+function* postCardExistingCategory(action) {
+  try {
+    const response = yield axios({
+      method: "POST",
+      url: "/api/cards/existingCategory",
+      data: action.payload,
+    });
+    yield put({
+      type: 'SAGA/FETCH_CARD',
+      payload: response.data.id
+    });
+    // yield fetchAllCards();
+  } catch (error) {
+    console.error("postCardCategory failed:", error);
+  }
+}
+
 function* cardSaga() {
   yield takeLatest('SAGA/POST_CARD', postCard);
+  yield takeLatest('SAGA/POST_CARD_CATEGORY', postCardCategory);
+  yield takeLatest('SAGA/POST_CARD_EXISTING_CATEGORY', postCardExistingCategory);
   yield takeLatest('SAGA/FETCH_CARDS', fetchAllCards);
   yield takeLatest('SAGA/FETCH_CARDS_BY_CATEGORY', fetchAllCardsByCategory);
   yield takeLatest('SAGA/DELETE_CARD', deleteCard);
