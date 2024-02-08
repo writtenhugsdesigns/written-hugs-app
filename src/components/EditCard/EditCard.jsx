@@ -10,8 +10,13 @@ import {
   Typography,
   FormControl,
   Icon,
+  CardContent,
+  Card,
+  CardActions,
+  IconButton,
 } from "@mui/material";
 import Swal from "sweetalert2";
+import EditIcon from "@mui/icons-material/Edit";
 import MultipleSelect from "../MultiSelectCategories/MultiSelectCategories";
 import { useParams } from "react-router-dom/";
 
@@ -19,11 +24,12 @@ export default function EditCard() {
     const history = useHistory();
     const params = useParams();
     const dispatch = useDispatch();
-    const [newCategory, setNewCategory] = useState("");
+    const [newCategory, setNewCategory] = useState([]);
 
     const databaseCategories = useSelector((store) => store.categoriesReducer);
     const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
     const cardToEdit = useSelector((store) => store.cardsReducer.editCurrentCard);
+    const arrayOfCurrentCategories = cardToEdit.categories_array
 
     useEffect(() => {
       dispatch({
@@ -214,11 +220,11 @@ export default function EditCard() {
               />
             </Grid>
             <Grid item sx={{ p: 2 }} lg={4}>
-              <MultipleSelect
+              {/* <MultipleSelect
                 categories={databaseCategories.categories}
                 categoriesValue={cardToEdit.categories_array.category_id}
                 setCategories={setCategoriesInput}
-              />
+              /> */}
               {/* <Button onClick={createCategory}>
               <Typography variant='body2'>New Category</Typography>
               <AddCircleIcon/>
@@ -237,53 +243,76 @@ export default function EditCard() {
             </Grid>
   
             <Grid sx={{ p: 2 }} item xs={12} md={6} lg={3}>
+            <Card sx={{width: 200}}>
+                <CardContent>
               <div>
                 <Typography variant="overline">Barcode Image</Typography>
               </div>
-              <TextField
-                id="barcode"
-                name="Barcode Image"
-                type="file"
-                onChange={() => {
-                  setBarcode(event.target.files);
-                }}
-              />
+              <img src={`${selectedCard.barcode.display}`} />
+              </CardContent>
+              <CardActions>
+                <IconButton
+                  aria-label="Edit Photo"
+                  onClick={() => handlePicURLEditClick(event)}
+                >
+                  <EditIcon />
+                </IconButton>
+              </CardActions>
+              </Card>
             </Grid>
             <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+              <Card sx={{width: 200}}>
+                <CardContent>
               <div>
                 <Typography variant="overline">Front Image</Typography>
               </div>
-              <TextField
-                id="front"
-                type="file"
-                onChange={() => {
-                  setFront(event.target.files);
-                }}
-              />
+              <img src={`${selectedCard.front_img.display}`} />
+              </CardContent>
+              <CardActions>
+                <IconButton
+                  aria-label="Edit Photo"
+                  onClick={() => handlePicURLEditClick(event)}
+                >
+                  <EditIcon />
+                </IconButton>
+              </CardActions>
+              </Card>
             </Grid>
             <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+              <Card sx={{width: 200}}>
+                <CardContent>
               <div>
                 <Typography variant="overline">Inside Image</Typography>
               </div>
-              <TextField
-                id="insideInsertion"
-                type="file"
-                onChange={() => {
-                  setInsideInsertion(event.target.files);
-                }}
-              />
+              <img src={`${selectedCard.inner_img.display}`} />
+              </CardContent>
+              <CardActions>
+                <IconButton
+                  aria-label="Edit Photo"
+                  onClick={() => handlePicURLEditClick(event)}
+                >
+                  <EditIcon />
+                </IconButton>
+              </CardActions>
+              </Card>
             </Grid>
             <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
+            <Card sx={{width: 200}}>
+                <CardContent>
               <div>
                 <Typography variant="overline">Insert Image</Typography>
               </div>
-              <TextField
-                id="insert"
-                type="file"
-                onChange={() => {
-                  setInsert(event.target.files);
-                }}
-              />
+              <img src={`${selectedCard.insert_img.display}`} />
+              </CardContent>
+              <CardActions>
+                <IconButton
+                  aria-label="Edit Photo"
+                  onClick={() => handlePicURLEditClick(event)}
+                >
+                  <EditIcon />
+                </IconButton>
+              </CardActions>
+              </Card>
             </Grid>
             <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
               <div>
