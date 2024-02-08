@@ -20,7 +20,8 @@ export default function CreateCategoryForCard({ handleClose, card }) {
             }
         })
         setShowAlert(true);
-        setCategoryName('')
+        setCategoryName('');
+        handleClose();
     };
 
     return (

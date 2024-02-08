@@ -47,11 +47,11 @@ export default function ViewCard({ handleClose }) {
       >
         Back
       </Button>
-      <h1>{selectedCard.name}</h1>
-      <p>{selectedCard.description}</p>
+      <h1>{selectedCard && selectedCard.name}</h1>
+      <p>{selectedCard && selectedCard.description}</p>
       <p>
         Categories:
-        {selectedCard.categories_array.map((x) => {
+        {selectedCard && selectedCard.categories_array.map((x) => {
           return <span className="tag">{x.category_name}</span>;
         })}
         <Button onClick={handleOpenNewCategory}>
@@ -64,11 +64,11 @@ export default function ViewCard({ handleClose }) {
         </div>
         <div className="imgRight">
           <p>Inner Image:</p>
-          <img src={selectedCard.inner_img.display} />
+          <img src={selectedCard && selectedCard.inner_img.display} />
           <p>Insert Image:</p>
-          <img src={selectedCard.insert_img.display} />
+          <img src={selectedCard && selectedCard.insert_img.display} />
           <p>Sticker Image:</p>
-          <img src={selectedCard.sticker_jpeg.display} />
+          <img src={selectedCard && selectedCard.sticker_jpeg.display} />
         </div>
       </div>
       <div>
