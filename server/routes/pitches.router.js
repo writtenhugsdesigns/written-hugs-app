@@ -68,7 +68,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
           newInput[0] === undefined ||
           (newInput[0] &&
             newInput[newInputLength - 1].pitches_id !=
-            result.rows[i].pitches_id)
+              result.rows[i].pitches_id)
         ) {
           input = result.rows[i];
           newInput.push({
@@ -89,10 +89,10 @@ router.get("/", rejectUnauthenticated, (req, res) => {
                 upc: input.upc,
                 sku: input.sku,
                 barcode: input.barcode,
-                front_img: { raw: input.front_img, display: '' },
-                inner_img: { raw: input.inner_img, display: '' },
-                insert_img: { raw: input.insert_img, display: '' },
-                sticker_jpeg: { raw: input.sticker_jpeg, display: '' },
+                front_img: { raw: input.front_img, display: "" },
+                inner_img: { raw: input.inner_img, display: "" },
+                insert_img: { raw: input.insert_img, display: "" },
+                sticker_jpeg: { raw: input.sticker_jpeg, display: "" },
                 sticker_pdf: input.sticker_pdf,
                 categories_array: [
                   {
@@ -106,7 +106,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
         } else if (
           newInput[0] &&
           newInput[newInputLength - 1].cards[cardsLength - 1].card_id !=
-          result.rows[i].card_id
+            result.rows[i].card_id
         ) {
           input = result.rows[i];
           newInput[newInputLength - 1].cards.push({
@@ -117,10 +117,10 @@ router.get("/", rejectUnauthenticated, (req, res) => {
             upc: input.upc,
             sku: input.sku,
             barcode: input.barcode,
-            front_img: { raw: input.front_img, display: '' },
-            inner_img: { raw: input.inner_img, display: '' },
-            insert_img: { raw: input.insert_img, display: '' },
-            sticker_jpeg: { raw: input.sticker_jpeg, display: '' },
+            front_img: { raw: input.front_img, display: "" },
+            inner_img: { raw: input.inner_img, display: "" },
+            insert_img: { raw: input.insert_img, display: "" },
+            sticker_jpeg: { raw: input.sticker_jpeg, display: "" },
             sticker_pdf: input.sticker_pdf,
             categories_array: [
               {
@@ -136,13 +136,15 @@ router.get("/", rejectUnauthenticated, (req, res) => {
           ].category_id != result.rows[i].category_id
         ) {
           input = result.rows[i];
-          newInput[newInputLength - 1].cards[cardsLength - 1].categories_array.push({
+          newInput[newInputLength - 1].cards[
+            cardsLength - 1
+          ].categories_array.push({
             category_name: input.category_name,
             category_id: input.category_id,
           });
         }
       }
-      const thePitches = formatPitches(newInput)
+      const thePitches = formatPitches(newInput);
       res.send(thePitches);
     })
     .catch((err) => {
@@ -162,18 +164,23 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     .query(sqlText, [
       req.body.wholesaler_id,
       req.body.pitchDescription,
-      req.body.pitchName
+      req.body.pitchName,
     ])
     .then((result) => {
-      const pitch_id = result.rows[0].id
-      const cardsArray = req.body.newPitch
-      const insertPitchesCardsQuery = newPitchesCardsQuery(cardsArray, pitch_id);
+      const pitch_id = result.rows[0].id;
+      const cardsArray = req.body.newPitch;
+      const insertPitchesCardsQuery = newPitchesCardsQuery(
+        cardsArray,
+        pitch_id
+      );
       // SECOND QUERY ADDS categories FOR THAT NEW card
-      pool.query(insertPitchesCardsQuery)
-        .then(result => {
+      pool
+        .query(insertPitchesCardsQuery)
+        .then((result) => {
           //Now that both are done, send back success!
           res.sendStatus(201);
-        }).catch(err => {
+        })
+        .catch((err) => {
           // catch for second query
           console.log("Error in pitches_cards POST route,", err);
           res.sendStatus(500);
@@ -191,48 +198,55 @@ router.put("/:id", rejectUnauthenticated, (req, res) => {
   UPDATE "pitches"
   SET "wholesaler_id" = $1,
       "description" = $2,
-      "name" = $3
-  WHERE "id" = $4;`;
+      "name" = $3,
+      "is_current" = $4
+  WHERE "id" = $5;`;
 
   const sqlValues = [
     req.body.wholesaler_id,
     req.body.pitchDescription,
     req.body.pitchName,
+    req.body.is_current,
     req.params.id,
   ];
-  pool
-    .query(sqlText, sqlValues)
-    .then(result => {
-      const queryDeleteText = `
+  pool.query(sqlText, sqlValues).then((result) => {
+    const queryDeleteText = `
       DELETE FROM pitches_cards
         WHERE pitch_id=${req.params.id};
       `;
-      // second QUERY removes cards FOR THAT pitch
-      pool.query(queryDeleteText)
-        .then(result => {
-          const cardsArray = req.body.newPitch
-          const pitch_id = req.params.id
-          const insertEditPitchesCardsQuery = newPitchesCardsQuery(cardsArray, pitch_id);
-          // Third QUERY ADDS cards FOR THAT pitch
-          pool.query(insertEditPitchesCardsQuery)
-            .then(result => {
-              res.sendStatus(201);
-            }).catch(err => {
-              // catch for third query
-              console.log(err);
-              res.sendStatus(500)
-            })
-        }).catch(err => {
-          // catch for second query
-          console.log(err);
-          res.sendStatus(500)
-        })
-        .catch((err) => {
-          // catch for second query
-          console.log("Error in pitches PUT route,", err);
-          res.sendStatus(500);
-        });
-    });
+    // second QUERY removes cards FOR THAT pitch
+    pool
+      .query(queryDeleteText)
+      .then((result) => {
+        const cardsArray = req.body.newPitch;
+        const pitch_id = req.params.id;
+        const insertEditPitchesCardsQuery = newPitchesCardsQuery(
+          cardsArray,
+          pitch_id
+        );
+        // Third QUERY ADDS cards FOR THAT pitch
+        pool
+          .query(insertEditPitchesCardsQuery)
+          .then((result) => {
+            res.sendStatus(201);
+          })
+          .catch((err) => {
+            // catch for third query
+            console.log(err);
+            res.sendStatus(500);
+          });
+      })
+      .catch((err) => {
+        // catch for second query
+        console.log(err);
+        res.sendStatus(500);
+      })
+      .catch((err) => {
+        // catch for second query
+        console.log("Error in pitches PUT route,", err);
+        res.sendStatus(500);
+      });
+  });
 });
 
 router.delete("/:id", rejectUnauthenticated, async (req, res) => {
@@ -271,37 +285,45 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
 function formatPitches(pitches) {
   for (let i = 0; i < pitches.length; i++) {
     for (let j = 0; j < pitches[i].cards.length; j++) {
-      pitches[i].cards[j].front_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].front_img.raw}`;
-      pitches[i].cards[j].inner_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].inner_img.raw}`;
-      pitches[i].cards[j].insert_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].insert_img.raw}`;
-      pitches[i].cards[j].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].sticker_jpeg.raw}`;
+      pitches[i].cards[
+        j
+      ].front_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].front_img.raw}`;
+      pitches[i].cards[
+        j
+      ].inner_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].inner_img.raw}`;
+      pitches[i].cards[
+        j
+      ].insert_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].insert_img.raw}`;
+      pitches[i].cards[
+        j
+      ].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].sticker_jpeg.raw}`;
     }
   }
-  return pitches
+  return pitches;
 }
 
-/**  
-* this function takes in an array of cards 
-* it's goal is to create a query to insert multiple rows in the pitches_cards table
-* since a single pitch could have multiple cards
-* */
+/**
+ * this function takes in an array of cards
+ * it's goal is to create a query to insert multiple rows in the pitches_cards table
+ * since a single pitch could have multiple cards
+ * */
 function newPitchesCardsQuery(cardsArray, pitch_id) {
   let pitchesCardsQuery = `
   INSERT INTO "pitches_cards"
   ("pitch_id", "card_id", "ordered")
   VALUES
-  `
+  `;
   for (let i = 0; i < cardsArray.length; i++) {
     // adds the appropriate ids
     if (i < cardsArray.length - 1) {
       pitchesCardsQuery += `
       (${pitch_id}, ${cardsArray[i].card_id}, false),
-    `
+    `;
       // adds the appropriate ids and a semi colon
     } else if (i === cardsArray.length - 1) {
       pitchesCardsQuery += `
       (${pitch_id}, ${cardsArray[i].card_id}, false);
-      `
+      `;
     }
   }
   return pitchesCardsQuery;

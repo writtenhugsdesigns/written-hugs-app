@@ -27,6 +27,7 @@ export default function EditPitch() {
     currentPitch.description
   );
   const [wholesalerID, setWholesalerID] = useState(currentPitch.wholesaler_id);
+  const [is_current, setIs_current] = useState(currentPitch.is_current);
 
   useEffect(() => {
     dispatch({ type: "SAGA/FETCH_PITCHES" });
@@ -47,19 +48,30 @@ export default function EditPitch() {
   }
 
   const savePitch = () => {
-    console.log("Save our souls!", selectedPitch);
     dispatch({
       type: "SAGA/EDIT_PITCH",
       payload: {
         id: id,
         data: {
-          wholesaler_id: wholesalerID,
-          pitchDescription: pitchDescription,
-          pitchName: pitchName,
+          wholesaler_id: wholesalerID || selectedPitch[0].wholesaler_id,
+          pitchDescription: pitchDescription || selectedPitch[0].description,
+          pitchName: pitchName || selectedPitch[0].name,
+          is_current: is_current || selectedPitch[0].is_current,
           newPitch: pitchCards,
         },
       },
     });
+    history.push("/pitches");
+  };
+
+  const setCurrent = () => {
+    if (typeof is_current === "undefined") {
+      setIs_current(!selectedPitch[0].is_current);
+    } else if (is_current === false) {
+      setIs_current(true);
+    } else {
+      setIs_current(false);
+    }
   };
 
   const displayFunction = (display, defaultDisplay) => {
@@ -120,7 +132,14 @@ export default function EditPitch() {
             })}
           </select>
         </p>
-        <button className="pageButton">Set Current</button>
+        <button className="pageButton" onClick={setCurrent}>
+          Is Current:{" "}
+          {(is_current == true && "true") ||
+            (is_current == false && "false") ||
+            (selectedPitch[0] &&
+              ((selectedPitch[0].is_current == true && "true") ||
+                (selectedPitch[0].is_current == false && "false")))}
+        </button>
       </div>
       {cardsByCategory.map((x, i) => {
         return <EditPitchCategory key={i} categoryContents={x} />;
