@@ -83,7 +83,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
             cards: [
               {
                 card_id: input.card_id,
-                card_name: input.card_name,
+                name: input.card_name,
                 vendor_style: input.vendor_style,
                 description: input.cards_description,
                 upc: input.upc,
@@ -111,7 +111,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
           input = result.rows[i];
           newInput[newInputLength - 1].cards.push({
             card_id: input.card_id,
-            card_name: input.card_name,
+            name: input.card_name,
             vendor_style: input.vendor_style,
             description: input.cards_description,
             upc: input.upc,

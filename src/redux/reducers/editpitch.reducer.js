@@ -21,7 +21,7 @@ const editPitch = (state = [], action) => {
     } else if (action.type === 'REMOVE_CARD_FROM_EDIT') {
       console.log("jo")
       return state.filter((card) => {
-            return card.id !== action.payload.card_id;
+            return card.card_id !== action.payload.card_id;
         })
     } else if(action.type === 'ADD_CATEGORY_TO_EDIT'){
         const cards = action.payload.filter((card) => {

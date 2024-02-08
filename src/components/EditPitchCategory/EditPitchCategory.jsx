@@ -27,7 +27,7 @@ export default function PitchCategory({categoryContents}){
      */
     const isInCart = (card) => {
         for(let object of edit){
-            if(object.id == card.card_id){
+            if(object.card_id == card.card_id){
                 return true;
             }
         }
