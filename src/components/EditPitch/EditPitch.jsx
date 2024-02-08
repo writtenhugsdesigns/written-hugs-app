@@ -17,6 +17,7 @@ export default function EditPitch() {
   const currentPitch = useSelector(
     (store) => store.editPitchReducer.selectedPitch
   );
+  const pitchCards = useSelector((store) => store.editPitchReducer.editPitch);
   const wholesalers = useSelector(
     (store) => store.wholesalersReducer.wholesalers
   );
@@ -47,6 +48,18 @@ export default function EditPitch() {
 
   const savePitch = () => {
     console.log("Save our souls!", selectedPitch);
+    dispatch({
+      type: "SAGA/EDIT_PITCH",
+      payload: {
+        id: id,
+        data: {
+          wholesaler_id: wholesalerID,
+          pitchDescription: pitchDescription,
+          pitchName: pitchName,
+          newPitch: pitchCards,
+        },
+      },
+    });
   };
 
   const displayFunction = (display, defaultDisplay) => {
