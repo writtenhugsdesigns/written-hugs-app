@@ -120,6 +120,11 @@ input {
   font-size: 17px;
 }
 
+select {
+  height: 2em;
+  font-family: "Open Sans Light";
+}
+
 @font-face {
   font-family: "Open Sans Light";
   src: url('/OpenSans-Light.ttf');
