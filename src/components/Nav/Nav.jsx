@@ -48,22 +48,22 @@ function Nav() {
       <List>
         <ListItem>
           <ListItemButton onClick = {() => history.push('/cards')}>
-            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Manage Cards'}/>
+            <ListItemText primaryTypographyProps={{fontSize: '20px', fontFamily: 'Open Sans Light'}} primary = {'Manage Cards'}/>
           </ListItemButton>
         </ListItem>
         <ListItem>
           <ListItemButton onClick = {() => history.push('/wholesalers')}>
-            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Manage Wholesalers'}/>
+            <ListItemText primaryTypographyProps={{fontSize: '20px', fontFamily: 'Open Sans Light'}} primary = {'Manage Wholesalers'}/>
           </ListItemButton>
         </ListItem>
         <ListItem>
           <ListItemButton onClick = {() => history.push('/pitches')}>
-            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Manage Pitches'}/>
+            <ListItemText primaryTypographyProps={{fontSize: '20px', fontFamily: 'Open Sans Light'}} primary = {'Manage Pitches'}/>
           </ListItemButton>
         </ListItem>
         <ListItem>
           <ListItemButton onClick={() => dispatch({ type: 'LOGOUT' })}>
-            <ListItemText primaryTypographyProps={{fontSize: '20px'}} primary = {'Logout'}/>
+            <ListItemText primaryTypographyProps={{fontSize: '20px', fontFamily: 'Open Sans Light'}} primary = {'Logout'}/>
           </ListItemButton>
         </ListItem>
       </List>
@@ -75,7 +75,7 @@ function Nav() {
     <div className="nav">
       <img className = 'nav-icon' src={'whd_icon.png'}/>
       <Link to="/home">
-        <h2 className="nav-title">Written Hugs</h2>
+        <h1 className="nav-title">Written Hugs</h1>
       </Link>
       
       {/* If a user is logged in, show the hamburger menu */}

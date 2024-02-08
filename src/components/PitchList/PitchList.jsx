@@ -9,11 +9,12 @@ import {
   TableRow,
   TableContainer,
   Modal,
-  Box,
+  Box
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import './PitchList.css';
 
 export default function PitchList() {
   const pitches = useSelector((store) => store.pitches.pitches);
@@ -213,8 +214,8 @@ export default function PitchList() {
 
   return (
     <div className="container">
-      <p>
-        Wholesaler:{" "}
+      <div className='flexbox'>
+        <h2>Wholesaler: {" "}</h2>
         <span>
           <select onChange={() => filterWholesalersByName(event.target.value)}>
             <option value="0">All</option>
@@ -228,13 +229,14 @@ export default function PitchList() {
               })}
           </select>
         </span>
-      </p>
+      </div>
+      <br/>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer>
           <Table stickyheader aria-label="sticky table">
             <TableHead>
-              <TableRow>
-                <TableCell style={{ maxWidth: "10vw" }} key={"wholesaler"}>
+              <TableRow sx={{backgroundColor: '#eeebe5'}}>
+                <TableCell style={{ maxWidth: "10vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"wholesaler"}>
                 {!wholesalerSort && (
                     <span onClick={sortPitchByWholesalerNameAsc}>Wholesaler ▽</span>
                   )}
@@ -242,7 +244,7 @@ export default function PitchList() {
                     <span onClick={sortPitchByWholesalerNameDesc}>Wholesaler △</span>
                   )}
                 </TableCell>
-                <TableCell style={{ maxWidth: "10vw" }} key={"date"}>
+                <TableCell style={{ maxWidth: "10vw", fontFamily: 'Open Sans Regular', fontSize: '18px'  }} key={"date"}>
                   {!dateSort && (
                     <span onClick={sortPitchByDateNewest}>Date ▽</span>
                   )}
@@ -250,7 +252,7 @@ export default function PitchList() {
                     <span onClick={sortPitchByDateOldest}>Date △</span>
                   )}
                 </TableCell>
-                <TableCell style={{ maxWidth: "10vw" }} key={"description"}>
+                <TableCell style={{ maxWidth: "10vw", fontFamily: 'Open Sans Regular', fontSize: '18px'  }} key={"description"}>
                   Description
                 </TableCell>
                 <TableCell></TableCell>
@@ -259,11 +261,11 @@ export default function PitchList() {
             <TableBody>
               {(renderList || pitches).map((pitchRow) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={pitchRow.id}>
-                  <TableCell>{pitchRow.wholesaler_company_name}</TableCell>
-                  <TableCell>
+                  <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{pitchRow.wholesaler_company_name}</TableCell>
+                  <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>
                     {new Date(Date.parse(pitchRow.date)).toLocaleDateString()}
                   </TableCell>
-                  <TableCell>{pitchRow.description}</TableCell>
+                  <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{pitchRow.description}</TableCell>
                   <TableCell>
                     <Button
                       onClick={() => viewPitch(pitchRow.pitches_id)}

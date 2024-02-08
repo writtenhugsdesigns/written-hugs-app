@@ -67,7 +67,9 @@ export default function PitchCard({ card, isInCart }) {
         alignItems: "center",
       }}
       >
+
         {isInCart(card) && <Alert>Added!</Alert>}
+
         <CardMedia
           height="20em"
           onMouseOver={() => setIsHoveredID(card.card_id)}
@@ -85,6 +87,7 @@ export default function PitchCard({ card, isInCart }) {
             gutterBottom
             variant="h5"
             component="div"
+            fontFamily= 'Open Sans Light'
           >
             {card.name}
           </Typography>
@@ -92,6 +95,7 @@ export default function PitchCard({ card, isInCart }) {
             sx={{ overflowY: "auto", height: "4em" }}
             variant="body2"
             color="text.secondary"
+            fontFamily='Open Sans Light'
           >
             {card.description}
           </Typography>
