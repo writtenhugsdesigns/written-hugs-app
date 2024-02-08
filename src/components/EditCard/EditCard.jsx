@@ -19,11 +19,11 @@ export default function EditCard() {
     const history = useHistory();
     const params = useParams();
     const dispatch = useDispatch();
-    const newCardToSend = new FormData();
     const [newCategory, setNewCategory] = useState("");
 
     const databaseCategories = useSelector((store) => store.categoriesReducer);
-    const selectedCard = useSelector((store) => store.cardsReducer.editCurrentCard);
+    const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
+    const cardToEdit = useSelector((store) => store.cardsReducer.editCurrentCard);
 
     useEffect(() => {
       dispatch({
@@ -191,7 +191,7 @@ export default function EditCard() {
           <Grid container sx={{ border: 1 }}>
             <Grid item sx={{ p: 2 }} xs={12} md={6} lg={4}>
               <TextField
-                value={selectedCard.name || ""}
+                value={cardToEdit.name || ""}
                 fullWidth
                 label="Variation Name"
                 onChange={(event) => handleVariationNameChange(event.target.value)}
@@ -200,7 +200,7 @@ export default function EditCard() {
             </Grid>
             <Grid item sx={{ p: 2 }} xs={12} md={6} lg={4}>
               <TextField
-                value={selectedCard.upc || ""}
+                value={cardToEdit.upc || ""}
                 fullWidth
                 required
                 label="UPC Number"
@@ -211,7 +211,7 @@ export default function EditCard() {
   
             <Grid item sx={{ p: 2 }} xs={12} md={6} lg={4}>
               <TextField
-                value={selectedCard.vendor_style || ""}
+                value={cardToEdit.vendor_style || ""}
                 fullWidth
                 label="Vendor Style"
                 onChange={() => handleVariationVendorStyleChange(event.target.value)}
@@ -231,13 +231,12 @@ export default function EditCard() {
             </Grid>
             <Grid item sx={{ p: 2 }} lg={8}>
               <TextField
-                value={description}
+                value={cardToEdit.description || ""}
                 multiline
                 fullWidth
                 minRows={4}
                 label="Card Varient Description"
-                placeholder="Card Varient Description"
-                onChange={() => setDescription(event.target.value)}
+                onChange={() => handleVariationDescriptionChange(event.target.value)}
                 id="description"
               />
             </Grid>
