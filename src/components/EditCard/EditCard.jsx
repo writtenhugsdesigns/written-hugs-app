@@ -32,11 +32,6 @@ export default function EditCard() {
       });
     }, [])
 
-    let [variationName, setVariationName] = useState(null);
-    let [UPCNumber, setUPCNumber] = useState("");
-    let [vendorStyle, setVendorStyle] = useState(null);
-    let [description, setDescription] = useState(null);
-    let [barcode, setBarcode] = useState([]);
     let [front, setFront] = useState([]);
     let [insideInsertion, setInsideInsertion] = useState([]);
     let [insert, setInsert] = useState([]);
@@ -221,7 +216,7 @@ export default function EditCard() {
             <Grid item sx={{ p: 2 }} lg={4}>
               <MultipleSelect
                 categories={databaseCategories.categories}
-                categoriesValue={categoriesInput}
+                categoriesValue={cardToEdit.categories_array.category_id}
                 setCategories={setCategoriesInput}
               />
               {/* <Button onClick={createCategory}>
