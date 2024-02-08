@@ -185,6 +185,26 @@ router.post("/newCategory", (req, res) => {
     });
 });
 
+router.post("/existingCategory", (req, res) => {
+  const sqlText = `
+  INSERT INTO "cards_categories"
+  ("card_id", "category_id")
+  VALUES
+  ($1, $2)`;
+  const sqlValues = [req.body.card.card_id, req.body.category.id];
+  pool
+    .query(sqlText, sqlValues)
+    .then((result) => {
+      // Now that's done, send back card to be fetched!
+      res.send({ id: req.body.card.card_id });
+    })
+    .catch((err) => {
+      console.log("problem posting existing category to existing card", err);
+      res.sendStatus(500);
+    });
+});
+
+
 /**
  * This post router takes in a new card formdata object.  It then passes it through multer.
  * The function does a few things:

@@ -139,9 +139,27 @@ function* postCardCategory(action) {
   }
 }
 
+function* postCardExistingCategory(action) {
+  try {
+    const response = yield axios({
+      method: "POST",
+      url: "/api/cards/existingCategory",
+      data: action.payload,
+    });
+    yield put({
+      type: 'SAGA/FETCH_CARD',
+      payload: response.data.id
+    });
+    // yield fetchAllCards();
+  } catch (error) {
+    console.error("postCardCategory failed:", error);
+  }
+}
+
 function* cardSaga() {
   yield takeLatest('SAGA/POST_CARD', postCard);
   yield takeLatest('SAGA/POST_CARD_CATEGORY', postCardCategory);
+  yield takeLatest('SAGA/POST_CARD_EXISTING_CATEGORY', postCardExistingCategory);
   yield takeLatest('SAGA/FETCH_CARDS', fetchAllCards);
   yield takeLatest('SAGA/FETCH_CARDS_BY_CATEGORY', fetchAllCardsByCategory);
   yield takeLatest('SAGA/DELETE_CARD', deleteCard);

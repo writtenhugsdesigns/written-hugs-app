@@ -4,7 +4,7 @@ import { Button,  Box,
   Modal,} from "@mui/material";
 import { ArrowBackIos, AddCircleOutline, } from "@mui/icons-material";
 import "./ViewCard.css";
-import CreateCategoryForCard from "../CreateCategory/CreateCategoryForCard";
+import CreateCategoryForCardView from "../CreateCategory/CreateCategoryForCardView";
 
 export default function ViewCard({ handleClose }) {
   const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
@@ -91,7 +91,7 @@ export default function ViewCard({ handleClose }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <CreateCategoryForCard card={selectedCard} handleClose={handleCloseNewCategory} />
+          <CreateCategoryForCardView card={selectedCard} handleClose={handleCloseNewCategory} />
         </Box>
       </Modal>
     </div>
