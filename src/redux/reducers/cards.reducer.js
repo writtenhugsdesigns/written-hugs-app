@@ -18,6 +18,23 @@ const cardsListByCategory = (state = [], action) => {
   }
 };
 
+const editCurrentCard = (state={}, action) => {
+  switch (action.type) {
+    case 'SET_CURRENT_CARD_TO_EDIT':
+      return action.payload;
+    case 'VARIATION_NAME_CHANGE':
+      return {...state, name: action.payload}
+    case 'VARIATION_UPC_CHANGE':
+      return {...state, upc: action.payload}
+    case 'VARIATION_DESCRIPTION_CHANGE':
+      return {...state, description: action.payload}
+    case 'VARIATION_VENDOR_STYLE_CHANGE':
+      return {...state, upc: action.payload}
+    default :
+      return state;
+  }
+}
+
 const selectedCard = (state = {}, action) => {
   if (action.type === 'SET_CARD') {
     console.log("this is the card to be added in reducer:", action.payload);
@@ -43,5 +60,6 @@ export default combineReducers({
     cardsList,
     cardsListByCategory,
     selectedCard,
-    currentFolders
+    currentFolders,
+    editCurrentCard
 });

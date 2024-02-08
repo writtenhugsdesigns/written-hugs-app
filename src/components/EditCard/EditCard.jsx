@@ -11,8 +11,6 @@ import {
   FormControl,
   Icon,
 } from "@mui/material";
-import { green } from "@mui/material/colors";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Swal from "sweetalert2";
 import MultipleSelect from "../MultiSelectCategories/MultiSelectCategories";
 import { useParams } from "react-router-dom/";
@@ -25,9 +23,15 @@ export default function EditCard() {
     const [newCategory, setNewCategory] = useState("");
 
     const databaseCategories = useSelector((store) => store.categoriesReducer);
-    const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
-    // console.log("this is the current selected card object:", selectedCard);
-  
+    const selectedCard = useSelector((store) => store.cardsReducer.editCurrentCard);
+
+    useEffect(() => {
+      dispatch({
+        type: "SET_CURRENT_CARD_TO_EDIT",
+        payload: selectedCard
+      });
+    }, [])
+
     let [variationName, setVariationName] = useState(null);
     let [UPCNumber, setUPCNumber] = useState("");
     let [vendorStyle, setVendorStyle] = useState(null);
@@ -40,8 +44,28 @@ export default function EditCard() {
     let [TIFFFile, setTIFFFile] = useState([]);
     let [AIFile, setAIFile] = useState([]);
     let [categoriesInput, setCategoriesInput] = useState([]);
-  
-    const folderName = vendorStyle + " " + variationName;
+      
+    const handVariationNameChange = (newName) => {
+      dispatch({
+        type: "VARIATION_NAME_CHANGE",
+        payload: newName
+      })
+    }
+
+    const handVariationUpcChange = (newName) => {
+      dispatch({
+        type: "VARIATION_NAME_CHANGE",
+        payload: newName
+      })
+    }
+
+    // const handVariationNameChange = (newName) => {
+    //   dispatch({
+    //     type: "VARIATION_NAME_CHANGE",
+    //     payload: newName
+    //   })
+    // }
+
     /**
      * Get  the user selected category ids
      * @returns an array of the ids of the checked categories
@@ -60,44 +84,44 @@ export default function EditCard() {
     // User hits submit button, checks if the variant name matches current folders in google drive,
     //POSTs a new card, redirects back to /cards
     const handleSubmit = (e) => {
-      e.preventDefault();
-      const sameName = currentFoldersArray.find(
-        (index) => index.name === folderName
-      );
+    //   e.preventDefault();
+    //   const sameName = currentFoldersArray.find(
+    //     (index) => index.name === folderName
+    //   );
   
-      if (sameName) {
-        Swal.fire("This card variant already exists. Choose a different name.");
-      } else {
-        newCardToSend.append("front_img", front[0]);
-        newCardToSend.append("front_tiff", TIFFFile[0]);
-        newCardToSend.append("inner_img", insideInsertion[0]);
-        newCardToSend.append("insert_img", insert[0]);
-        newCardToSend.append("sticker_jpeg", sticker[0]);
-        newCardToSend.append("barcode", barcode[0]);
-        newCardToSend.append("insert_ai", AIFile[0]);
-        newCardToSend.append("upc", UPCNumber);
-        newCardToSend.append("vendor_style", vendorStyle);
-        newCardToSend.append("name", variationName);
-        newCardToSend.append("description", description);
-        newCardToSend.append("categoriesArray", categoriesInput);
-        dispatch({
-          type: "SAGA/POST_CARD",
-          payload: newCardToSend,
-        });
-        console.log("categories array:", categoriesInput);
-        // Do the dispatch
-        history.push("/cards");
-      }
-      // Clear fields
-      handleClear(e);
-    };
+    //   if (sameName) {
+    //     Swal.fire("This card variant already exists. Choose a different name.");
+    //   } else {
+    //     newCardToSend.append("front_img", front[0]);
+    //     newCardToSend.append("front_tiff", TIFFFile[0]);
+    //     newCardToSend.append("inner_img", insideInsertion[0]);
+    //     newCardToSend.append("insert_img", insert[0]);
+    //     newCardToSend.append("sticker_jpeg", sticker[0]);
+    //     newCardToSend.append("barcode", barcode[0]);
+    //     newCardToSend.append("insert_ai", AIFile[0]);
+    //     newCardToSend.append("upc", UPCNumber);
+    //     newCardToSend.append("vendor_style", vendorStyle);
+    //     newCardToSend.append("name", variationName);
+    //     newCardToSend.append("description", description);
+    //     newCardToSend.append("categoriesArray", categoriesInput);
+    //     dispatch({
+    //       type: "SAGA/POST_CARD",
+    //       payload: newCardToSend,
+    //     });
+    //     console.log("categories array:", categoriesInput);
+    //     // Do the dispatch
+    //     history.push("/cards");
+    //   }
+    //   // Clear fields
+    //   handleClear(e);
+    // };
   
-    // Clears form inputs when user hits the clear button
-    const handleClear = (e) => {
-      e.preventDefault();
-      setVariationName(null);
-      setUPCNumber(null);
-      setVendorStyle(null);
+    // // Clears form inputs when user hits the clear button
+    // const handleClear = (e) => {
+    //   e.preventDefault();
+    //   setVariationName(null);
+    //   setUPCNumber(null);
+    //   setVendorStyle(null);
     };
   
     //This function verifies a users desire to leave the page, and lose information
@@ -160,11 +184,10 @@ export default function EditCard() {
           <Grid container sx={{ border: 1 }}>
             <Grid item sx={{ p: 2 }} xs={12} md={6} lg={4}>
               <TextField
-                value={variationName}
+                value={selectedCard.name || ""}
                 fullWidth
                 label="Variation Name"
-                placeholder="Variation Name"
-                onChange={() => setVariationName(event.target.value)}
+                onChange={(event) => handVariationNameChange(event.target.value)}
                 id="variation"
               />
             </Grid>
