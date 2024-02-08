@@ -61,7 +61,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
         if (newInputLength > 0) {
           cardsLength = newInput[newInputLength - 1].cards.length;
           categoriesLength =
-            newInput[newInputLength - 1].cards[cardsLength - 1].categories
+            newInput[newInputLength - 1].cards[cardsLength - 1].categories_array
               .length;
         }
         if (
@@ -82,7 +82,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
             description: input.description,
             cards: [
               {
-                id: input.card_id,
+                card_id: input.card_id,
                 card_name: input.card_name,
                 vendor_style: input.vendor_style,
                 description: input.cards_description,
@@ -94,7 +94,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
                 insert_img: { raw: input.insert_img, display: '' },
                 sticker_jpeg: { raw: input.sticker_jpeg, display: '' },
                 sticker_pdf: input.sticker_pdf,
-                categories: [
+                categories_array: [
                   {
                     category_name: input.category_name,
                     category_id: input.category_id,
@@ -105,12 +105,12 @@ router.get("/", rejectUnauthenticated, (req, res) => {
           });
         } else if (
           newInput[0] &&
-          newInput[newInputLength - 1].cards[cardsLength - 1].id !=
+          newInput[newInputLength - 1].cards[cardsLength - 1].card_id !=
           result.rows[i].card_id
         ) {
           input = result.rows[i];
           newInput[newInputLength - 1].cards.push({
-            id: input.card_id,
+            card_id: input.card_id,
             card_name: input.card_name,
             vendor_style: input.vendor_style,
             description: input.cards_description,
@@ -122,7 +122,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
             insert_img: { raw: input.insert_img, display: '' },
             sticker_jpeg: { raw: input.sticker_jpeg, display: '' },
             sticker_pdf: input.sticker_pdf,
-            categories: [
+            categories_array: [
               {
                 category_name: input.category_name,
                 category_id: input.category_id,
@@ -131,12 +131,12 @@ router.get("/", rejectUnauthenticated, (req, res) => {
           });
         } else if (
           newInput[0] &&
-          newInput[newInputLength - 1].cards[cardsLength - 1].categories[
+          newInput[newInputLength - 1].cards[cardsLength - 1].categories_array[
             categoriesLength - 1
           ].category_id != result.rows[i].category_id
         ) {
           input = result.rows[i];
-          newInput[newInputLength - 1].cards[cardsLength - 1].categories.push({
+          newInput[newInputLength - 1].cards[cardsLength - 1].categories_array.push({
             category_name: input.category_name,
             category_id: input.category_id,
           });

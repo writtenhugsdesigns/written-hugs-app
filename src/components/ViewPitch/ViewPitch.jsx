@@ -137,7 +137,7 @@ export default function ViewPitch() {
                       <img src={card.sticker_jpeg.display} />
                     </TableCell>
                     <TableCell>
-                      {card.categories.map((category) => {
+                      {card.categories_array.map((category) => {
                         return <p>{category.category_name}</p>;
                       })}
                     </TableCell>
