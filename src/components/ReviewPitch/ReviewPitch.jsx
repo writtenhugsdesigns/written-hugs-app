@@ -77,7 +77,7 @@ export default function ReviewPitch() {
                     return <option key={wholesaler.id} value={wholesaler.id}>{wholesaler.company_name}</option>
                 })}
             </select>
-            <button onClick={() => history.push("/")}>Back</button>
+            <button onClick={() => history.goBack()}>Back</button>
             <button onClick={handleCreate}>Create</button>
             {/* MUI table within an MUI paper component */}
             <Paper sx={{ width: "100%", overflow: "hidden" }}>

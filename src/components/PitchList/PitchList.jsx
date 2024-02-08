@@ -267,7 +267,7 @@ export default function PitchList() {
                   <TableCell>
                     <Button
                       onClick={() => viewPitch(pitchRow.pitches_id)}
-                      variant="outlined"
+                      variant="contained"
                     >
                       View
                     </Button>
