@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
     Button,
     Paper,
@@ -9,9 +9,6 @@ import {
     TableRow,
     TableContainer,
     Alert,
-    TablePagination,
-    Modal,
-    Box,
 } from "@mui/material";
 import { ArrowBackIos } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,11 +18,6 @@ export default function CreateCategoryForCard({ handleClose, card }) {
     let [categoryName, setCategoryName] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     dispatch({ type: "SAGA/FETCH_CATEGORIES" });
-    // }, []);
-
 
     // User hits submit button, POSTs a new category, closes modal
     async function handleSubmit(e) {
