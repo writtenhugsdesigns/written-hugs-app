@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -37,7 +37,7 @@
     "sweetalert2": "^11.10.5"
   },
   "scripts": {
-    "start": "node server/server.js | vite",
+    "start": "node server/server.js",
     "client": "vite",
     "server": "nodemon --watch server server/server.js",
     "build": "vite build",
