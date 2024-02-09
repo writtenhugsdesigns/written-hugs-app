@@ -7,7 +7,7 @@ export default function EditFile() {
     <CardActions>
       <IconButton
         aria-label="Edit Photo"
-        onClick={() => updateFileOnClick(event)}
+        onClick={(e) => updateFileOnClick(e)}
       >
         <EditIcon />
       </IconButton>
