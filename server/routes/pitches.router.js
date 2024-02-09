@@ -7,6 +7,10 @@ const pool = require("../modules/pool");
 const router = express.Router();
 
 router.get("/", rejectUnauthenticated, (req, res) => {
+  // This sql text gets us our information sorted by:
+  // Pitch id, then card id, then category id.
+  // This is essential since it garentees our loop to sort it works
+  // each time.
   const sqlText = `
   SELECT
     pitches.id as pitches_id,
@@ -53,24 +57,40 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   pool
     .query(sqlText)
     .then((result) => {
+      // sets our new formatted array to send back to our server. Starts at blank
       let newInput = [];
+
+      // Loops through our result.rows to begin the process of sorting our informaiton
       for (i = 0; i < result.rows.length; i++) {
+        // setting lengths of all of the parts of our result so we can easily
+        // find their lengths.
         let newInputLength = newInput.length;
         let cardsLength;
         let categoriesLength;
+
+        // only really setting the cards and categories lengths if newInput has content.
         if (newInputLength > 0) {
           cardsLength = newInput[newInputLength - 1].cards.length;
           categoriesLength =
             newInput[newInputLength - 1].cards[cardsLength - 1].categories_array
               .length;
         }
+
+        // If our first input is nonexistent, or if we have a new pitches_id
+        // (aka if the pitches_id != pitches_id)
+        // we need to add a new pitch to our newInput return.
         if (
           newInput[0] === undefined ||
           (newInput[0] &&
             newInput[newInputLength - 1].pitches_id !=
               result.rows[i].pitches_id)
         ) {
+          // Input gets our index in result.rows so we don't have to type it out
+          // every time
           input = result.rows[i];
+
+          // Because we have a completely new pitch, we can also fill in the other
+          // info which comes with it, such as its card and its first category.
           newInput.push({
             pitches_id: input.pitches_id,
             wholesaler_id: input.wholesaler_id,
@@ -89,10 +109,22 @@ router.get("/", rejectUnauthenticated, (req, res) => {
                 upc: input.upc,
                 sku: input.sku,
                 barcode: input.barcode,
-                front_img: { raw: input.front_img, display: "" },
-                inner_img: { raw: input.inner_img, display: "" },
-                insert_img: { raw: input.insert_img, display: "" },
-                sticker_jpeg: { raw: input.sticker_jpeg, display: "" },
+                front_img: {
+                  raw: input.front_img,
+                  display: `https://drive.google.com/thumbnail?id=${input.front_img}`,
+                },
+                inner_img: {
+                  raw: input.inner_img,
+                  display: `https://drive.google.com/thumbnail?id=${input.inner_img}`,
+                },
+                insert_img: {
+                  raw: input.insert_img,
+                  display: `https://drive.google.com/thumbnail?id=${input.insert_img}`,
+                },
+                sticker_jpeg: {
+                  raw: input.sticker_jpeg,
+                  display: `https://drive.google.com/thumbnail?id=${input.sticker_jpeg}`,
+                },
                 sticker_pdf: input.sticker_pdf,
                 categories_array: [
                   {
@@ -103,12 +135,20 @@ router.get("/", rejectUnauthenticated, (req, res) => {
               },
             ],
           });
-        } else if (
+        }
+
+        // Now we ask if there is a new card to be added by first seeing if newInput
+        // exits, and then seeing if its latest card_id is the same as our card_id
+        // from the server. If it is not the same we need a new card.
+        else if (
           newInput[0] &&
           newInput[newInputLength - 1].cards[cardsLength - 1].card_id !=
             result.rows[i].card_id
         ) {
           input = result.rows[i];
+
+          // Puts our new row into our last input in newInput into their cards
+          // adds the first category into it as well, since the row includes it
           newInput[newInputLength - 1].cards.push({
             card_id: input.card_id,
             name: input.card_name,
@@ -117,10 +157,22 @@ router.get("/", rejectUnauthenticated, (req, res) => {
             upc: input.upc,
             sku: input.sku,
             barcode: input.barcode,
-            front_img: { raw: input.front_img, display: "" },
-            inner_img: { raw: input.inner_img, display: "" },
-            insert_img: { raw: input.insert_img, display: "" },
-            sticker_jpeg: { raw: input.sticker_jpeg, display: "" },
+            front_img: {
+              raw: input.front_img,
+              display: `https://drive.google.com/thumbnail?id=${input.front_img}`,
+            },
+            inner_img: {
+              raw: input.inner_img,
+              display: `https://drive.google.com/thumbnail?id=${input.inner_img}`,
+            },
+            insert_img: {
+              raw: input.insert_img,
+              display: `https://drive.google.com/thumbnail?id=${input.insert_img}`,
+            },
+            sticker_jpeg: {
+              raw: input.sticker_jpeg,
+              display: `https://drive.google.com/thumbnail?id=${input.sticker_jpeg}`,
+            },
             sticker_pdf: input.sticker_pdf,
             categories_array: [
               {
@@ -129,13 +181,21 @@ router.get("/", rejectUnauthenticated, (req, res) => {
               },
             ],
           });
-        } else if (
+        }
+
+        // last else checks to see if there needs to be a new category by seeing
+        // if the last input of category_id does not equal the result.rows current
+        // category_id. It then goes to add the new category into its row.
+        else if (
           newInput[0] &&
           newInput[newInputLength - 1].cards[cardsLength - 1].categories_array[
             categoriesLength - 1
           ].category_id != result.rows[i].category_id
         ) {
           input = result.rows[i];
+
+          // Pushes the new categories into its respective list. Doesn't need
+          // any more information for this else.
           newInput[newInputLength - 1].cards[
             cardsLength - 1
           ].categories_array.push({
@@ -144,8 +204,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
           });
         }
       }
-      const thePitches = formatPitches(newInput);
-      res.send(thePitches);
+      res.send(newInput);
     })
     .catch((err) => {
       console.log("Error in pitches GET router,", err);
@@ -153,100 +212,93 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.post("/", rejectUnauthenticated, (req, res) => {
-  const sqlText = `
-  INSERT INTO "pitches"
-    ("wholesaler_id", "is_current", "description", "name")
-  VALUES
-    ($1, true, $2, $3)
-    RETURNING "id";`;
-  pool
-    .query(sqlText, [
+router.post("/", rejectUnauthenticated, async (req, res) => {
+  let connection;
+  try {
+    const sqlText = `
+    INSERT INTO "pitches"
+      ("wholesaler_id", "is_current", "description", "name")
+    VALUES
+      ($1, true, $2, $3)
+      RETURNING "id";`;
+
+    connection = await pool.connect();
+    connection.query("BEGIN;");
+
+    const pitchesRes = await connection.query(sqlText, [
       req.body.wholesaler_id,
       req.body.pitchDescription,
       req.body.pitchName,
-    ])
-    .then((result) => {
-      const pitch_id = result.rows[0].id;
-      const cardsArray = req.body.newPitch;
-      const insertPitchesCardsQuery = newPitchesCardsQuery(
-        cardsArray,
-        pitch_id
-      );
-      // SECOND QUERY ADDS categories FOR THAT NEW card
-      pool
-        .query(insertPitchesCardsQuery)
-        .then((result) => {
-          //Now that both are done, send back success!
-          res.sendStatus(201);
-        })
-        .catch((err) => {
-          // catch for second query
-          console.log("Error in pitches_cards POST route,", err);
-          res.sendStatus(500);
-        })
-        .catch((err) => {
-          // catch for the first query
-          console.log("Error in pitches POST route,", err);
-          res.sendStatus(500);
-        });
-    });
+    ]);
+    const pitch_id = pitchesRes.rows[0].id;
+    const cardsArray = req.body.newPitch;
+    const insertPitchesCardsQuery = newPitchesCardsQuery(cardsArray, pitch_id);
+    const pitchesCardsRes = await connection.query(insertPitchesCardsQuery);
+
+    connection.query("COMMIT;");
+    connection.release();
+
+    res.sendStatus(201);
+  } catch (err) {
+    console.log("Error in pitches POST:", err);
+    connection.query("ROLLBACK;");
+    connection.release();
+    res.sendStatus(500);
+  }
 });
 
-router.put("/:id", rejectUnauthenticated, (req, res) => {
-  const sqlText = `
-  UPDATE "pitches"
-  SET "wholesaler_id" = $1,
-      "description" = $2,
-      "name" = $3,
-      "is_current" = $4
-  WHERE "id" = $5;`;
+router.put("/:id", rejectUnauthenticated, async (req, res) => {
+  let connection;
+  try {
+    const sqlText = `
+    UPDATE "pitches"
+    SET "wholesaler_id" = $1,
+        "description" = $2,
+        "name" = $3,
+        "is_current" = $4
+    WHERE "id" = $5;`;
 
-  const sqlValues = [
-    req.body.wholesaler_id,
-    req.body.pitchDescription,
-    req.body.pitchName,
-    req.body.is_current,
-    req.params.id,
-  ];
-  pool.query(sqlText, sqlValues).then((result) => {
+    const sqlValues = [
+      req.body.wholesaler_id,
+      req.body.pitchDescription,
+      req.body.pitchName,
+      req.body.is_current,
+      req.params.id,
+    ];
+
+    const cardsArray = req.body.newPitch;
+    const pitch_id = req.params.id;
+    const insertEditPitchesCardsQuery = newPitchesCardsQuery(
+      cardsArray,
+      pitch_id
+    );
+
     const queryDeleteText = `
       DELETE FROM pitches_cards
         WHERE pitch_id=${req.params.id};
       `;
+
+    connection = await pool.connect();
+    connection.query("BEGIN;");
+
+    const updatePitches = await connection.query(sqlText, sqlValues);
     // second QUERY removes cards FOR THAT pitch
-    pool
-      .query(queryDeleteText)
-      .then((result) => {
-        const cardsArray = req.body.newPitch;
-        const pitch_id = req.params.id;
-        const insertEditPitchesCardsQuery = newPitchesCardsQuery(
-          cardsArray,
-          pitch_id
-        );
-        // Third QUERY ADDS cards FOR THAT pitch
-        pool
-          .query(insertEditPitchesCardsQuery)
-          .then((result) => {
-            res.sendStatus(201);
-          })
-          .catch((err) => {
-            // catch for third query
-            console.log(err);
-            res.sendStatus(500);
-          });
-      })
-      .catch((err) => {
-        // catch for second query
-        console.log(err);
-        res.sendStatus(500);
-      })
-      .catch((err) => {
-        // catch for second query
-        console.log("Error in pitches PUT route,", err);
-        res.sendStatus(500);
-      });
-  });
+    const deletePitchesCards = await connection.query(queryDeleteText);
+    // Third QUERY ADDS cards FOR THAT pitch
+    const insertEditPitches = await connection.query(
+      insertEditPitchesCardsQuery
+    );
+
+    connection.query("COMMIT;");
+    connection.release();
+
+    res.sendStatus(201);
+  } catch (err) {
+    console.log("Error in pitches PUT:", err);
+    connection.query("ROLLBACK;");
+    connection.release();
+    res.sendStatus(500);
+  }
 });
 
 router.delete("/:id", rejectUnauthenticated, async (req, res) => {
@@ -281,26 +333,6 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     res.sendStatus(500);
   }
 });
-
-function formatPitches(pitches) {
-  for (let i = 0; i < pitches.length; i++) {
-    for (let j = 0; j < pitches[i].cards.length; j++) {
-      pitches[i].cards[
-        j
-      ].front_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].front_img.raw}`;
-      pitches[i].cards[
-        j
-      ].inner_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].inner_img.raw}`;
-      pitches[i].cards[
-        j
-      ].insert_img.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].insert_img.raw}`;
-      pitches[i].cards[
-        j
-      ].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${pitches[i].cards[j].sticker_jpeg.raw}`;
-    }
-  }
-  return pitches;
-}
 
 /**
  * this function takes in an array of cards
