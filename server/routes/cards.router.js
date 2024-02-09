@@ -279,8 +279,10 @@ router.post("/", uploadHandler.any(), async (req, res) => {
   };
   const { body, files } = req;
   for (let f = 0; f < files.length; f++) {
+    console.log('inside loop, number:', f);
     await uploadFile(files[f]);
   }
+  console.log('outside loop');
 
   //This setups the DB queryText and queryValues to send to DB
   const queryText = `
