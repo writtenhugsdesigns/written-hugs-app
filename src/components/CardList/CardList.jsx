@@ -11,7 +11,9 @@ import {
   TableRow,
   TableContainer,
   Box,
-  Modal, IconButton, Collapse, Typography,
+  Modal, 
+  IconButton, 
+  Collapse,
 } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -33,22 +35,36 @@ export default function CardList() {
     dispatch({ type: "SAGA/FETCH_CATEGORIES" });
   }, []);
 
-  const viewCard = (x) => {
+  /**
+   * When the user clicks the View button, opens the modal for the card, and dispatches to set the current card reducer
+   * @param {*} card object representing one card variation 
+   */
+  const viewCard = (card) => {
     handleOpen();
     dispatch({
       type: "SET_CARD",
-      payload: x,
+      payload: card,
     });
   };
 
-  const editCard = (x) => {
+  /**
+   * When the user clicks the Edit button, dispatch to set the current card reducer and redirect the user to the edit page
+   * corresponding to that specific card
+   * @param {*} card 
+   */
+  const editCard = (card) => {
     dispatch({
       type: "SET_CARD",
-      payload: x,
+      payload: card,
     });
-    history.push(`/editcard/${x.card_id}`)
+    history.push(`/editcard/${card.card_id}`)
   };
 
+  /**
+   * When a user clicks the delete button, displays a sweet alert to confirm deletion. Then, dispatches a delete request for that
+   * card
+   * @param {*} card 
+   */
   const deleteCard = (card) => {
     Swal.fire({
       title: `Are you sure you want to delete this card?`,
@@ -102,7 +118,7 @@ export default function CardList() {
                 <Table size="medium" aria-label="purchases">
                   
                   <TableHead>
-                    <TableRow sx={{fontFamily: 'Open Sans Regular'}}>
+                    <TableRow>
                       <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px'}}>Card Name</TableCell>
                       <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px'}}>Description</TableCell>
                       <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px'}}>Categories</TableCell>
@@ -144,10 +160,7 @@ export default function CardList() {
     );
   }
   
-  const rows = 
-    cardsByCategory.map((category) => {
-      return category
-    });
+  const rows = cardsByCategory.map((category) => {return category});
 
   return (
     <div className="container">

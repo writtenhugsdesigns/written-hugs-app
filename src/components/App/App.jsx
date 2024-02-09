@@ -17,7 +17,6 @@ import LoginPage from "../LoginPage/LoginPage";
 
 // Protected Routes
 import AdminHome from "../AdminHome/AdminHome";
-import InfoPage from "../InfoPage/InfoPage";
 import PitchPage from "../PitchPage/PitchPage";
 import CreatePitchPage from "../CreatePitchPage/CreatePitchPage";
 import ReviewPitch from "../ReviewPitch/ReviewPitch";
@@ -28,10 +27,10 @@ import CreateWholesaler from "../CreateWholesaler/CreateWholesaler";
 import CategoriesPage from "../CategoriesPage/CategoriesPage";
 import CreateCategory from "../CreateCategory/CreateCategory";
 import ViewPitch from "../ViewPitch/ViewPitch";
-
-import "./App.css";
 import EditPitch from "../EditPitch/EditPitch";
 import EditCard from "../EditCard/EditCard";
+
+import "./App.css";
 
 function App() {
   const dispatch = useDispatch();

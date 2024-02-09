@@ -36,3 +36,12 @@ export const largeModalStyle = {
     bgcolor: "background.paper",
     borderRadius: '5px'
 }
+
+export const fontStyle16 = {
+    fontFamily: 'Open Sans Regular', 
+    fontSize: '16px'
+}
+
+export const fontStyle15 = {
+
+}
