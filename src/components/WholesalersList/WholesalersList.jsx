@@ -79,7 +79,7 @@ export default function WholesalersList(){
                     <Table stickyheader aria-label='sticky table'>
                         <TableHead >
                             <TableRow sx={{backgroundColor: '#eeebe5'}}>
-                                <TableCell style={{minWidth: '50vw'}}key={'name'}>
+                                <TableCell style={{minWidth: '50vw', fontFamily: 'Open Sans Regular', fontSize: '18px'}} key={'name'}>
                                     Organization Name
                                 </TableCell>
                                 <TableCell></TableCell>
@@ -89,7 +89,7 @@ export default function WholesalersList(){
                         <TableBody>
                             {wholesalers && wholesalers.map((x) => (
                                 <TableRow hover role='checkbox' tabIndex={-1} key = {x.id}>
-                                    <TableCell>
+                                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>
                                         {x.company_name}
                                     </TableCell>
                                     <TableCell>

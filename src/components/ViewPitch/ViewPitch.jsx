@@ -75,7 +75,7 @@ export default function ViewPitch() {
           <div>
             <p>
               <CSVLink className="viewPitchGroup" data={getCards(selectedPitch[0])}>Download CSV</CSVLink>
-              <Button className="viewPitchGroup" variant={"outlined"} onClick={() => print("pitchTable", "html")}>Print To PDF</Button>
+              <Button className="viewPitchGroup" size='large' variant={"contained"} onClick={() => print("pitchTable", "html")}>Print To PDF</Button>
             </p>
           </div>
         </div>
@@ -83,34 +83,34 @@ export default function ViewPitch() {
           <h3>Description: {selectedPitch[0] && selectedPitch[0].description}</h3>
         </div>
         <TableContainer>
-          <Table id="pitchTable" stickyheader aria-label="sticky table">
+          <Table sx={{ width: '80%'}}id="pitchTable" stickyheader aria-label="sticky table">
             <TableHead>
               <TableRow sx={{backgroundColor: '#eeebe5'}}>
-                <TableCell style={{ minWidth: "5vw" }} key={"upc"}>
+                <TableCell style={{ minWidth: "5vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"upc"}>
                   UPC#
                 </TableCell>
-                <TableCell style={{ minWidth: "5vw" }} key={"barcode"}>
+                <TableCell style={{ minWidth: "5vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"barcode"}>
                   Barcode
                 </TableCell>
-                <TableCell style={{ minWidth: "8vw" }} key={"vendor_style"}>
+                <TableCell style={{ minWidth: "8vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"vendor_style"}>
                   Vendor Style
                 </TableCell>
-                <TableCell style={{ minWidth: "8vw" }} key={"name"}>
+                <TableCell style={{ minWidth: "8vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"name"}>
                   Variation Name
                 </TableCell>
-                <TableCell style={{ minWidth: "8vw" }} key={"front_img"}>
+                <TableCell style={{ minWidth: "8vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"front_img"}>
                   Front
                 </TableCell>
-                <TableCell style={{ minWidth: "8vw" }} key={"inner_img"}>
+                <TableCell style={{ minWidth: "8vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"inner_img"}>
                   Inside Inscription
                 </TableCell>
-                <TableCell style={{ minWidth: "8vw" }} key={"insert_img"}>
+                <TableCell style={{ minWidth: "8vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"insert_img"}>
                   Insert
                 </TableCell>
-                <TableCell style={{ minWidth: "8vw" }} key={"sticker_jpeg"}>
+                <TableCell style={{ minWidth: "8vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"sticker_jpeg"}>
                   Sticker
                 </TableCell>
-                <TableCell style={{ minWidth: "8vw" }} key={"categories"}>
+                <TableCell style={{ minWidth: "8vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"categories"}>
                   Categories
                 </TableCell>
               </TableRow>
@@ -120,10 +120,10 @@ export default function ViewPitch() {
                 selectedPitch[0].cards.map((card) => (
                   <TableRow>
 
-                    <TableCell>{card.upc}</TableCell>
-                    <TableCell>{card.barcode}</TableCell>
-                    <TableCell>{card.vendor_style}</TableCell>
-                    <TableCell>{card.name}</TableCell>
+                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.upc}</TableCell>
+                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.barcode}</TableCell>
+                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.vendor_style}</TableCell>
+                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.card_name}</TableCell>
                     <TableCell>
                       <img src={card.front_img.display} />
                     </TableCell>
@@ -136,7 +136,7 @@ export default function ViewPitch() {
                     <TableCell>
                       <img src={card.sticker_jpeg.display} />
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>
                       {card.categories_array.map((category) => {
                         return <p>{category.category_name}</p>;
                       })}
@@ -148,8 +148,8 @@ export default function ViewPitch() {
           </Table>
         </TableContainer>
       <div className="viewPitchButtons">
-        <Button onClick={editPitch}>Edit Pitch</Button>
-        <Button variant={"contained"} color={"error"} onClick={deletePitch}>Delete</Button>
+        <Button variant='outlined' size='large' onClick={editPitch}>Edit Pitch</Button>
+        <Button variant={"contained"} size='large' color={"error"} onClick={deletePitch}>Delete</Button>
       </div>
       </Paper>
     </div>

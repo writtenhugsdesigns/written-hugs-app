@@ -81,7 +81,7 @@ export default function CategoriesList() {
           <Table stickyheader aria-label="sticky table">
             <TableHead>
               <TableRow sx={{backgroundColor: '#eeebe5'}}>
-                <TableCell style={{ minWidth: "50vw" }} key={"name"}>
+                <TableCell style={{ minWidth: "50vw", fontFamily: "Open Sans Regular", fontSize: '18px' }} key={"name"}>
                   Category Name
                 </TableCell>
                 <TableCell></TableCell>
@@ -91,7 +91,7 @@ export default function CategoriesList() {
               {categories &&
                 categories.map((x) => (
                   <TableRow hover role="checkbox" tabIndex={-1} key={x.id}>
-                    <TableCell>{x.name}</TableCell>
+                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{x.name}</TableCell>
                     <TableCell>
                       <Button onClick = {() => editCategory(x)} variant="outlined">Edit</Button>
                       <span> </span>

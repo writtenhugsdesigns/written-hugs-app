@@ -22,7 +22,6 @@ export default function CreateCard() {
   const history = useHistory();
   const dispatch = useDispatch();
   const newCardToSend = new FormData();
-  const [newCategory, setNewCategory] = useState("");
 
   //This use effect triggers the saga "getCurrentFolders"
   //After this is triggered a useSelector will get the current folders array
@@ -50,6 +49,7 @@ export default function CreateCard() {
   let [insideInsertion, setInsideInsertion] = useState([]);
   let [insert, setInsert] = useState([]);
   let [sticker, setSticker] = useState([]);
+  let [stickerPdf, setStickerPdf] = useState([]);
   let [TIFFFile, setTIFFFile] = useState([]);
   let [AIFile, setAIFile] = useState([]);
   let [categoriesInput, setCategoriesInput] = useState([]);
@@ -130,14 +130,12 @@ export default function CreateCard() {
     });
   };
 
-  //Still under development, used to create a new category
+  // This function is used to create a new category
   const createCategory = () => {
-    const inputValue = "";
     Swal.fire({
       input: "text",
       inputLabel: "New Category Name",
       inputPlaceholder: "Type your cateory here",
-      inputValue,
       inputAttributes: {
         "aria-label": "Type your category here",
       },
@@ -145,7 +143,10 @@ export default function CreateCard() {
       confirmButtonText: "Submit",
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(inputValue);
+        dispatch({
+          type: 'SAGA/POST_CATEGORY',
+          payload: { name: result.value }
+        })
       }
     });
   };
@@ -164,10 +165,10 @@ export default function CreateCard() {
           </button>
         </Grid>
         <Grid item lg={3}>
-            <button className="pageButton" onClick={handleSubmit}>
-              Submit
-            </button>
-          </Grid>
+          <button className="pageButton" onClick={handleSubmit}>
+            Submit
+          </button>
+        </Grid>
       </Grid>
       <form>
         <Grid container sx={{ border: 1 }}>
@@ -209,10 +210,10 @@ export default function CreateCard() {
               categoriesValue={categoriesInput}
               setCategories={setCategoriesInput}
             />
-            {/* <Button onClick={createCategory}>
-            <Typography variant='body2'>New Category</Typography>
-            <AddCircleIcon/>
-            </Button> */}
+            <Button onClick={createCategory}>
+              <Typography variant='body2'>New Category</Typography>
+              <AddCircleIcon />
+            </Button>
           </Grid>
           <Grid item sx={{ p: 2 }} lg={8}>
             <TextField
@@ -331,7 +332,7 @@ export default function CreateCard() {
           <Grid item lg={6}></Grid>
           <Grid item lg={3}>
             <button className="pageButton" onClick={handleCancel}>
-            <ArrowBackIos />
+              <ArrowBackIos />
               Back
             </button>
           </Grid>

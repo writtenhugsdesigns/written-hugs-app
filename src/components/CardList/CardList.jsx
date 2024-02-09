@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom/";
 import {
   Button,
   Paper,
@@ -20,6 +21,7 @@ import { Category } from "@mui/icons-material";
 
 export default function CardList() {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // const cards = useSelector(store => store.cardsReducer.cardsList);
   const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
@@ -29,6 +31,7 @@ export default function CardList() {
 
   useEffect(() => {
     dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
+    dispatch({ type: "SAGA/FETCH_CATEGORIES" });
   }, []);
 
   // Style for MUI box in Modal
@@ -53,8 +56,12 @@ export default function CardList() {
     });
   };
 
-  const editCard = () => {
-    console.log("This will do pop up stuff for edit.");
+  const editCard = (x) => {
+    dispatch({
+      type: "SET_CARD",
+      payload: x,
+    });
+    history.push(`/editcard/${x.card_id}`)
   };
 
   const deleteCard = () => {
@@ -71,7 +78,7 @@ export default function CardList() {
   
     return (
       <React.Fragment>
-        <TableRow sx={{ '& > *': { borderBottom: 'unset', backgroundColor: 'rgb(249, 247, 243)' } }}>
+        <TableRow sx={{ '& > *': { fontFamily: 'Open Sans Light', borderBottom: 'unset', backgroundColor: 'rgb(249, 247, 243)' } }}>
           <TableCell>
             <IconButton
               aria-label="expand row"
@@ -81,7 +88,7 @@ export default function CardList() {
               {openRow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell>{row.category_name}</TableCell>
+          <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '18px'}}>{row.category_name}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -90,21 +97,22 @@ export default function CardList() {
                 <Table size="medium" aria-label="purchases">
                   
                   <TableHead>
-                    <TableRow>
-                      <TableCell>Card Name</TableCell>
-                      <TableCell>Description</TableCell>
-                      <TableCell>Categories</TableCell>
-                      <TableCell>Preview</TableCell>
+                    <TableRow sx={{fontFamily: 'Open Sans Regular'}}>
+                      <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px'}}>Card Name</TableCell>
+                      <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px'}}>Description</TableCell>
+                      <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px'}}>Categories</TableCell>
+                      <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px'}}>Preview</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
 
                   <TableBody>
                     {row.cardsArray.map((x) => (
-                      <TableRow key={x.id}>
-                        <TableCell>{x.name}</TableCell>
-                        <TableCell>{x.description}</TableCell>
-                        <TableCell>{x.categories_array.map((y) => (<span className='tag'>{y.category_name}</span>))}</TableCell>
+
+                      <TableRow sx={{fontFamily: 'Open Sans Light'}} key={x.id}>
+                        <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '15px', width: '10em'}}>{x.name}</TableCell>
+                        <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '15px', width: '13em'}}>{x.description}</TableCell>
+                        <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '15px', width: '20em'}}>{x.categories_array.map((y) => (<span>{y.category_name}, </span>))}</TableCell>
                         <TableCell>
                           <img width='180em' src={x.front_img.display} />
                         </TableCell>
@@ -113,7 +121,7 @@ export default function CardList() {
                             View
                           </Button>
                           <span> </span>
-                          <Button variant="outlined">Edit</Button>
+                          <Button variant="outlined" onClick={() => editCard(x)}>Edit</Button>
                           <span> </span>
                           <Button variant="contained" color="error">
                             Delete
@@ -141,9 +149,9 @@ export default function CardList() {
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
           <TableHead>
-            <TableRow sx={{backgroundColor: 'rgb(238, 235, 229)'}}>
+            <TableRow sx={{ backgroundColor: 'rgb(238, 235, 229)'}}>
               <TableCell />
-              <TableCell>Category</TableCell>
+              <TableCell sx={{fontSize: '19px', fontFamily: 'Open Sans Regular'}}>Category</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
