@@ -12,7 +12,6 @@ import Nav from "../Nav/Nav";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 // Unprotected Routes
-import AboutPage from "../AboutPage/AboutPage";
 import LoginPage from "../LoginPage/LoginPage";
 
 // Protected Routes
@@ -50,10 +49,6 @@ function App() {
           <Redirect exact from="/" to="/home" />
 
           {/* Routes for authenticated and unauthenticated users */}
-          <Route exact path="/about">
-            <AboutPage />
-          </Route>
-
           <Route exact path="/login">
             {user.id ? (
               // If the user is already logged in,

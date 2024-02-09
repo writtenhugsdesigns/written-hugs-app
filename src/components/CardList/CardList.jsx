@@ -19,7 +19,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ViewCard from "../ViewCard/ViewCard";
 import Swal from "sweetalert2";
-import { largeModalStyle } from "../../constants/styling";
+import { largeModalStyle, fontStyle16, fontStyle18, fontStyle19, darkSand, lightSand } from "../../constants/styling";
+
 
 export default function CardList() {
   const dispatch = useDispatch();
@@ -99,7 +100,7 @@ export default function CardList() {
   
     return (
       <React.Fragment>
-        <TableRow sx={{ '& > *': { fontFamily: 'Open Sans Light', borderBottom: 'unset', backgroundColor: 'rgb(249, 247, 243)' } }}>
+        <TableRow sx={{ '& > *': { fontFamily: 'Open Sans Light', borderBottom: 'unset', backgroundColor: lightSand } }}>
           <TableCell>
             <IconButton
               aria-label="expand row"
@@ -109,44 +110,37 @@ export default function CardList() {
               {openRow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '18px'}}>{row.category_name}</TableCell>
+          <TableCell sx={fontStyle18}>{row.category_name}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={openRow} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
                 <Table size="medium" aria-label="purchases">
-                  
                   <TableHead>
                     <TableRow>
-                      <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px'}}>Card Name</TableCell>
-                      <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px'}}>Description</TableCell>
-                      <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px'}}>Categories</TableCell>
-                      <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px'}}>Preview</TableCell>
+                      <TableCell sx={fontStyle16}>Card Name</TableCell>
+                      <TableCell sx={fontStyle16}>Description</TableCell>
+                      <TableCell sx={fontStyle16}>Categories</TableCell>
+                      <TableCell sx={fontStyle16}>Preview</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
-
                   <TableBody>
                     {row.cardsArray.map((x) => (
-
-                      <TableRow sx={{fontFamily: 'Open Sans Light'}} key={x.id}>
+                      <TableRow key={x.card_id}>
                         <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '15px', width: '10em'}}>{x.name}</TableCell>
                         <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '15px', width: '13em'}}>{x.description}</TableCell>
-                        <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '15px', width: '20em'}}>{x.categories_array.map((y) => (<span>{y.category_name}, </span>))}</TableCell>
+                        <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '15px', width: '20em'}}>{x.categories_array.map((y, i) => (<span key={i}>{y.category_name}, </span>))}</TableCell>
                         <TableCell>
                           <img minWidth='200em' src={x.front_img.display} />
                         </TableCell>
                         <TableCell>
-                          <Button onClick={() => viewCard(x)} variant="contained">
-                            View
-                          </Button>
+                          <Button onClick={() => viewCard(x)} variant="contained">View</Button>
                           <span> </span>
                           <Button variant="outlined" onClick={() => editCard(x)}>Edit</Button>
                           <span> </span>
-                          <Button onClick = {() => deleteCard(x)} variant="contained" color="error">
-                            Delete
-                          </Button>
+                          <Button onClick = {() => deleteCard(x)} variant="contained" color="error">Delete</Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -160,6 +154,7 @@ export default function CardList() {
     );
   }
   
+  // Create an array of categories where each category will be a row in the table
   const rows = cardsByCategory.map((category) => {return category});
 
   return (
@@ -167,14 +162,14 @@ export default function CardList() {
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
           <TableHead>
-            <TableRow sx={{ backgroundColor: 'rgb(238, 235, 229)'}}>
+            <TableRow sx={{ backgroundColor: darkSand}}>
               <TableCell />
-              <TableCell sx={{fontSize: '19px', fontFamily: 'Open Sans Regular'}}>Category</TableCell>
+              <TableCell sx={fontStyle19}>Category</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <Row key={row.id} row={row} />
+            {rows.map((row, i) => (
+              <Row key={i} row={row} />
             ))}
           </TableBody>
         </Table>

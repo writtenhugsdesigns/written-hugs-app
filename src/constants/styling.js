@@ -42,6 +42,16 @@ export const fontStyle16 = {
     fontSize: '16px'
 }
 
-export const fontStyle15 = {
-
+export const fontStyle18 = {
+    fontFamily: 'Open Sans Regular', 
+    fontSize: '18px'
 }
+
+export const fontStyle19 = {
+    fontFamily: 'Open Sans Regular', 
+    fontSize: '19px'
+}
+
+export const lightSand = 'rgb(249, 247, 243)';
+
+export const darkSand = 'rgb(238, 235, 229)';
