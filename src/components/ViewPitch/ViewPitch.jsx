@@ -83,7 +83,7 @@ export default function ViewPitch() {
           <h3>Description: {selectedPitch[0] && selectedPitch[0].description}</h3>
         </div>
         <TableContainer>
-          <Table id="pitchTable" stickyheader aria-label="sticky table">
+          <Table sx={{ width: '80%'}}id="pitchTable" stickyheader aria-label="sticky table">
             <TableHead>
               <TableRow sx={{backgroundColor: '#eeebe5'}}>
                 <TableCell style={{ minWidth: "5vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"upc"}>
@@ -123,7 +123,7 @@ export default function ViewPitch() {
                     <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.upc}</TableCell>
                     <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.barcode}</TableCell>
                     <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.vendor_style}</TableCell>
-                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.name}</TableCell>
+                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.card_name}</TableCell>
                     <TableCell>
                       <img src={card.front_img.display} />
                     </TableCell>
@@ -137,7 +137,7 @@ export default function ViewPitch() {
                       <img src={card.sticker_jpeg.display} />
                     </TableCell>
                     <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>
-                      {card.categories.map((category) => {
+                      {card.categories_array.map((category) => {
                         return <p>{category.category_name}</p>;
                       })}
                     </TableCell>
