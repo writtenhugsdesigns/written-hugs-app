@@ -5,6 +5,7 @@ import {
 } from "react-router-dom/cjs/react-router-dom.min";
 import { useEffect, useState } from "react";
 import EditPitchCategory from "../EditPitchCategory/EditPitchCategory";
+import { Button } from "@mui/material";
 
 export default function EditPitch() {
   const dispatch = useDispatch();
@@ -88,6 +89,11 @@ export default function EditPitch() {
 
   return (
     <div className="container">
+      <div className="wholesalerBar">
+        <Button onClick={() => history.push("/pitches")} variant="outlined">
+          Back to Pitches
+        </Button>
+      </div>
       <div className="wholesalerBar">
         <h1>Edit Pitch</h1>
         <button className="pageButton" onClick={savePitch}>
