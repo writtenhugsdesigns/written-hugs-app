@@ -275,14 +275,14 @@ router.post("/", uploadHandler.any(), async (req, res) => {
     objectToSendToDB[fileObject.fieldname] = data.id;
     // console.log("fieldName:", fileObject.fieldname);
     // console.log("dataID:", data.id);
-    console.log(objectToSendToDB);
+    console.error(objectToSendToDB);
   };
   const { body, files } = req;
   for (let f = 0; f < files.length; f++) {
     console.log('inside loop, number:', f);
     await uploadFile(files[f]);
   }
-  console.log('outside loop');
+  console.error('outside loop');
 
   //This setups the DB queryText and queryValues to send to DB
   const queryText = `
