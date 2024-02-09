@@ -67,7 +67,9 @@ export default function PitchCard({ card, isInCart }) {
         alignItems: "center",
       }}
       >
-        {isInCart(card) && <Alert>Added</Alert>}
+
+        {isInCart(card) && <Alert>Added!</Alert>}
+
         <CardMedia
           height="20em"
           onMouseOver={() => setIsHoveredID(card.card_id)}
