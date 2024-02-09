@@ -42,6 +42,11 @@ export const fontStyle16 = {
     fontSize: '16px'
 }
 
+export const fontStyle17 = {
+    fontFamily: 'Open Sans Light',
+    fontSize: '17px'
+}
+
 export const fontStyle18 = {
     fontFamily: 'Open Sans Regular', 
     fontSize: '18px'

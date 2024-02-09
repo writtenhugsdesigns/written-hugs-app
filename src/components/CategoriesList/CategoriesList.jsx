@@ -11,10 +11,10 @@ import {
   Modal,
   Box
 } from "@mui/material";
-import EditCategory from "../EditCategory/EditCategory";
 import { useSelector, useDispatch } from "react-redux";
+import { smallModalStyle, darkSand, fontStyle17 } from "../../constants/styling";
 import Swal from "sweetalert2";
-import { smallModalStyle } from "../../constants/styling";
+import EditCategory from "../EditCategory/EditCategory";
 
 export default function CategoriesList() {
   const dispatch = useDispatch();
@@ -27,6 +27,11 @@ export default function CategoriesList() {
     dispatch({ type: "SAGA/FETCH_CATEGORIES" });
   }, []);
 
+  /**
+   * When the user clicks the delete button, display a sweet alert confirming category deletion. Then, dispatch to delete
+   * the category by id
+   * @param {*} category object representing all data for a card category
+   */
   const deleteCategory = (category) => {
     Swal.fire({
       title: `Are you sure you want to delete the ${category.name} category?`,
@@ -51,6 +56,10 @@ export default function CategoriesList() {
     });
   }
 
+  /**
+   * When the user clicks the edit button, set the current category reducer and open the edit modal
+   * @param {*} category 
+   */
   const editCategory = (category) => {
     dispatch({
       type: 'SET_CURRENT_CATEGORY',
@@ -61,13 +70,12 @@ export default function CategoriesList() {
 
   return (
     <div className="container">
-      {/* MUI table within an MUI paper component */}
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer>
-          <Table stickyheader aria-label="sticky table">
+          <Table stickyheader='true' aria-label="sticky table">
             <TableHead>
-              <TableRow sx={{backgroundColor: '#eeebe5'}}>
-                <TableCell style={{ minWidth: "50vw", fontFamily: "Open Sans Regular", fontSize: '18px' }} key={"name"}>
+              <TableRow sx={{backgroundColor: darkSand}}>
+                <TableCell style={{ minWidth: "50vw", fontFamily: "Open Sans Regular", fontSize: '18px' }}>
                   Category Name
                 </TableCell>
                 <TableCell></TableCell>
@@ -77,13 +85,11 @@ export default function CategoriesList() {
               {categories &&
                 categories.map((x) => (
                   <TableRow hover role="checkbox" tabIndex={-1} key={x.id}>
-                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{x.name}</TableCell>
+                    <TableCell sx={fontStyle17}>{x.name}</TableCell>
                     <TableCell>
                       <Button onClick = {() => editCategory(x)} variant="outlined">Edit</Button>
                       <span> </span>
-                      <Button onClick = {() => deleteCategory(x)} variant="contained" color="error">
-                        Delete
-                      </Button>
+                      <Button onClick = {() => deleteCategory(x)} variant="contained" color="error">Delete</Button>
                     </TableCell>
                   </TableRow>
                 ))}
