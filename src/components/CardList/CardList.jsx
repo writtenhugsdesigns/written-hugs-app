@@ -18,6 +18,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ViewCard from "../ViewCard/ViewCard";
 import { Category } from "@mui/icons-material";
+import Swal from "sweetalert2";
 
 export default function CardList() {
   const dispatch = useDispatch();
@@ -64,8 +65,28 @@ export default function CardList() {
     history.push(`/editcard/${x.card_id}`)
   };
 
-  const deleteCard = () => {
-    console.log("BEGONE THINGY WITH card", card.id);
+  const deleteCard = (card) => {
+    Swal.fire({
+      title: `Are you sure you want to delete this card?`,
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "The card has been deleted.",
+          icon: "success"
+        });
+        dispatch({
+          type: 'SAGA/DELETE_CARD',
+          payload: card.card_id
+        })
+      }
+    });
   };
 
   /**
@@ -123,7 +144,7 @@ export default function CardList() {
                           <span> </span>
                           <Button variant="outlined" onClick={() => editCard(x)}>Edit</Button>
                           <span> </span>
-                          <Button variant="contained" color="error">
+                          <Button onClick = {() => deleteCard(x)} variant="contained" color="error">
                             Delete
                           </Button>
                         </TableCell>
