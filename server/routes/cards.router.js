@@ -218,38 +218,38 @@ router.post("/existingCategory", rejectUnauthenticated, (req, res) => {
 router.post("/", uploadHandler.any(), rejectUnauthenticated, async (req, res) => {
   const folderName = req.body.vendor_style + " " + req.body.name;
 
-  //This creates an object to be populated with the file ids
-  const objectToSendToDB = {
-    name: req.body.name,
-    upc: req.body.upc,
-    vendor_style: req.body.vendor_style,
-    description: req.body.description,
-    barcode: "",
-    front_img: "",
-    inner_img: "",
-    insert_img: "",
-    insert_ai: "",
-    sticker_jpeg: "",
-    sticker_pdf: "",
-    front_tiff: "",
-  };
+    //This creates an object to be populated with the file ids
+    const objectToSendToDB = {
+      name: req.body.name,
+      upc: req.body.upc,
+      vendor_style: req.body.vendor_style,
+      description: req.body.description,
+      barcode: "",
+      front_img: "",
+      inner_img: "",
+      insert_img: "",
+      insert_ai: "",
+      sticker_jpeg: "",
+      sticker_pdf: "",
+      front_tiff: "",
+    };
 
-  //This creates an authentication token with google
-  const jwtClient = new google.auth.JWT(
-    apikeys.client_email,
-    null,
-    apikeys.private_key,
-    SCOPE
-  );
-  await jwtClient.authorize();
-  const drive = google.drive({ version: "v3", auth: jwtClient });
+    //This creates an authentication token with google
+    const jwtClient = new google.auth.JWT(
+      apikeys.client_email,
+      null,
+      apikeys.private_key,
+      SCOPE
+    );
+    await jwtClient.authorize();
+    const drive = google.drive({ version: "v3", auth: jwtClient });
 
-  //This is the metadata to setup the card variant folder
-  let fileMetaData = {
-    name: folderName,
-    parents: ["1wG6GeFUgvvh-8GOHw1NhlfRPUUDfP2H_"],
-    mimeType: "application/vnd.google-apps.folder",
-  };
+    //This is the metadata to setup the card variant folder
+    let fileMetaData = {
+      name: folderName,
+      parents: ["1wG6GeFUgvvh-8GOHw1NhlfRPUUDfP2H_"],
+      mimeType: "application/vnd.google-apps.folder",
+    };
 
   //This creates the folder for the card variant
   const folderResponse = await drive.files.create({
