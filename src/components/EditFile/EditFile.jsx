@@ -1,8 +1,10 @@
 import Swal from "sweetalert2";
+import { CardActions, IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
-Swal;
+export default function EditFile(event, fileid) {
 
-export default function EditFile() {
+  const functi  
   return (
     <CardActions>
       <IconButton
