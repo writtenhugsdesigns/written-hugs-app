@@ -28,19 +28,36 @@ export default function EditCard() {
   const params = useParams();
   const dispatch = useDispatch();
   const [newCategory, setNewCategory] = useState([]);
+  const [folderId, setFolderId] = useState('')
 
   const databaseCategories = useSelector((store) => store.categoriesReducer.categories);
   const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
   const cardToEdit = useSelector((store) => store.cardsReducer.editCurrentCard);
+  const folderList = useSelector((store) => store.cardsReducer.currentFolders);
   const folderName = (cardToEdit.vendor_style, "+", cardToEdit.name)
+  console.log("this is the folderName:", folderName);
+  const currentFolderId = folderList.map(
+    (folder) => { console.log(folder.name);
+      if(folder.name===folderName){
+        console.log(folder.id);
+      };
+
+    // if(folder.name === folderName){
+    //   return folder.id
+    })
   // const populateCategoryArray = () =>
   //   cardToEdit.categories_array.map(setNewCategory());
+  console.log("current folder Id:", currentFolderId);
 
   useEffect(() => {
     dispatch({
       type: "SET_CURRENT_CARD_TO_EDIT",
       payload: selectedCard,
     });
+    dispatch({
+      type: "SAGA/GET_FOLDERS",
+    });
+    
   }, []);
 
   const handleVariationNameChange = (newName) => {
@@ -236,7 +253,7 @@ export default function EditCard() {
                 </div>
                 <img src={`${selectedCard.barcode.display}`} />
               </CardContent>
-              <EditFile fileType="barcode" currentId={selectedCard.barcode}/>
+              <EditFile fileType="barcode" currentId={selectedCard.barcode} folderName={folderName}/>
             </Card>
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
