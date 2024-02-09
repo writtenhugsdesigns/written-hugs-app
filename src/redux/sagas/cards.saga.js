@@ -59,6 +59,7 @@ function* postCard(action) {
  * @param {*} action action.payload containing the card id is sent to the router
  */
 function* deleteCard(action) {
+  console.log("in delete saga:", action.payload);
   try {
     const response = yield axios({
       method: 'DELETE',
