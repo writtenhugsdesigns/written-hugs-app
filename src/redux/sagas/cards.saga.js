@@ -48,6 +48,7 @@ function* postCard(action) {
     })
 
     yield fetchAllCards()
+    yield fetchAllCardsByCategory();
   }
   catch (error) {
     console.error('Card POST failed:', error)
@@ -59,12 +60,14 @@ function* postCard(action) {
  * @param {*} action action.payload containing the card id is sent to the router
  */
 function* deleteCard(action) {
+  console.log("in delete saga:", action.payload);
   try {
     const response = yield axios({
       method: 'DELETE',
       url: `/api/cards/${action.payload}`
     })
-    yield fetchAllCards()
+    yield fetchAllCards();
+    yield fetchAllCardsByCategory();
   }
   catch (error) {
     console.error('Card DELETE failed:', error)
@@ -82,7 +85,8 @@ function* editCard(action) {
       url: `/api/cards/${action.payload.id}`,
       data: action.payload.data
     })
-    yield fetchAllCards()
+    yield fetchAllCards();
+    yield fetchAllCardsByCategory();
   }
   catch (error) {
     console.error('Card EDIT failed:', error)

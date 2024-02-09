@@ -1,10 +1,8 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import './AdminHome.css';
 
 function AdminHome() {
-  // const user = useSelector((store) => store.user);
   const history = useHistory();
 
   return (

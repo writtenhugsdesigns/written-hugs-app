@@ -32,14 +32,14 @@ create table "cards" (
 create table "wholesalers" (
 	"id" serial primary key,
 	"company_name" varchar,
-	"user_id" integer references "user",
+	"user_id" integer references "user" ON DELETE CASCADE,
     "inserted_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 create table "pitches" (
 	"id" serial primary key,
-	"wholesaler_id" integer references "wholesalers",
+	"wholesaler_id" integer references "wholesalers" ON DELETE CASCADE,
 	"is_current" boolean,
 	"name" text,
 	"description" text,
@@ -49,8 +49,8 @@ create table "pitches" (
 
 create table "pitches_cards" (
 	"id" serial primary key,
-	"pitch_id" integer references "pitches",
-	"card_id" integer references "cards",
+	"pitch_id" integer references "pitches" ON DELETE CASCADE,
+	"card_id" integer references "cards" ON DELETE CASCADE,
 	"ordered" boolean,
     "inserted_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -66,7 +66,7 @@ create table "categories" (
 
 create table "cards_categories" (
 	"id" serial primary key,
-	"card_id" integer references "cards",
+	"card_id" integer references "cards" ON DELETE CASCADE,
 	"category_id" integer references "categories" ON DELETE CASCADE,
     "inserted_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
     "updated_at" TIMESTAMPTZ NOT NULL DEFAULT now()

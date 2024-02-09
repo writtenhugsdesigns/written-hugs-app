@@ -30,3 +30,7 @@
     margin-right: 0.25em;
     width: auto;
 }
+
+.swal2-container {
+    z-index: 10000;
+}

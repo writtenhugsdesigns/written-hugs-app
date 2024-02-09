@@ -5,7 +5,8 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { AddCircleOutline } from "@mui/icons-material";
 import './WholesalersPage.css';
-import CreateWholesaler from '../CreateWholesaler/CreateWholesaler'
+import CreateWholesaler from '../CreateWholesaler/CreateWholesaler';
+import { smallModalStyle } from "../../constants/styling";
 
 export default function WholesalersPage() {
     const history = useHistory();
@@ -13,19 +14,6 @@ export default function WholesalersPage() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     
-    const style = {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        overflow: "auto",
-        display: "block",
-        width: "60vw",
-        height: "30vh",
-        bgcolor: "background.paper",
-        borderRadius: '5px'
-    }
-
     return (
         <>
             <div className='container'>
@@ -42,7 +30,7 @@ export default function WholesalersPage() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={smallModalStyle}>
                     <CreateWholesaler handleClose={handleClose} />
                 </Box>
             </Modal>
