@@ -29,7 +29,7 @@ const editCurrentCard = (state={}, action) => {
     case 'VARIATION_DESCRIPTION_CHANGE':
       return {...state, description: action.payload}
     case 'VARIATION_VENDOR_STYLE_CHANGE':
-      return {...state, upc: action.payload}
+      return {...state, vendor_style: action.payload}
     default :
       return state;
   }
