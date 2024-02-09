@@ -145,15 +145,6 @@ export default function EditCard() {
     });
   };
 
-  const updateFileOnClick = (action, fileid) =>
-  {
-    console.log(action);
-    // <EditFile 
-    // folderName={folderName}
-
-    // />
-  }
-
   //This form is divided using MUI Grid elements inside of a form div
   return (
     <div className="container">
@@ -238,21 +229,14 @@ export default function EditCard() {
           </Grid>
 
           <Grid sx={{ p: 2 }} item xs={12} md={6} lg={3}>
-            <Card sx={{ width: 200, height: 300 }}>
+            <Card id="barcodeImage" sx={{ width: 200, height: 300 }}>
               <CardContent>
                 <div>
                   <Typography variant="overline">Barcode Image</Typography>
                 </div>
                 <img src={`${selectedCard.barcode.display}`} />
               </CardContent>
-              <CardActions gutterbottom>
-                <IconButton
-                  aria-label="Edit Photo"
-                  onClick={() => updateFileOnClick(event)}
-                >
-                  <EditIcon />
-                </IconButton>
-              </CardActions>
+              <EditFile fileType="barcode" currentId={selectedCard.barcode}/>
             </Card>
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -370,7 +354,7 @@ export default function EditCard() {
           </Grid>
 
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
-          <Card sx={{ width: 200, height: 200 }}>
+          <Card id="insert_ai" sx={{ width: 200, height: 200 }}>
               <CardContent>
                 <div>
                   <Typography variant="overline">AI File</Typography>
@@ -382,7 +366,6 @@ export default function EditCard() {
               <CardActions>
                 <IconButton
                   aria-label="Edit Photo"
-                  id="insert_ai"
                   onClick={() => updateFileOnClick(event, fileid)}
                 >
                   <EditIcon />
