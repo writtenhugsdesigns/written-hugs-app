@@ -10,21 +10,19 @@ import {
   TableHead,
   TableRow,
   TableContainer,
-  TablePagination,
   Box,
   Modal, IconButton, Collapse, Typography,
 } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ViewCard from "../ViewCard/ViewCard";
-import { Category } from "@mui/icons-material";
 import Swal from "sweetalert2";
+import { largeModalStyle } from "../../constants/styling";
 
 export default function CardList() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  // const cards = useSelector(store => store.cardsReducer.cardsList);
   const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -34,20 +32,6 @@ export default function CardList() {
     dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
     dispatch({ type: "SAGA/FETCH_CATEGORIES" });
   }, []);
-
-  // Style for MUI box in Modal
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    overflow: "auto",
-    display: "block",
-    width: "90vw",
-    height: "90vh",
-    bgcolor: "background.paper",
-    'border-radius': '5px'
-  };
 
   const viewCard = (x) => {
     handleOpen();
@@ -189,7 +173,7 @@ export default function CardList() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={largeModalStyle}>
           <ViewCard handleClose={handleClose} />
         </Box>
       </Modal>

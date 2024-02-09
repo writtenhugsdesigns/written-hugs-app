@@ -206,7 +206,7 @@ router.post("/existingCategory", (req, res) => {
 
 
 /**
- * This post router takes in a new card formdata object.  It then passes it through multer.
+ * This post router takes in a new card form data object.  It then passes it through multer.
  * The function does a few things:
  * 1) Authenticates to Google Drive
  * 2) Creates a folder for the new card

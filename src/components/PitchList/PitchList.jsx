@@ -8,8 +8,6 @@ import {
   TableHead,
   TableRow,
   TableContainer,
-  Modal,
-  Box
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -185,15 +183,9 @@ export default function PitchList() {
     }
   };
 
-  const viewPitch = (id) => {
-    console.log("viewing pitch with id", id);
-    history.push(`/viewPitch/${id}`);
-  };
+  const viewPitch = (id) => {history.push(`/viewPitch/${id}`);};
 
-  const editPitch = (id) => {
-    console.log("editing pitch with id", id);
-    history.push(`/editPitch/${id}`);
-  };
+  const editPitch = (id) => {history.push(`/editPitch/${id}`);};
 
   const openDeleteProcess = (id) => {
     Swal.fire({

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { Button,  Box,
-  Modal,} from "@mui/material";
+import { Button, Box, Modal,} from "@mui/material";
 import { ArrowBackIos, AddCircleOutline, } from "@mui/icons-material";
-import "./ViewCard.css";
+import {mediumModalStyle} from '../../constants/styling.js'
 import CreateCategoryForCardView from "../CreateCategory/CreateCategoryForCardView";
 import Swal from "sweetalert2";
-
+import "./ViewCard.css";
 
 export default function ViewCard({ handleClose }) {
   const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
@@ -15,20 +14,6 @@ export default function ViewCard({ handleClose }) {
   const handleOpenNewCategory = () => setOpenNewCategory(true);
   const handleCloseNewCategory = () => setOpenNewCategory(false);
   const dispatch = useDispatch();
-
-    // Style for MUI box in Modal
-    const style = {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      overflow: "auto",
-      display: "block",
-      width: "80vw",
-      height: "80vh",
-      bgcolor: "background.paper",
-      'border-radius': '5px'
-    };
 
   const editCardText = () => {
     console.log("This will do pop up stuff for edit.");
@@ -115,7 +100,7 @@ export default function ViewCard({ handleClose }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={mediumModalStyle}>
           <CreateCategoryForCardView card={selectedCard} handleClose={handleCloseNewCategory} />
         </Box>
       </Modal>

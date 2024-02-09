@@ -8,14 +8,13 @@ import {
     TableHead,
     TableRow,
     TableContainer,
-    TablePagination,
     Modal,
     Box
 } from "@mui/material";
-import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import EditWholesaler from "../EditWholesaler/EditWholesaler";
 import Swal from "sweetalert2";
+import { smallModalStyle } from "../../constants/styling";
 
 export default function WholesalersList(){
     const dispatch = useDispatch();
@@ -25,19 +24,6 @@ export default function WholesalersList(){
     const handleClose = () => setOpen(false);
     
     useEffect(() => {dispatch({type: 'SAGA/FETCH_WHOLESALERS'})}, []);
-
-    const style = {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        overflow: "auto",
-        display: "block",
-        width: "60vw",
-        height: "30vh",
-        bgcolor: "background.paper",
-        borderRadius: '5px'
-    };
 
     const editWholesaler = (wholesaler) => {
         dispatch({
@@ -110,7 +96,7 @@ export default function WholesalersList(){
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={smallModalStyle}>
                     <EditWholesaler handleClose = {handleClose}/>
                 </Box>
             </Modal>

@@ -8,13 +8,13 @@ import {
   TableHead,
   TableRow,
   TableContainer,
-  TablePagination,
   Modal,
   Box
 } from "@mui/material";
 import EditCategory from "../EditCategory/EditCategory";
 import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
+import { smallModalStyle } from "../../constants/styling";
 
 export default function CategoriesList() {
   const dispatch = useDispatch();
@@ -26,20 +26,6 @@ export default function CategoriesList() {
   useEffect(() => {
     dispatch({ type: "SAGA/FETCH_CATEGORIES" });
   }, []);
-
-  // Style for MUI box in Modal
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    overflow: "auto",
-    display: "block",
-    width: "60vw",
-    height: "30vh",
-    bgcolor: "background.paper",
-    'border-radius': '5px'
-  };
 
   const deleteCategory = (category) => {
     Swal.fire({
@@ -112,7 +98,7 @@ export default function CategoriesList() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={smallModalStyle}>
           <EditCategory handleClose = {handleClose}/>
         </Box>
       </Modal>
