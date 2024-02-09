@@ -21,6 +21,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import MultipleSelect from "../MultiSelectCategories/MultiSelectCategories";
 import { useParams } from "react-router-dom/";
+import EditFile from "../EditFile/EditFile";
 
 export default function EditCard() {
   const history = useHistory();
@@ -31,6 +32,7 @@ export default function EditCard() {
   const databaseCategories = useSelector((store) => store.categoriesReducer.categories);
   const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
   const cardToEdit = useSelector((store) => store.cardsReducer.editCurrentCard);
+  const folderName = (cardToEdit.vendor_style, "+", cardToEdit.name)
   // const populateCategoryArray = () =>
   //   cardToEdit.categories_array.map(setNewCategory());
 
@@ -143,6 +145,15 @@ export default function EditCard() {
     });
   };
 
+  const updateFileOnClick = (action, fileid) =>
+  {
+    console.log(action);
+    // <EditFile 
+    // folderName={folderName}
+
+    // />
+  }
+
   //This form is divided using MUI Grid elements inside of a form div
   return (
     <div className="container">
@@ -220,7 +231,7 @@ export default function EditCard() {
               minRows={4}
               label="Card Varient Description"
               onChange={() =>
-                handleVariationDescriptionChange(event.target.value)
+                updateFileOnClick(event)
               }
               id="description"
             />
@@ -237,7 +248,7 @@ export default function EditCard() {
               <CardActions gutterbottom>
                 <IconButton
                   aria-label="Edit Photo"
-                  onClick={() => handlePicURLEditClick(event)}
+                  onClick={() => updateFileOnClick(event)}
                 >
                   <EditIcon />
                 </IconButton>
@@ -255,7 +266,7 @@ export default function EditCard() {
               <CardActions>
                 <IconButton
                   aria-label="Edit Photo"
-                  onClick={() => handlePicURLEditClick(event)}
+                  onClick={() => updateFileOnClick(event)}
                 >
                   <EditIcon />
                 </IconButton>
@@ -273,7 +284,7 @@ export default function EditCard() {
               <CardActions>
                 <IconButton
                   aria-label="Edit Photo"
-                  onClick={() => handlePicURLEditClick(event)}
+                  onClick={() => updateFileOnClick(event)}
                 >
                   <EditIcon />
                 </IconButton>
@@ -291,7 +302,7 @@ export default function EditCard() {
               <CardActions>
                 <IconButton
                   aria-label="Edit Photo"
-                  onClick={() => handlePicURLEditClick(event)}
+                  onClick={() => updateFileOnClick(event)}
                 >
                   <EditIcon />
                 </IconButton>
@@ -309,7 +320,7 @@ export default function EditCard() {
               <CardActions>
                 <IconButton
                   aria-label="Edit Photo"
-                  onClick={() => handlePicURLEditClick(event)}
+                  onClick={() => updateFileOnClick(event)}
                 >
                   <EditIcon />
                 </IconButton>
@@ -329,7 +340,7 @@ export default function EditCard() {
               <CardActions>
                 <IconButton
                   aria-label="Edit Photo"
-                  onClick={() => handlePicURLEditClick(event)}
+                  onClick={() => updateFileOnClick(event)}
                 >
                   <EditIcon />
                 </IconButton>
@@ -350,7 +361,7 @@ export default function EditCard() {
               <CardActions>
                 <IconButton
                   aria-label="Edit Photo"
-                  onClick={() => handlePicURLEditClick(event)}
+                  onClick={() => updateFileOnClick(event)}
                 >
                   <EditIcon />
                 </IconButton>
@@ -371,7 +382,8 @@ export default function EditCard() {
               <CardActions>
                 <IconButton
                   aria-label="Edit Photo"
-                  onClick={() => handlePicURLEditClick(event)}
+                  id="insert_ai"
+                  onClick={() => updateFileOnClick(event, fileid)}
                 >
                   <EditIcon />
                 </IconButton>
