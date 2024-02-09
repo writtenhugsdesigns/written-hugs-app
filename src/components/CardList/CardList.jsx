@@ -120,7 +120,7 @@ export default function CardList() {
                   <TableHead>
                     <TableRow>
                       <TableCell sx={fontStyle16}>Card Name</TableCell>
-                      <TableCell sx={fontStyle16}>Description</TableCell>
+                      <TableCell sx={{fontFamily: 'Open Sans Regular', fontSize: '16px', height: '10em', overflowY: 'auto'}}>Description</TableCell>
                       <TableCell sx={fontStyle16}>Categories</TableCell>
                       <TableCell sx={fontStyle16}>Preview</TableCell>
                       <TableCell></TableCell>
@@ -133,7 +133,7 @@ export default function CardList() {
                         <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '15px', width: '13em'}}>{x.description}</TableCell>
                         <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '15px', width: '20em'}}>{x.categories_array.map((y, i) => (<span key={i}>{y.category_name}, </span>))}</TableCell>
                         <TableCell>
-                          <img minWidth='200em' src={x.front_img.display} />
+                          <img width='200em' src={x.front_img.display} />
                         </TableCell>
                         <TableCell>
                           <Button onClick={() => viewCard(x)} variant="contained">View</Button>
