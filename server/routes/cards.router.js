@@ -477,15 +477,15 @@ function formatCards(all) {
       vendor_style: all[i].vendor_style,
       upc: all[i].upc,
       sku: all[i].sku,
-      barcode: all[i].barcode,
+      barcode: { raw: all[i].barcode },
       front_img: { raw: all[i].front_img },
-      front_tiff: all[i].front_tiff,
+      front_tiff: { raw: all[i].front_tiff},
       inner_img: { raw: all[i].inner_img },
       insert_img: { raw: all[i].insert_img },
-      insert_ai: all[i].insert_ai,
+      insert_ai: { raw: all[i].insert_ai},
       raw_art: all[i].raw_art,
       sticker_jpeg: { raw: all[i].sticker_jpeg },
-      sticker_pdf: all[i].sticker_pdf,
+      sticker_pdf: { raw: all[i].sticker_pdf},
       categories_array: all[i].categories_array,
     });
     // After getting all cards in cardsArray, we must format the urls for displaying
@@ -506,11 +506,24 @@ function formatCards(all) {
       cardsArray[
         i
       ].sticker_jpeg.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].sticker_jpeg.raw}`;
+      //barcode
+      cardsArray[
+        i
+      ].barcode.display = `https://drive.google.com/thumbnail?id=${cardsArray[i].barcode.raw}`;
+      cardsArray[
+        i
+      ].sticker_pdf.display = `https://drive.google.com/file/d/${cardsArray[i].sticker_pdf.raw}`;
+      cardsArray[
+        i
+      ].front_tiff.display = `https://drive.google.com/file/d/${cardsArray[i].front_tiff.raw}`;
+      cardsArray[
+        i
+      ].insert_ai.display = `https://drive.google.com/file/d/${cardsArray[i].insert_ai.raw}`;
     }
   }
   return cardsArray;
 }
-
+//https://drive.google.com/file/d/1l4uogPMdeQI9thTGc1cHci2-IsMZ3PyX/view?usp=share_link
 /**
  * this function takes in an array of formatted cards and an array of categories
  * it's goal is to bundle categories with an array of cards within each category
