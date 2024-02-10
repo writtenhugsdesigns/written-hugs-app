@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   useParams,
   useHistory,
-} from "react-router-dom/cjs/react-router-dom.min";
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 import EditPitchCategory from "../EditPitchCategory/EditPitchCategory";
 import { Button } from "@mui/material";
@@ -48,6 +48,10 @@ export default function EditPitch() {
     dispatch({ type: "SET_SELECTED_PITCH", payload: selectedPitch[0] });
   }
 
+  /**
+   * When the user clicks the Save button, dispatch to PUT the edits to the pitch, then navigate the user back to the
+   * pitches page
+   */
   const savePitch = () => {
     dispatch({
       type: "SAGA/EDIT_PITCH",
@@ -65,6 +69,9 @@ export default function EditPitch() {
     history.push("/pitches");
   };
 
+  /**
+   * Checks if the selected pitch has the is_current property
+   */
   const setCurrent = () => {
     if (typeof is_current === "undefined") {
       setIs_current(!selectedPitch[0].is_current);
@@ -75,6 +82,12 @@ export default function EditPitch() {
     }
   };
 
+  /**
+   * Protection method to prevent displaying information that hasn't been updated yet
+   * @param {*} display the element the user would prefer to display
+   * @param {*} defaultDisplay the element that will display on default if the prefered element hasn't loaded yet
+   * @returns the element to display
+   */
   const displayFunction = (display, defaultDisplay) => {
     if (typeof display === "string") {
       return display;

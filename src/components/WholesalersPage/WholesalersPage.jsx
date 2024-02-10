@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
 import WholesalersList from "../WholesalersList/WholesalersList";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -9,7 +8,6 @@ import CreateWholesaler from '../CreateWholesaler/CreateWholesaler';
 import { smallModalStyle } from "../../constants/styling";
 
 export default function WholesalersPage() {
-    const history = useHistory();
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
