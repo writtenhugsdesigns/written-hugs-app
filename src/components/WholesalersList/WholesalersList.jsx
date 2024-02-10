@@ -14,7 +14,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import EditWholesaler from "../EditWholesaler/EditWholesaler";
 import Swal from "sweetalert2";
-import { smallModalStyle } from "../../constants/styling";
+import { smallModalStyle, darkSand, fontStyle17 } from "../../constants/styling";
 
 export default function WholesalersList(){
     const dispatch = useDispatch();
@@ -64,7 +64,7 @@ export default function WholesalersList(){
                 <TableContainer >
                     <Table stickyheader aria-label='sticky table'>
                         <TableHead >
-                            <TableRow sx={{backgroundColor: '#eeebe5'}}>
+                            <TableRow sx={{backgroundColor: darkSand}}>
                                 <TableCell style={{minWidth: '50vw', fontFamily: 'Open Sans Regular', fontSize: '18px'}} key={'name'}>
                                     Organization Name
                                 </TableCell>
@@ -75,7 +75,7 @@ export default function WholesalersList(){
                         <TableBody>
                             {wholesalers && wholesalers.map((x) => (
                                 <TableRow hover role='checkbox' tabIndex={-1} key = {x.id}>
-                                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>
+                                    <TableCell sx={fontStyle17}>
                                         {x.company_name}
                                     </TableCell>
                                     <TableCell>

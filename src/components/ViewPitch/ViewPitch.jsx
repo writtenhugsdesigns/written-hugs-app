@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import {
   Button,
   Paper,
@@ -7,19 +7,16 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableContainer,
-  TablePagination,
-  Modal,
-  Box
+  TableContainer
 } from "@mui/material";
 import { CSVLink } from "react-csv";
 import print from "print-js";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { useEffect } from "react";
+import { fontStyle17 } from "../../constants/styling";
 import Swal from "sweetalert2";
 import "./ViewPitch.css"
-
 
 
 export default function ViewPitch() {
@@ -65,7 +62,7 @@ export default function ViewPitch() {
           history.push("/pitches")
         }
       });
-    };
+  };
 
   return (
     <div className="container">
@@ -120,10 +117,10 @@ export default function ViewPitch() {
                 selectedPitch[0].cards.map((card) => (
                   <TableRow>
 
-                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.upc}</TableCell>
-                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.barcode}</TableCell>
-                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.vendor_style}</TableCell>
-                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.card_name}</TableCell>
+                    <TableCell sx={fontStyle17}>{card.upc}</TableCell>
+                    <TableCell sx={fontStyle17}>{card.barcode}</TableCell>
+                    <TableCell sx={fontStyle17}>{card.vendor_style}</TableCell>
+                    <TableCell sx={fontStyle17}>{card.card_name}</TableCell>
                     <TableCell>
                       <img src={card.front_img.display} />
                     </TableCell>
@@ -136,7 +133,7 @@ export default function ViewPitch() {
                     <TableCell>
                       <img src={card.sticker_jpeg.display} />
                     </TableCell>
-                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>
+                    <TableCell sx={fontStyle17}>
                       {card.categories_array.map((category) => {
                         return <p>{category.category_name}</p>;
                       })}
