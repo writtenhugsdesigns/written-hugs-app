@@ -128,6 +128,11 @@ function* getCurrentFolders() {
   }
 }
 
+/**
+ * Send a POST request to create a new category for a card and then add that
+ * category to the card's categories
+ * @param {*} action action.payload contains the new category object
+ */
 function* postCardCategory(action) {
   try {
     const response = yield axios({
@@ -145,6 +150,10 @@ function* postCardCategory(action) {
   }
 }
 
+/**
+ * add an existing category to a card's categories
+ * @param {*} action action.payload contains the category  object
+ */
 function* postCardExistingCategory(action) {
   try {
     const response = yield axios({
