@@ -118,7 +118,9 @@ export default function ViewPitch() {
                   <TableRow>
 
                     <TableCell sx={fontStyle17}>{card.upc}</TableCell>
-                    <TableCell sx={fontStyle17}>{card.barcode}</TableCell>
+                    <TableCell>
+                      <img src={card.barcode.display} />
+                    </TableCell>
                     <TableCell sx={fontStyle17}>{card.vendor_style}</TableCell>
                     <TableCell sx={fontStyle17}>{card.card_name}</TableCell>
                     <TableCell>
