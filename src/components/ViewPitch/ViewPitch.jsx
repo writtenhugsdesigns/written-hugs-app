@@ -121,9 +121,12 @@ export default function ViewPitch() {
                   <TableRow>
 
                     <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.upc}</TableCell>
-                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.barcode}</TableCell>
+                    <TableCell>
+                      <img src={card.barcode.display} />
+                    </TableCell>
+                    {/* <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.barcode}</TableCell> */}
                     <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.vendor_style}</TableCell>
-                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.card_name}</TableCell>
+                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{card.name}</TableCell>
                     <TableCell>
                       <img src={card.front_img.display} />
                     </TableCell>

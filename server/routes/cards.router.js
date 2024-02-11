@@ -275,14 +275,12 @@ router.post("/", uploadHandler.any(), async (req, res) => {
     objectToSendToDB[fileObject.fieldname] = data.id;
     // console.log("fieldName:", fileObject.fieldname);
     // console.log("dataID:", data.id);
-    console.error(objectToSendToDB);
+    // console.error(objectToSendToDB);
   };
   const { body, files } = req;
   for (let f = 0; f < files.length; f++) {
-    console.log('inside loop, number:', f);
     await uploadFile(files[f]);
   }
-  console.error('outside loop');
 
   //This setups the DB queryText and queryValues to send to DB
   const queryText = `
@@ -519,6 +517,9 @@ function formatCards(all) {
       cardsArray[
         i
       ].insert_ai.display = `https://drive.google.com/file/d/${cardsArray[i].insert_ai.raw}`;
+      cardsArray[
+        i
+      ].barcode.display = `https://drive.google.com/file/d/${cardsArray[i].barcode.raw}`;
     }
   }
   return cardsArray;
