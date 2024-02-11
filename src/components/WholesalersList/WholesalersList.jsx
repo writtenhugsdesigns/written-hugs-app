@@ -8,14 +8,13 @@ import {
     TableHead,
     TableRow,
     TableContainer,
-    TablePagination,
     Modal,
     Box
 } from "@mui/material";
-import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import EditWholesaler from "../EditWholesaler/EditWholesaler";
 import Swal from "sweetalert2";
+import { smallModalStyle, darkSand, fontStyle17 } from "../../constants/styling";
 
 export default function WholesalersList(){
     const dispatch = useDispatch();
@@ -25,19 +24,6 @@ export default function WholesalersList(){
     const handleClose = () => setOpen(false);
     
     useEffect(() => {dispatch({type: 'SAGA/FETCH_WHOLESALERS'})}, []);
-
-    const style = {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        overflow: "auto",
-        display: "block",
-        width: "60vw",
-        height: "30vh",
-        bgcolor: "background.paper",
-        borderRadius: '5px'
-    };
 
     const editWholesaler = (wholesaler) => {
         dispatch({
@@ -78,7 +64,7 @@ export default function WholesalersList(){
                 <TableContainer >
                     <Table stickyheader aria-label='sticky table'>
                         <TableHead >
-                            <TableRow sx={{backgroundColor: '#eeebe5'}}>
+                            <TableRow sx={{backgroundColor: darkSand}}>
                                 <TableCell style={{minWidth: '50vw', fontFamily: 'Open Sans Regular', fontSize: '18px'}} key={'name'}>
                                     Organization Name
                                 </TableCell>
@@ -89,7 +75,7 @@ export default function WholesalersList(){
                         <TableBody>
                             {wholesalers && wholesalers.map((x) => (
                                 <TableRow hover role='checkbox' tabIndex={-1} key = {x.id}>
-                                    <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>
+                                    <TableCell sx={fontStyle17}>
                                         {x.company_name}
                                     </TableCell>
                                     <TableCell>
@@ -110,7 +96,7 @@ export default function WholesalersList(){
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={smallModalStyle}>
                     <EditWholesaler handleClose = {handleClose}/>
                 </Box>
             </Modal>

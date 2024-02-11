@@ -206,7 +206,7 @@ router.post("/existingCategory", (req, res) => {
 
 
 /**
- * This post router takes in a new card formdata object.  It then passes it through multer.
+ * This post router takes in a new card form data object.  It then passes it through multer.
  * The function does a few things:
  * 1) Authenticates to Google Drive
  * 2) Creates a folder for the new card
@@ -275,7 +275,7 @@ router.post("/", uploadHandler.any(), async (req, res) => {
     objectToSendToDB[fileObject.fieldname] = data.id;
     // console.log("fieldName:", fileObject.fieldname);
     // console.log("dataID:", data.id);
-    console.log(objectToSendToDB);
+    // console.error(objectToSendToDB);
   };
   const { body, files } = req;
   for (let f = 0; f < files.length; f++) {
@@ -409,10 +409,12 @@ router.put("/:id", (req, res) => {
     });
 });
 
+
 router.put("/file/:id", uploadHandler.any(), async (req,res) =>
 {
   
 })
+
 
 
 router.get("/:id", (req, res) => {
@@ -464,6 +466,32 @@ router.get("/:id", (req, res) => {
       res.sendStatus(500);
     });
 });
+
+router.delete("/:id", (req, res) => {
+  
+  // Deleting on google drive api?
+  console.log("In delete router")
+  
+  const id = req.params.id;
+
+  const sqlText = 
+  `
+  DELETE FROM "cards"
+    WHERE "id" = $1;
+  `
+
+  const sqlValues = [id];
+
+  pool
+  .query(sqlText, sqlValues)
+  .then((result) => {
+    res.sendStatus(200);
+  })
+  .catch((error) => {
+    console.log("Error in DELETE /api/cards/:id:", error);
+    res.sendStatus(500);
+  })
+})
 
 /**
  * this function takes in an array from the database
@@ -522,6 +550,9 @@ function formatCards(all) {
       cardsArray[
         i
       ].insert_ai.display = `https://drive.google.com/file/d/${cardsArray[i].insert_ai.raw}`;
+      cardsArray[
+        i
+      ].barcode.display = `https://drive.google.com/file/d/${cardsArray[i].barcode.raw}`;
     }
   }
   return cardsArray;
@@ -557,14 +588,6 @@ function formatCardsByCategory(incomingCardsArray, incomingCategoriesArray) {
   }
   return categoriesArray;
 }
-
-/**
- * this function takes in a file's raw google drive url, and extracts the file ID
- * returns a string representing the id
- */
-// function extractID(rawURL) {
-//     return rawURL.substring(32, rawURL.length - 17);
-// }
 
 /**
  * this function takes in an array of categories
