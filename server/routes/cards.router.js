@@ -409,6 +409,14 @@ router.put("/:id", (req, res) => {
     });
 });
 
+
+router.put("/file/:id", uploadHandler.any(), async (req,res) =>
+{
+  
+})
+
+
+
 router.get("/:id", (req, res) => {
   const queryText = `
 

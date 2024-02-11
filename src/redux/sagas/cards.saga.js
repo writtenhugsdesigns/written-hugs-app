@@ -93,6 +93,20 @@ function* editCard(action) {
   }
 }
 
+function* editCardFile(action) {
+  try{
+    const response = yield axios({
+      method: 'PUT',
+      url: `/api/cards/${action.payload.params}`,
+      data: action.payload.data
+    })
+    yield fetchAllCards()
+  }
+  catch (error) {
+    console.error('error updating file for card', error)
+  }
+}
+
 /**
  * Send a get request to receive one card by id from the server, and set the card reducer
  * @param {*} action action.payload contains the id of the desired card
@@ -181,6 +195,7 @@ function* cardSaga() {
   yield takeLatest('SAGA/EDIT_CARD', editCard);
   yield takeLatest('SAGA/GET_FOLDERS', getCurrentFolders)
   yield takeLatest('SAGA/FETCH_CARD', fetchCard);
+  yield takeLatest('SAGA/EDIT_CARD_FILE', editCardFile)
 }
 
 export default cardSaga;
