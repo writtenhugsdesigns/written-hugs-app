@@ -3,25 +3,22 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ArrowBackIos } from "@mui/icons-material";
 import {
-  Box,
   Button,
   Grid,
   TextField,
   Typography,
-  FormControl,
-  Icon,
 } from "@mui/material";
-import { green } from "@mui/material/colors";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import "./CreateCard.css";
 import Swal from "sweetalert2";
 import MultipleSelect from "../MultiSelectCategories/MultiSelectCategories";
-// import '@sweetalert2/theme-material-ui'
+import "./CreateCard.css";
 
 export default function CreateCard() {
   const history = useHistory();
   const dispatch = useDispatch();
   const newCardToSend = new FormData();
+  const currentFoldersArray = useSelector(store => store.cardsReducer.currentFolders);
+  const databaseCategories = useSelector((store) => store.categoriesReducer);
 
   //This use effect triggers the saga "getCurrentFolders"
   //After this is triggered a useSelector will get the current folders array
@@ -34,11 +31,6 @@ export default function CreateCard() {
       type: "SAGA/FETCH_CATEGORIES",
     });
   }, []);
-
-  const currentFoldersArray = useSelector(
-    (store) => store.cardsReducer.currentFolders
-  );
-  const databaseCategories = useSelector((store) => store.categoriesReducer);
 
   let [variationName, setVariationName] = useState(null);
   let [UPCNumber, setUPCNumber] = useState("");
@@ -55,23 +47,12 @@ export default function CreateCard() {
   let [categoriesInput, setCategoriesInput] = useState([]);
 
   const folderName = vendorStyle + " " + variationName;
-  /**
-   * Get  the user selected category ids
-   * @returns an array of the ids of the checked categories
-   */
-  // const getCategories = () => {
-  //   let checkboxes = document.querySelectorAll(
-  //     'input[name="categories"]:checked'
-  //   );
-  //   let values = [];
-  //   checkboxes.forEach((checkbox) => {
-  //     values.push(checkbox.value);
-  //   });
-  //   return values;
-  // };
 
-  // User hits submit button, checks if the variant name matches current folders in google drive,
-  //POSTs a new card, redirects back to /cards
+  /**
+   * When user hits submit, check if the variant name matches a current folder name in Google Drive. Then,
+   * POSTs the card and redirects the user to the cards page
+   * @param {*} e event
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     const sameName = currentFoldersArray.find(
@@ -98,15 +79,16 @@ export default function CreateCard() {
         type: "SAGA/POST_CARD",
         payload: newCardToSend,
       });
-      console.log("categories array:", categoriesInput);
-      // Do the dispatch
       history.push("/cards");
     }
     // Clear fields
     handleClear(e);
   };
 
-  // Clears form inputs when user hits the clear button
+  /**
+   * Clear the form fields after form submission
+   * @param {*} e event
+   */
   const handleClear = (e) => {
     e.preventDefault();
     setVariationName(null);
@@ -114,7 +96,10 @@ export default function CreateCard() {
     setVendorStyle(null);
   };
 
-  //This function verifies a users desire to leave the page, and lose information
+  /**
+   * When the user clicks the cancel button, confirms the user wants to abandon the form. If yes, redirects back to
+   * cards page
+   */
   const handleCancel = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -131,12 +116,15 @@ export default function CreateCard() {
     });
   };
 
-  // This function is used to create a new category
+  /**
+   * Displays sweet alert prompting user to provide a category name when they click the New Category button,  then POSTs the 
+   * new category
+   */
   const createCategory = () => {
     Swal.fire({
       input: "text",
       inputLabel: "New Category Name",
-      inputPlaceholder: "Type your cateory here",
+      inputPlaceholder: "Type your category here",
       inputAttributes: {
         "aria-label": "Type your category here",
       },
@@ -179,7 +167,7 @@ export default function CreateCard() {
               fullWidth
               label="Variation Name"
               placeholder="Variation Name"
-              onChange={() => setVariationName(event.target.value)}
+              onChange={(e) => setVariationName(e.target.value)}
               id="variation"
             />
           </Grid>
@@ -190,7 +178,7 @@ export default function CreateCard() {
               required
               label="UPC Number"
               placeholder="UPC Number"
-              onChange={() => setUPCNumber(event.target.value)}
+              onChange={(e) => setUPCNumber(e.target.value)}
               id="UPCNumber"
             />
           </Grid>
@@ -201,7 +189,7 @@ export default function CreateCard() {
               fullWidth
               label="Vendor Style"
               placeholder="Vendor Style"
-              onChange={() => setVendorStyle(event.target.value)}
+              onChange={(e) => setVendorStyle(e.target.value)}
               id="vendorStyle"
             />
           </Grid>
@@ -224,7 +212,7 @@ export default function CreateCard() {
               minRows={4}
               label="Card Varient Description"
               placeholder="Card Varient Description"
-              onChange={() => setDescription(event.target.value)}
+              onChange={(e) => setDescription(e.target.value)}
               id="description"
             />
           </Grid>
@@ -237,9 +225,7 @@ export default function CreateCard() {
               id="barcode"
               name="Barcode Image"
               type="file"
-              onChange={() => {
-                setBarcode(event.target.files);
-              }}
+              onChange={(e) => {setBarcode(e.target.files);}}
             />
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -249,9 +235,7 @@ export default function CreateCard() {
             <TextField
               id="front"
               type="file"
-              onChange={() => {
-                setFront(event.target.files);
-              }}
+              onChange={(e) => {setFront(e.target.files);}}
             />
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -261,9 +245,7 @@ export default function CreateCard() {
             <TextField
               id="insideInsertion"
               type="file"
-              onChange={() => {
-                setInsideInsertion(event.target.files);
-              }}
+              onChange={(e) => {setInsideInsertion(e.target.files);}}
             />
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -273,9 +255,7 @@ export default function CreateCard() {
             <TextField
               id="insert"
               type="file"
-              onChange={() => {
-                setInsert(event.target.files);
-              }}
+              onChange={(e) => {setInsert(e.target.files);}}
             />
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -285,9 +265,7 @@ export default function CreateCard() {
             <TextField
               id="sticker"
               type="file"
-              onChange={() => {
-                setSticker(event.target.files);
-              }}
+              onChange={(e) => {setSticker(e.target.files);}}
             />
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -297,9 +275,7 @@ export default function CreateCard() {
             <TextField
               id="stickerPdf"
               type="file"
-              onChange={() => {
-                setStickerPdf(event.target.files);
-              }}
+              onChange={(e) => {setStickerPdf(e.target.files);}}
             />
           </Grid>
 
@@ -310,9 +286,7 @@ export default function CreateCard() {
             <TextField
               id="tiffFile"
               type="file"
-              onChange={() => {
-                setTIFFFile(event.target.files);
-              }}
+              onChange={(e) => {setTIFFFile(e.target.files);}}
             />
           </Grid>
 
@@ -323,9 +297,7 @@ export default function CreateCard() {
             <TextField
               id="AIfile"
               type="file"
-              onChange={() => {
-                setAIFile(event.target.files);
-              }}
+              onChange={(e) => {setAIFile(e.target.files);}}
             />
           </Grid>
         </Grid>
