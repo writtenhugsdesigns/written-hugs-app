@@ -2,7 +2,6 @@ const express = require("express");
 const pool = require("../modules/pool");
 const router = express.Router();
 const { google } = require("googleapis");
-const apikeys = require("../../googleDriveAPI.json");
 const SCOPE = ["https://www.googleapis.com/auth/drive"];
 const multer = require("multer");
 const uploadHandler = multer();
@@ -236,9 +235,9 @@ router.post("/", uploadHandler.any(), rejectUnauthenticated, async (req, res) =>
 
   //This creates an authentication token with google
   const jwtClient = new google.auth.JWT(
-    apikeys.client_email,
+    client_email,
     null,
-    apikeys.private_key,
+    private_key,
     SCOPE
   );
   await jwtClient.authorize();
