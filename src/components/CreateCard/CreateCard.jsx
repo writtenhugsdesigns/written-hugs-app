@@ -32,10 +32,10 @@ export default function CreateCard() {
     });
   }, []);
 
-  let [variationName, setVariationName] = useState(null);
+  let [variationName, setVariationName] = useState('');
   let [UPCNumber, setUPCNumber] = useState("");
-  let [vendorStyle, setVendorStyle] = useState(null);
-  let [description, setDescription] = useState(null);
+  let [vendorStyle, setVendorStyle] = useState('');
+  let [description, setDescription] = useState('');
   let [barcode, setBarcode] = useState([]);
   let [front, setFront] = useState([]);
   let [insideInsertion, setInsideInsertion] = useState([]);
@@ -140,12 +140,19 @@ export default function CreateCard() {
     });
   };
 
+  const fillForm = () => {
+    setVariationName('Messy Table');
+    setUPCNumber("1234");
+    setVendorStyle('V1234');
+    setDescription('If you know someone who feels like their life is a messy and they “should” be doing better, this card is for them. This is a unique greeting card with mental health quotes for encouraging someone to keep their head up despite struggles on Valentine’s Day. The front of this card is a scene of a messy table with glue spilled and a newly crafted Valentine’s Day card that says, ‘I love you’. Inside it reads, “Your life may feel a mess, but I love you. All of you. I’m glad you are in my life. Be kind to yourself.”');
+  }
+
   //This form is divided using MUI Grid elements inside of a form div
   return (
     <div className="container">
       <Grid container sx={{ m: 3 }}>
         <Grid item lg={6}>
-          <Typography variant="h2">New Card Variation</Typography>
+          <Typography variant="h2" onClick={fillForm}>New Card Variation</Typography>
         </Grid>
         <Grid item lg={3}>
           <button className="pageButton" onClick={handleCancel}>
