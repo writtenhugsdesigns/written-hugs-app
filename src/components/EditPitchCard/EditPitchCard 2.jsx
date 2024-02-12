@@ -9,7 +9,6 @@ import {
   Typography,
   Alert
 } from "@mui/material";
-import {largeModalStyle, cardStyle} from "../../constants/styling.js";
 import ViewCard from "../ViewCard/ViewCard";
 
 export default function PitchCard({ card, isInCart }) {
@@ -20,12 +19,27 @@ export default function PitchCard({ card, isInCart }) {
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
 
-  const viewCard = () => {
+
+  const viewCard = (card) => {
     dispatch({
       type: "SET_EDIT",
       payload: card
     });
     handleOpen();
+  };
+
+  // Style for MUI box in Modal
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    overflow: "auto",
+    display: "block",
+    width: "90vw",
+    height: "90vh",
+    bgcolor: "background.paper",
+    'border-radius': '5px'
   };
 
   const removeCardFromCart = () => {
@@ -44,7 +58,15 @@ export default function PitchCard({ card, isInCart }) {
 
   return (
     <>
-      <Card sx={cardStyle}>
+      <Card
+        sx={{
+        height: "27em",
+        width: "15em",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+      >
         {isInCart(card) && <Alert>Added!</Alert>}
         <CardMedia
           height="20em"
@@ -106,7 +128,7 @@ export default function PitchCard({ card, isInCart }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={largeModalStyle}>
+        <Box sx={style}>
           <ViewCard handleClose={handleClose} />
         </Box>
       </Modal>

@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { darkSand, fontStyle17 } from "../../constants/styling";
 import Swal from "sweetalert2";
 import './PitchList.css';
 
@@ -100,6 +101,7 @@ export default function PitchList() {
     setDateSort(true);
   };
 
+  
   const sortPitchByWholesalerNameDesc = () => {
     pitches.sort((a, b) => {
       const wholesalerA = a.wholesaler_company_name.toLowerCase();
@@ -209,7 +211,7 @@ export default function PitchList() {
       <div className='flexbox'>
         <h2>Wholesaler: {" "}</h2>
         <span>
-          <select onChange={() => filterWholesalersByName(event.target.value)}>
+          <select onChange={(e) => filterWholesalersByName(e.target.value)}>
             <option value="0">All</option>
             {wholesalers &&
               wholesalers.map((wholesaler) => {
@@ -227,7 +229,7 @@ export default function PitchList() {
         <TableContainer>
           <Table stickyheader aria-label="sticky table">
             <TableHead>
-              <TableRow sx={{backgroundColor: '#eeebe5'}}>
+              <TableRow sx={{backgroundColor: darkSand}}>
                 <TableCell style={{ maxWidth: "10vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"wholesaler"}>
                 {!wholesalerSort && (
                     <span onClick={sortPitchByWholesalerNameAsc}>Wholesaler ▽</span>
@@ -253,11 +255,11 @@ export default function PitchList() {
             <TableBody>
               {(renderList || pitches).map((pitchRow) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={pitchRow.id}>
-                  <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{pitchRow.wholesaler_company_name}</TableCell>
-                  <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>
+                  <TableCell sx={fontStyle17}>{pitchRow.wholesaler_company_name}</TableCell>
+                  <TableCell sx={fontStyle17}>
                     {new Date(Date.parse(pitchRow.date)).toLocaleDateString()}
                   </TableCell>
-                  <TableCell sx={{fontFamily: 'Open Sans Light', fontSize: '17px'}}>{pitchRow.description}</TableCell>
+                  <TableCell sx={fontStyle17}>{pitchRow.description}</TableCell>
                   <TableCell>
                     <Button
                       onClick={() => viewPitch(pitchRow.pitches_id)}

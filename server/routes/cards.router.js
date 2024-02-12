@@ -30,7 +30,7 @@ router.get("/folders", rejectUnauthenticated, async (req, res) => {
   const drive = google.drive({ version: "v3", auth: jwtClient });
   const folders = [];
   const results = await drive.files.list({
-    q: "mimeType='application/vnd.google-apps.folder'",
+    q: "mimeType='application/vnd.google-apps.folder' and parents = '1wG6GeFUgvvh-8GOHw1NhlfRPUUDfP2H_'",
     fields: "nextPageToken, files(id, name)",
     spaces: "drive",
   });
@@ -405,7 +405,14 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
+
+router.put("/file/:id", uploadHandler.any(), async (req,res) =>
+{
+  
+})
+
 router.get("/:id", rejectUnauthenticated, (req, res) => {
+
   const queryText = `
 
       SELECT
@@ -535,6 +542,9 @@ function formatCards(all) {
       cardsArray[
         i
       ].insert_ai.display = `https://drive.google.com/file/d/${cardsArray[i].insert_ai.raw}`;
+      cardsArray[
+        i
+      ].barcode.display = `https://drive.google.com/file/d/${cardsArray[i].barcode.raw}`;
     }
   }
   return cardsArray;

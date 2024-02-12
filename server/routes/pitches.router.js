@@ -108,7 +108,10 @@ router.get("/", rejectUnauthenticated, (req, res) => {
                 description: input.cards_description,
                 upc: input.upc,
                 sku: input.sku,
-                barcode: input.barcode,
+                barcode: {
+                  raw: input.barcode,
+                  display: `https://drive.google.com/thumbnail?id=${input.barcode}`,
+                },
                 front_img: {
                   raw: input.front_img,
                   display: `https://drive.google.com/thumbnail?id=${input.front_img}`,
@@ -156,7 +159,10 @@ router.get("/", rejectUnauthenticated, (req, res) => {
             description: input.cards_description,
             upc: input.upc,
             sku: input.sku,
-            barcode: input.barcode,
+            barcode: {
+              raw: input.barcode,
+              display: `https://drive.google.com/thumbnail?id=${input.barcode}`,
+            },
             front_img: {
               raw: input.front_img,
               display: `https://drive.google.com/thumbnail?id=${input.front_img}`,
