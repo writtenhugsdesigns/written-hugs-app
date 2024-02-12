@@ -72,14 +72,17 @@ export default function ViewCard({ handleClose }) {
         <div className="imgLeft">
           <img className="frontImg" src={selectedCard.front_img.display} />
         </div>
-        <div className="imgRight">
-          <p>Inner Image:</p>
-          <img src={selectedCard && selectedCard.inner_img.display} />
-          <p>Insert Image:</p>
-          <img src={selectedCard && selectedCard.insert_img.display} />
-          <p>Sticker Image:</p>
-          <img src={selectedCard && selectedCard.sticker_jpeg.display} />
-        </div>
+        {selectedCard && 
+          <div className="imgRight">
+            <p>Inner Image:</p>
+            {selectedCard.inner_img.display && <img src={selectedCard.inner_img.display} />}
+            <p>Insert Image:</p>
+            {selectedCard.insert_img.display && <img src={selectedCard.insert_img.display} />}
+            <p>Sticker Image:</p>
+            {selectedCard.sticker_jpeg.display && <img src={selectedCard.sticker_jpeg.display} />}
+          </div>
+        
+        }
       </div>
       <div>
         <Button variant="outlined" onClick={editCardText}>
