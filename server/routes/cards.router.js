@@ -27,7 +27,7 @@ router.get("/folders", async (req, res) => {
   const drive = google.drive({ version: "v3", auth: jwtClient });
   const folders = [];
   const results = await drive.files.list({
-    q: "mimeType='application/vnd.google-apps.folder'",
+    q: "mimeType='application/vnd.google-apps.folder' and parents = '1wG6GeFUgvvh-8GOHw1NhlfRPUUDfP2H_'",
     fields: "nextPageToken, files(id, name)",
     spaces: "drive",
   });
