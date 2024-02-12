@@ -137,3 +137,8 @@ select {
   font-family: "Open Sans Regular";
   src: url('/OpenSans-Regular.ttf');
 }
+
+.description {
+  height: 10em;
+  overflow-y: scroll;
+}
