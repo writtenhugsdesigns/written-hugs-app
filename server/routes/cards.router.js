@@ -31,7 +31,6 @@ router.get("/folders", async (req, res) => {
     fields: "nextPageToken, files(id, name)",
     spaces: "drive",
   });
-  // console.log("this is the result", results.data.files);
   res.send(results.data.files);
 });
 
@@ -253,6 +252,7 @@ router.post("/", uploadHandler.any(), async (req, res) => {
   //This creates the folder for the card variant
   const folderResponse = await drive.files.create({
     resource: fileMetaData,
+    ignoreDefaultVisibility: true,
     fields: "id",
   });
   const folderID = folderResponse.data.id;
@@ -273,9 +273,6 @@ router.post("/", uploadHandler.any(), async (req, res) => {
       fileds: "id.name",
     });
     objectToSendToDB[fileObject.fieldname] = data.id;
-    // console.log("fieldName:", fileObject.fieldname);
-    // console.log("dataID:", data.id);
-    // console.error(objectToSendToDB);
   };
   const { body, files } = req;
   for (let f = 0; f < files.length; f++) {

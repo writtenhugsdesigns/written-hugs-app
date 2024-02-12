@@ -34,20 +34,15 @@ export default function EditCard() {
   const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
   const cardToEdit = useSelector((store) => store.cardsReducer.editCurrentCard);
   const folderList = useSelector((store) => store.cardsReducer.currentFolders);
-  const folderName = (cardToEdit.vendor_style, "+", cardToEdit.name)
-  console.log("this is the folderName:", folderName);
-  const currentFolderId = folderList.map(
-    (folder) => { console.log(folder.name);
-      if(folder.name===folderName){
-        console.log(folder.id);
-      };
+  const folderName = (cardToEdit.vendor_style + " " + cardToEdit.name)
 
-    // if(folder.name === folderName){
-    //   return folder.id
-    })
+  for (let folder of folderList) {
+    if(folder.name === folderName && folderId != '') {
+    return setFolderId(folder.id)
+  }}
+
   // const populateCategoryArray = () =>
   //   cardToEdit.categories_array.map(setNewCategory());
-  console.log("current folder Id:", currentFolderId);
 
   useEffect(() => {
     dispatch({
@@ -59,6 +54,10 @@ export default function EditCard() {
     });
     
   }, []);
+  // console.log("this is the folderName:", folderName);
+  // console.log("this is the list of folders", folderList);
+  // console.log("current folder Id:", folderId);
+
 
   const handleVariationNameChange = (newName) => {
     dispatch({
@@ -239,7 +238,7 @@ export default function EditCard() {
               minRows={4}
               label="Card Varient Description"
               onChange={() =>
-                updateFileOnClick(event)
+                handleVariationDescriptionChange(event)
               }
               id="description"
             />
