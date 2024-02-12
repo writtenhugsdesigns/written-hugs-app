@@ -215,7 +215,7 @@ router.post("/existingCategory", rejectUnauthenticated, (req, res) => {
  * 4) Sends the card information to the database
  * 5) Sends the categories information to the card - categories database table
  */
-router.post("/", uploadHandler.any(), rejectUnauthenticated async (req, res) => {
+router.post("/", uploadHandler.any(), rejectUnauthenticated, async (req, res) => {
   const folderName = req.body.vendor_style + " " + req.body.name;
 
   //This creates an object to be populated with the file ids
