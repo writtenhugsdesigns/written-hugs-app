@@ -18,9 +18,9 @@ const {
  */
 router.get("/folders", rejectUnauthenticated, async (req, res) => {
   const jwtClient = new google.auth.JWT(
-    apikeys.client_email,
+    process.env.client_email,
     null,
-    apikeys.private_key,
+    process.env.private_key,
     SCOPE
   );
   //     console.log("jwtClient before authorize", jwtClient);
