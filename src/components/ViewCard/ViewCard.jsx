@@ -75,11 +75,11 @@ export default function ViewCard({ handleClose }) {
         {selectedCard && 
           <div className="imgRight">
             <p>Inner Image:</p>
-            <img src={selectedCard.inner_img.display} />
+            {selectedCard.inner_img.display && <img src={selectedCard.inner_img.display} />}
             <p>Insert Image:</p>
-            <img src={selectedCard.insert_img.display} />
+            {selectedCard.insert_img.display && <img src={selectedCard.insert_img.display} />}
             <p>Sticker Image:</p>
-            <img src={selectedCard.sticker_jpeg.display} />
+            {selectedCard.sticker_jpeg.display && <img src={selectedCard.sticker_jpeg.display} />}
           </div>
         
         }
