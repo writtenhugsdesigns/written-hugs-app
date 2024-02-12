@@ -387,12 +387,12 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
     // second QUERY removes categories FOR THAT card
     const deleteCategories = await connection.query(queryDeleteText);
     const categoriesArray = req.body.categoriesArrayForQuery;
-    const editCardsCategoriesQuery = editCardsCategoriesQuery(
+    const editCardsCategoriesQueryByID = editCardsCategoriesQuery(
       categoriesArray,
       req.params.id
     );
     // Third QUERY ADDS categories FOR THAT card
-    const addCardCategories = await connection.query(editCardsCategoriesQuery);
+    const addCardCategories = await connection.query(editCardsCategoriesQueryByID);
 
     connection.query("COMMIT;");
     connection.release();
@@ -403,84 +403,6 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
     connection.release();
     res.sendStatus(500);
   }
-
-  // const queryText = `
-  //     UPDATE "cards"
-  //       SET
-  //         "name"=$1,
-  //         "vendor_style"=$2,
-  //         "description"=$3,
-  //         "upc"=$4,
-  //         "sku"=$5,
-  //         "barcode"=$6,
-  //         "front_img"=$7,
-  //         "front_tiff"=$8,
-  //         "inner_img"=$9,
-  //         "insert_img"=$10,
-  //         "insert_ai"=$11,
-  //         "raw_art"=$12,
-  //         "sticker_jpeg"=$13,
-  //         "sticker_pdf"=$14
-  //       WHERE
-  //         id=$15;
-  //   `;
-  // console.log("req.body:", req.body);
-  // const queryValues = [
-  //   req.body.card.name,
-  //   req.body.card.vendor_style,
-  //   req.body.card.description,
-  //   req.body.card.upc,
-  //   req.body.card.sku,
-  //   req.body.card.barcode,
-  //   req.body.card.front_img,
-  //   req.body.card.front_tiff,
-  //   req.body.card.inner_img,
-  //   req.body.card.insert_img,
-  //   req.body.card.insert_ai,
-  //   req.body.card.raw_art,
-  //   req.body.card.sticker_jpeg,
-  //   req.body.card.sticker_pdf,
-  //   req.params.id,
-  // ];
-  // pool
-  //   .query(queryText, queryValues)
-  //   .then((result) => {
-  //     const queryDeleteText = `
-  //     DELETE FROM cards_categories
-  //       WHERE cards_id=${req.params.id};
-  //   `;
-  //     // second QUERY removes categories FOR THAT card
-  //     pool
-  //       .query(queryDeleteText)
-  //       .then((result) => {
-  //         const categoriesArray = req.body.categoriesArrayForQuery;
-  //         const editCardsCategoriesQuery = editCardsCategoriesQuery(
-  //           categoriesArray,
-  //           req.params.id
-  //         );
-  //         // Third QUERY ADDS categories FOR THAT card
-  //         pool
-  //           .query(editCardsCategoriesQuery)
-  //           .then((result) => {
-  //             res.sendStatus(201);
-  //           })
-  //           .catch((err) => {
-  //             // catch for third query
-  //             console.log(err);
-  //             res.sendStatus(500);
-  //           });
-  //       })
-  //       .catch((err) => {
-  //         // catch for second query
-  //         console.log(err);
-  //         res.sendStatus(500);
-  //       });
-  //   })
-  //   .catch((err) => {
-  //     // 👈 Catch for first query
-  //     console.log(err);
-  //     res.sendStatus(500);
-  //   });
 });
 
 router.get("/:id", rejectUnauthenticated, (req, res) => {
