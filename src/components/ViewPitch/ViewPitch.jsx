@@ -67,6 +67,10 @@ export default function ViewPitch() {
   return (
     <div className="container">
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <div>
+          <br></br>
+          <span className="marginLeft"></span><Button variant={"outlined"} onClick={() => history.push("/pitches")}>Back to Pitches</Button>
+        </div>
         <div className="viewPitchButtons">
           <h3>Pitch Name: {selectedPitch[0] && selectedPitch[0].name}</h3>
           <div>
