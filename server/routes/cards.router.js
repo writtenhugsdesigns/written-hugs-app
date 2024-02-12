@@ -2,7 +2,6 @@ const express = require("express");
 const pool = require("../modules/pool");
 const router = express.Router();
 const { google } = require("googleapis");
-const apikeys = require("../../googleDriveAPI.json");
 const SCOPE = ["https://www.googleapis.com/auth/drive"];
 const multer = require("multer");
 const uploadHandler = multer();
@@ -19,9 +18,9 @@ const {
  */
 router.get("/folders", rejectUnauthenticated, async (req, res) => {
   const jwtClient = new google.auth.JWT(
-    apikeys.client_email,
+    process.env.client_email,
     null,
-    apikeys.private_key,
+    process.env.private_key,
     SCOPE
   );
   //     console.log("jwtClient before authorize", jwtClient);
@@ -217,32 +216,31 @@ router.post("/existingCategory", rejectUnauthenticated, (req, res) => {
  */
 router.post("/", uploadHandler.any(), rejectUnauthenticated, async (req, res) => {
   const folderName = req.body.vendor_style + " " + req.body.name;
+  //This creates an object to be populated with the file ids
+  const objectToSendToDB = {
+    name: req.body.name,
+    upc: req.body.upc,
+    vendor_style: req.body.vendor_style,
+    description: req.body.description,
+    barcode: "",
+    front_img: "",
+    inner_img: "",
+    insert_img: "",
+    insert_ai: "",
+    sticker_jpeg: "",
+    sticker_pdf: "",
+    front_tiff: "",
+  };
 
-    //This creates an object to be populated with the file ids
-    const objectToSendToDB = {
-      name: req.body.name,
-      upc: req.body.upc,
-      vendor_style: req.body.vendor_style,
-      description: req.body.description,
-      barcode: "",
-      front_img: "",
-      inner_img: "",
-      insert_img: "",
-      insert_ai: "",
-      sticker_jpeg: "",
-      sticker_pdf: "",
-      front_tiff: "",
-    };
-
-    //This creates an authentication token with google
-    const jwtClient = new google.auth.JWT(
-      apikeys.client_email,
-      null,
-      apikeys.private_key,
-      SCOPE
-    );
-    await jwtClient.authorize();
-    const drive = google.drive({ version: "v3", auth: jwtClient });
+  //This creates an authentication token with google
+  const jwtClient = new google.auth.JWT(
+    client_email,
+    null,
+    private_key,
+    SCOPE
+  );
+  await jwtClient.authorize();
+  const drive = google.drive({ version: "v3", auth: jwtClient });
 
     //This is the metadata to setup the card variant folder
     let fileMetaData = {
