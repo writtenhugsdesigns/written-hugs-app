@@ -17,6 +17,7 @@ Duration: 3 weeks sprint
 ## Usage
 
 ## Demo
+View a demo walking through the features of this app [here](https://www.youtube.com/watch?v=VLI2vKHr48E)
 
 ## Prerequisites
 This application requires the following technologies and libraries:
@@ -65,7 +66,9 @@ To install this application on your local device:
 
 ## Deployment
 
+
 ## Authors
-This application was created by [Mark Klein](https://github.com/kleincentral), [Hannah Bjorklund](https://github.com/hannahbjorklund), [James Woods](https://github.com/jamesdtwoods), and [Ryan Kjesbo-Johnson](https://github.com/RyanKjesboJohnson) for Written Hugs Designs under the tutelage of Prime Digital Academy.
+This application was created by [Mark Klein](https://github.com/kleincentral), [Hannah Bjorklund](https://github.com/hannahbjorklund), [James Woods](https://github.com/jamesdtwoods), and [Ryan Kjesbo-Johnson](https://github.com/RyanKjesboJohnson) for Written Hugs Designs.
 
 ## Acknowledgements
+This project was developed under the tutelage of [Prime Digital Academy](https://www.primeacademy.io/?utm_campaign=brand_search&utm_medium=cpc&utm_source=google&utm_medium=ppc&utm_campaign=Brand+Search&utm_term=prime%20digital%20academy&utm_source=adwords&hsa_mt=b&hsa_kw=prime%20digital%20academy&hsa_grp=34455376016&hsa_tgt=kwd-315051457809&hsa_ad=665947820597&hsa_ver=3&hsa_acc=5885076177&hsa_cam=670836869&hsa_src=g&hsa_net=adwords&gad_source=1&gclid=Cj0KCQiA5rGuBhCnARIsAN11vgSkwy6YBKtx7R4OmyctPvuM6FXI4A1XErI-O91IigXJQn8tEIInGvAaAp4REALw_wcB)
