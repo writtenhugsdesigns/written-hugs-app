@@ -7,6 +7,23 @@
 ## Demo
 
 ## Prerequisites
+This application was created using some of the following technologies and libraries:
+* Node.js
+* PG
+* Axios
+* Express
+* Redux-Saga
+* React
+* PostgreSQL database manager
+* Material UI
+* Sweet Alerts 2
+* Passport
+* Multer
+* PrintJS
+* React CSV
+* Google Auth Library
+
+For a full list of dependencies, please refer to the [package.json](package.json).
 
 ## Installation
 
