@@ -235,9 +235,9 @@ router.post("/", uploadHandler.any(), rejectUnauthenticated, async (req, res) =>
 
   //This creates an authentication token with google
   const jwtClient = new google.auth.JWT(
-    client_email,
+    process.env.CLIENT_EMAIL,
     null,
-    private_key,
+    process.env.PRIVATE_KEY,
     SCOPE
   );
   await jwtClient.authorize();
