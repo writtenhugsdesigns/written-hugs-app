@@ -10,7 +10,7 @@ const { log } = require("console");
 const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
-const apikeys = require("../../googleDriveAPI.json");
+const apikeys = require("../../credentials.json");
 
 /** This function first authorizes to google drive using the JWT api method
  * Then it makes an api get call to google drive to fetch files of
