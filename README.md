@@ -39,7 +39,10 @@ For a full list of dependencies, please refer to the [package.json](package.json
 
 ## Installation
 To install this application on your local device:
-1. 
+1. Fork and clone this repository
+2. Run ~~~ npm install ~~~ to get all necessary dependencies to run the application
+3. Create a .env file in the [public](public) folder
+4. Add the following 
 
 ## Deployment
 
