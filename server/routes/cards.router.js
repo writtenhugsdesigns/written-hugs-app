@@ -10,6 +10,8 @@ const { log } = require("console");
 const {
   rejectUnauthenticated,
 } = require("../modules/authentication-middleware");
+const client_email =  process.env.CLIENT_EMAIL;
+const private_key =  process.env.PRIVATE_KEY;
 
 /** This function first authorizes to google drive using the JWT api method
  * Then it makes an api get call to google drive to fetch files of
@@ -18,9 +20,9 @@ const {
  */
 router.get("/folders", rejectUnauthenticated, async (req, res) => {
   const jwtClient = new google.auth.JWT(
-    process.env.client_email,
+    client_email,
     null,
-    process.env.private_key,
+    private_key,
     SCOPE
   );
   //     console.log("jwtClient before authorize", jwtClient);
