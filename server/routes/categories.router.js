@@ -22,6 +22,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 });
 
 router.post("/", rejectUnauthenticated, (req, res) => {
+  console.log('req.body', req.body);
   const sqlText = `
   INSERT INTO "categories"
   ("name")
@@ -33,8 +34,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     .query(sqlText, [req.body.name])
     .then((result) => {
       const categoryId = result.rows[0].id;
-      res.send({id : categoryId,
-      name: req.body.name});
+      res.send({id : categoryId});
     })
     .catch((err) => {
       console.log("Error in wholesaler POST route,", err);

@@ -18,13 +18,12 @@ function* postCategory(action) {
     const response = yield axios({
       method: "POST",
       url: "/api/categories",
-      data: action.payload,
+      data: {name: action.payload}
     })
     yield put({
       type: "SET_CURRENT_CATEGORY",
-      payload: response.data
+      payload: response.data.id
     })
-    yield fetchCategories();
   }  catch (error) {
     console.error("postCategory failed:", error);
   }

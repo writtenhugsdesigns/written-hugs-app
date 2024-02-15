@@ -12,7 +12,6 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Swal from "sweetalert2";
 import MultipleSelect from "../MultiSelectCategories/MultiSelectCategories";
 import "./CreateCard.css";
-import axios from "axios";
 
 export default function CreateCard() {
   const history = useHistory();
@@ -32,7 +31,8 @@ export default function CreateCard() {
     dispatch({
       type: "SAGA/FETCH_CATEGORIES",
     });
-  }, []);
+    categoryFunction()
+  }, [createdCategory]);
 
   let [variationName, setVariationName] = useState('');
   let [UPCNumber, setUPCNumber] = useState("");
@@ -46,7 +46,13 @@ export default function CreateCard() {
   let [stickerPdf, setStickerPdf] = useState([]);
   let [TIFFFile, setTIFFFile] = useState([]);
   let [AIFile, setAIFile] = useState([]);
-  let [categoriesInput, setCategoriesInput] = useState([createdCategory.id]);
+  let [categoriesInput, setCategoriesInput] = useState([]);
+
+  const categoryFunction = () => {
+    if (createdCategory) {
+      setCategoriesInput([...categoriesInput, createdCategory])
+    }
+  }
 
   const folderName = vendorStyle + " " + variationName;
 
@@ -134,7 +140,10 @@ export default function CreateCard() {
       confirmButtonText: "Submit",
     }).then((result) => {
       if (result.isConfirmed) {
-        
+        dispatch({
+          type: "SAGA/POST_CATEGORY",
+          payload: result.value
+        });
       }
     });
   };
@@ -229,7 +238,7 @@ export default function CreateCard() {
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
             <div>
-              <Typography variant="overline">Front Image</Typography>
+              <Typography variant="overline">Web Front</Typography>
             </div>
             <TextField
               id="front"
@@ -239,7 +248,7 @@ export default function CreateCard() {
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
             <div>
-              <Typography variant="overline">Inside Image</Typography>
+              <Typography variant="overline">Web Inscription</Typography>
             </div>
             <TextField
               id="insideInsertion"
