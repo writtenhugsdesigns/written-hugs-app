@@ -126,7 +126,7 @@ export default function ViewPitch() {
                       <img src={card.barcode.display} />
                     </TableCell>
                     <TableCell sx={fontStyle17}>{card.vendor_style}</TableCell>
-                    <TableCell sx={fontStyle17}>{card.card_name}</TableCell>
+                    <TableCell sx={fontStyle17}>{card.name}</TableCell>
                     <TableCell>
                       <img src={card.front_img.display} />
                     </TableCell>
