@@ -9,7 +9,7 @@ const categories = (state = [], action) => {
   }
 };
 
-const currentCategory = (state = {}, action) => {
+const currentCategory = (state = null, action) => {
   switch (action.type) {
     case "SET_CURRENT_CATEGORY":
       return action.payload;

@@ -95,10 +95,11 @@ function* editCard(action) {
 
 function* editCardFile(action) {
   try{
+    console.log("this is the data received in editCardFile", action.payload.cardId.id);
     const response = yield axios({
       method: 'PUT',
-      url: `/api/cards/${action.payload.params}`,
-      data: action.payload.data
+      url: `/api/cards/${action.payload.cardId.id}`,
+      data: action.payload.data.fileToSend
     })
     yield fetchAllCards()
   }
@@ -136,7 +137,7 @@ function* getCurrentFolders() {
     yield put({
       type: 'SET_FOLDERS',
       payload: folders.data
-    });
+    })
   } catch (error) {
     console.log('fetchCategories error:', error);
   }
