@@ -71,9 +71,6 @@ To install this application on your local device:
 8. Navigate to localhost:{insert port here}/#/home
 9. Login using admin credentials
 
-## Deployment
-
-
 ## Authors
 This application was created by [Mark Klein](https://github.com/kleincentral), [Hannah Bjorklund](https://github.com/hannahbjorklund), [James Woods](https://github.com/jamesdtwoods), and [Ryan Kjesbo-Johnson](https://github.com/RyanKjesboJohnson) for Written Hugs Designs.
 
