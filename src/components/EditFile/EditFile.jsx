@@ -17,7 +17,7 @@ export default function EditFile({fileType, currentId, folderName}) {
             input: "file",
             inputAttributes: {
             "accept": "image/*",
-            "aria-label": "Upload your profile picture"
+            "aria-label": "Upload your updated file"
             }
         });
         fileToSend.append(`${fileType}`, file)

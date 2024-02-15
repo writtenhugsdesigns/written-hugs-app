@@ -12,6 +12,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Swal from "sweetalert2";
 import MultipleSelect from "../MultiSelectCategories/MultiSelectCategories";
 import "./CreateCard.css";
+import axios from "axios";
 
 export default function CreateCard() {
   const history = useHistory();
@@ -19,6 +20,7 @@ export default function CreateCard() {
   const newCardToSend = new FormData();
   const currentFoldersArray = useSelector(store => store.cardsReducer.currentFolders);
   const databaseCategories = useSelector((store) => store.categoriesReducer);
+  const createdCategory = useSelector((store) => store.categoriesReducer.currentCategory);
 
   //This use effect triggers the saga "getCurrentFolders"
   //After this is triggered a useSelector will get the current folders array
@@ -44,7 +46,7 @@ export default function CreateCard() {
   let [stickerPdf, setStickerPdf] = useState([]);
   let [TIFFFile, setTIFFFile] = useState([]);
   let [AIFile, setAIFile] = useState([]);
-  let [categoriesInput, setCategoriesInput] = useState([]);
+  let [categoriesInput, setCategoriesInput] = useState([createdCategory.id]);
 
   const folderName = vendorStyle + " " + variationName;
 
@@ -132,10 +134,7 @@ export default function CreateCard() {
       confirmButtonText: "Submit",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch({
-          type: 'SAGA/POST_CATEGORY',
-          payload: { name: result.value }
-        })
+        
       }
     });
   };

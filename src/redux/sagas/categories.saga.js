@@ -19,9 +19,13 @@ function* postCategory(action) {
       method: "POST",
       url: "/api/categories",
       data: action.payload,
-    });
+    })
+    yield put({
+      type: "SET_CURRENT_CATEGORY",
+      payload: response.data
+    })
     yield fetchCategories();
-  } catch (error) {
+  }  catch (error) {
     console.error("postCategory failed:", error);
   }
 }
