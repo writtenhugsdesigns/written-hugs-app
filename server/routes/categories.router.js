@@ -27,11 +27,14 @@ router.post("/", rejectUnauthenticated, (req, res) => {
   ("name")
   VALUES
   ($1)
+  RETURNING "id";
   `;
   pool
     .query(sqlText, [req.body.name])
     .then((result) => {
-      res.sendStatus(201);
+      const categoryId = result.rows[0].id;
+      res.send({id : categoryId,
+      name: req.body.name});
     })
     .catch((err) => {
       console.log("Error in wholesaler POST route,", err);
