@@ -18,9 +18,9 @@ const {
  */
 router.get("/folders", rejectUnauthenticated, async (req, res) => {
   const jwtClient = new google.auth.JWT(
-    apikeys.client_email,
+    process.env.CLIENT_EMAIL,
     null,
-    apikeys.private_key,
+    process.env.PRIVATE_KEY,
     SCOPE
   );
   //     console.log("jwtClient before authorize", jwtClient);
@@ -235,9 +235,9 @@ router.post("/", uploadHandler.any(), rejectUnauthenticated, async (req, res) =>
 
   //This creates an authentication token with google
   const jwtClient = new google.auth.JWT(
-    client_email,
+    process.env.CLIENT_EMAIL,
     null,
-    private_key,
+    process.env.PRIVATE_KEY,
     SCOPE
   );
   await jwtClient.authorize();
