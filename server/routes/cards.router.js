@@ -375,7 +375,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
     const updateCard = await connection.query(queryText, queryValues);
     const queryDeleteText = `
       DELETE FROM cards_categories
-        WHERE cards_id=${req.params.id};`;
+        WHERE card_id=${req.params.id};`;
     // second QUERY removes categories FOR THAT card
     const deleteCategories = await connection.query(queryDeleteText);
     const categoriesArray = req.body.categoriesArrayForQuery;
