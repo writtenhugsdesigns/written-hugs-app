@@ -40,6 +40,9 @@ export default function ReviewPitch() {
         newPitch: cart,
       },
     });
+    dispatch({
+      type: "CLEAR_CART"
+    });
     history.push("/pitches");
   };
   
