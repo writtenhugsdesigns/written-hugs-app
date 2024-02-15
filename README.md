@@ -12,9 +12,16 @@
 ## Description
 Duration: 3 weeks sprint
 
-
+This application was created for Christi Kmecik, owner of Written Hugs Designs, to help her better manage her files for her business. Christi creates custom greeting cards that often address difficult feelings and situations in a genuine and caring way. Christi's previous process involved her doing all file and image formatting for her cards and wholesaler pitches on her own. This included creating folders for her cards, making pitch documents and spreadsheets for wholesalers, and gathering many files together from multiple places, all on her iPad. The Written Hugs application was created to automate away much of the formatting process and provide Christi with a secure cloud storage method. This app makes and organizes folders for her in the connected Google Drive via the Google Drive API. It also creates her pitch documents and spreadsheets and allows her to view all her data in one accessible place. Overall, this should save time and energy that Christi can now invest into growing her business further and spreading love with her amazing and thoughtful cards.
 
 ## Usage
+1. **Login**: The admin can log in using their credentials
+2. **Admin Home**: Upon logging in, the admin will be directed to the home page, where they can navigate to manage cards, wholesalers, and pitches
+3. **Card Management**: Admin can view all existing cards on this page as sorted by card category. The admin can also add a new card by clicking the 'New Card' button, and view, edit, or delete a specific card by clicking one of the corresponding buttons in the table row for that card.
+4. **Category Management**: Admin can click on the 'Manage Categories' button on the Card Management page to navigate to the categories page. Here they can view all existing card categories. Clicking 'Add Category' will allow them to add a new category. The admin can also edit and delete specified categories using the 'Edit' and 'Delete' buttons. The admin can also add categories on individual card view
+5. **Wholesaler Management**: Clicking on  the 'Manage Wholesalers' button will navigate the admin to the wholesaler page, where they can add, edit, and delete wholesalers. Wholesalers can be assigned to pitches on the Review or Edit Pitch pages
+6. **Pitch Creation**:  Admin can interact with  a pitch creation "shopping interface" where they can add or remove singular cards from their cart, or add/remove all cards in a given category. Admin also can view cards. When they are done adding cards, clicking the Review Cart button will prompt them to review the cards again, also with the option to remove cards. Admin can assign a name, description, and wholesaler to a pitch and hit the 'Save Pitch' button to save to the database. Admin can also view and manage pitch history on  the 'Manage Pitches' page.
+
 
 ## Demo
 View a demo walking through the features of this app [here](https://www.youtube.com/watch?v=VLI2vKHr48E)
