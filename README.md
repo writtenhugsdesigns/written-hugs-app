@@ -5,7 +5,6 @@
 - [Usage](#usage)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Deployment](#deployment)
 - [Authors](#authors)
 - [Acknowledgements](#acknowledgements)
   
