@@ -27,6 +27,7 @@ export default function CardList() {
   const history = useHistory();
 
   const cardsByCategory = useSelector(store => store.cardsReducer.cardsListByCategory);
+  const folderList = useSelector((store) => store.cardsReducer.currentFolders);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -34,6 +35,7 @@ export default function CardList() {
   useEffect(() => {
     dispatch({ type: "SAGA/FETCH_CARDS_BY_CATEGORY" });
     dispatch({ type: "SAGA/FETCH_CATEGORIES" });
+    dispatch({type: 'SAGA/GET_FOLDERS'});
   }, []);
 
   /**
@@ -82,9 +84,19 @@ export default function CardList() {
           text: "The card has been deleted.",
           icon: "success"
         });
+        // Delete from Google Drive
+        // Get the folder id by cross referencing folder name with list of folders
+        const folderName = (card.vendor_style + " " + card.name);
+        let folderIdToDelete = '';
+        for (let folder of folderList) {
+          if(folder.name === folderName && folderIdToDelete === '') {
+            folderIdToDelete = folder.id;
+          }
+        }
+        //Dispatch to router where card will be deleted in both places
         dispatch({
           type: 'SAGA/DELETE_CARD',
-          payload: card.card_id
+          payload: {card_id: card.card_id, folder_id: folderIdToDelete}
         })
       }
     });

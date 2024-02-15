@@ -49,6 +49,7 @@ function* postCard(action) {
 
     yield fetchAllCards()
     yield fetchAllCardsByCategory();
+    yield getCurrentFolders();
   }
   catch (error) {
     console.error('Card POST failed:', error)
@@ -64,7 +65,7 @@ function* deleteCard(action) {
   try {
     const response = yield axios({
       method: 'DELETE',
-      url: `/api/cards/${action.payload}`
+      url: `/api/cards?card_id=${action.payload.card_id}&folder_id=${action.payload.folder_id}`
     })
     yield fetchAllCards();
     yield fetchAllCardsByCategory();
