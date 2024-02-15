@@ -6,6 +6,7 @@ import cardSaga from "./cards.saga";
 import wholesalerSaga from "./wholesalers.saga";
 import categorySaga from "./categories.saga";
 import pitchSaga from "./pitches.saga";
+import allUserSaga from "./all_user.saga";
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -23,5 +24,6 @@ export default function* rootSaga() {
     wholesalerSaga(),
     categorySaga(),
     pitchSaga(),
+    allUserSaga()
   ]);
 }
