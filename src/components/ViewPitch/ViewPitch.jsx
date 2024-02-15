@@ -37,7 +37,7 @@ export default function ViewPitch() {
     let cardsArray = [["Vendor Style", "UPC#", "Product Name"]];
     if (pitch) {
       pitch.cards.map((card) => {
-        cardsArray.push([card.vendor_style, card.upc, card.description]);
+        cardsArray.push([card.vendor_style, card.upc, card.name]);
       });
     }
     return cardsArray;
