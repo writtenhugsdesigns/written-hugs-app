@@ -23,9 +23,9 @@ router.get("/folders", rejectUnauthenticated, async (req, res) => {
     process.env.PRIVATE_KEY,
     SCOPE
   );
-      // console.log("jwtClient before authorize", jwtClient);
+  // console.log("jwtClient before authorize", jwtClient);
   await jwtClient.authorize();
-      // console.log("jwtClient after authorize", jwtClient);
+  // console.log("jwtClient after authorize", jwtClient);
   const drive = google.drive({ version: "v3", auth: jwtClient });
   const folders = [];
   const results = await drive.files.list({
@@ -214,71 +214,75 @@ router.post("/existingCategory", rejectUnauthenticated, (req, res) => {
  * 4) Sends the card information to the database
  * 5) Sends the categories information to the card - categories database table
  */
-router.post("/", uploadHandler.any(), rejectUnauthenticated, async (req, res) => {
-  const folderName = req.body.vendor_style + " " + req.body.name;
+router.post(
+  "/",
+  uploadHandler.any(),
+  rejectUnauthenticated,
+  async (req, res) => {
+    const folderName = req.body.vendor_style + " " + req.body.name;
 
-  //This creates an object to be populated with the file ids
-  const objectToSendToDB = {
-    name: req.body.name,
-    upc: req.body.upc,
-    vendor_style: req.body.vendor_style,
-    description: req.body.description,
-    barcode: "",
-    front_img: "",
-    inner_img: "",
-    insert_img: "",
-    insert_ai: "",
-    sticker_jpeg: "",
-    sticker_pdf: "",
-    front_tiff: "",
-  };
+    //This creates an object to be populated with the file ids
+    const objectToSendToDB = {
+      name: req.body.name,
+      upc: req.body.upc,
+      vendor_style: req.body.vendor_style,
+      description: req.body.description,
+      barcode: "",
+      front_img: "",
+      inner_img: "",
+      insert_img: "",
+      insert_ai: "",
+      sticker_jpeg: "",
+      sticker_pdf: "",
+      front_tiff: "",
+    };
 
-  //This creates an authentication token with google
-  const jwtClient = new google.auth.JWT(
-    process.env.CLIENT_EMAIL,
-    null,
-    process.env.PRIVATE_KEY,
-    SCOPE
-  );
-  await jwtClient.authorize();
-  const drive = google.drive({ version: "v3", auth: jwtClient });
+    //This creates an authentication token with google
+    const jwtClient = new google.auth.JWT(
+      process.env.CLIENT_EMAIL,
+      null,
+      process.env.PRIVATE_KEY,
+      SCOPE
+    );
+    await jwtClient.authorize();
+    const drive = google.drive({ version: "v3", auth: jwtClient });
 
-  //This is the metadata to setup the card variant folder
-  let fileMetaData = {
-    name: folderName,
-    parents: ["1wG6GeFUgvvh-8GOHw1NhlfRPUUDfP2H_"],
-    mimeType: "application/vnd.google-apps.folder",
-  };
+    //This is the metadata to setup the card variant folder
+    let fileMetaData = {
+      name: folderName,
+      parents: ["1wG6GeFUgvvh-8GOHw1NhlfRPUUDfP2H_"],
+      mimeType: "application/vnd.google-apps.folder",
+    };
 
-  //This creates the folder for the card variant
-  const folderResponse = await drive.files.create({
-    resource: fileMetaData,
-    ignoreDefaultVisibility: true,
-    fields: "id",
-  });
-  const folderID = folderResponse.data.id;
-
-  //This creates a function called uploadFile which sends each file to google drive
-  const uploadFile = async (fileObject) => {
-    const bufferStream = new stream.PassThrough();
-    bufferStream.end(fileObject.buffer);
-    const { data } = await drive.files.create({
-      media: {
-        name: fileObject.mimeType,
-        body: bufferStream,
-      },
-      requestBody: {
-        name: fileObject.originalname,
-        parents: [folderID],
-      },
-      fileds: "id.name",
+    //This creates the folder for the card variant
+    const folderResponse = await drive.files.create({
+      resource: fileMetaData,
+      ignoreDefaultVisibility: true,
+      fields: "id",
     });
-    objectToSendToDB[fileObject.fieldname] = data.id;
-  };
-  const { body, files } = req;
-  for (let f = 0; f < files.length; f++) {
-    await uploadFile(files[f]);
-  }
+    const folderID = folderResponse.data.id;
+
+    //This creates a function called uploadFile which sends each file to google drive
+    const uploadFile = async (fileObject) => {
+      const bufferStream = new stream.PassThrough();
+      bufferStream.end(fileObject.buffer);
+      const { data } = await drive.files.create({
+        media: {
+          name: fileObject.mimeType,
+          body: bufferStream,
+        },
+        requestBody: {
+          name: fileObject.originalname,
+          parents: [folderID],
+        },
+        fileds: "id.name",
+      });
+      objectToSendToDB[fileObject.fieldname] = data.id;
+    };
+    const { body, files } = req;
+    for (let f = 0; f < files.length; f++) {
+      await uploadFile(files[f]);
+    }
 
     //This setups the DB queryText and queryValues to send to DB
     const queryText = `
@@ -384,7 +388,9 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
       req.params.id
     );
     // Third QUERY ADDS categories FOR THAT card
-    const addCardCategories = await connection.query(editCardsCategoriesQueryByID);
+    const addCardCategories = await connection.query(
+      editCardsCategoriesQueryByID
+    );
 
     connection.query("COMMIT;");
     connection.release();
@@ -396,7 +402,6 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
     res.sendStatus(500);
   }
 });
-
 
 router.put("/file/:id", uploadHandler.any(), async (req,res) =>
 { const params = req.params.id
@@ -447,7 +452,6 @@ router.put("/file/:id", uploadHandler.any(), async (req,res) =>
 })
 
 router.get("/:id", rejectUnauthenticated, (req, res) => {
-
   const queryText = `
 
       SELECT
@@ -496,18 +500,38 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.delete("/:id", rejectUnauthenticated, (req, res) => {
+router.delete("/", rejectUnauthenticated, async (req, res) => {
   // Deleting on google drive api?
-  console.log("In delete router");
 
-  const id = req.params.id;
-
+  const card_id = req.query.card_id
+  const folder_id = req.query.folder_id
+  console.log('card id  and folder id:', card_id, folder_id);
+  // let fileMetaData = {
+  //   name: folder_id,
+  //   parents: ["1wG6GeFUgvvh-8GOHw1NhlfRPUUDfP2H_"],
+  //   mimeType: "application/vnd.google-apps.folder",
+  // };
+  const jwtClient = new google.auth.JWT(
+    process.env.CLIENT_EMAIL,
+    null,
+    process.env.PRIVATE_KEY,
+    SCOPE
+  );
+  // console.log("jwtClient before authorize", jwtClient);
+  await jwtClient.authorize();
+  // console.log("jwtClient after authorize", jwtClient);
+  const drive = google.drive({ version: "v2", auth: jwtClient });
+  const results = await drive.files.delete({
+    fileId: folder_id,
+  });
+  
+  
   const sqlText = `
   DELETE FROM "cards"
     WHERE "id" = $1;
   `;
 
-  const sqlValues = [id];
+  const sqlValues = [card_id];
 
   pool
     .query(sqlText, sqlValues)
