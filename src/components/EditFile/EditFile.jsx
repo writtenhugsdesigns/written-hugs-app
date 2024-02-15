@@ -4,30 +4,29 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
-export default function EditFile({fileType, currentId, folderName}) {
+export default function EditFile({cardId, fileType, currentImageId, folderId}) {
     const dispatch = useDispatch();
     const currentEditingCard = useSelector((store) => (store.cardsReducer.editCurrentCard))
-    console.log(currentEditingCard);
     
-    const updateFileOnClick = (action) => {
+    const updateFileOnClick = async (action) => {
         action.preventDefault();
         const fileToSend = new FormData();
-        const { value: file } = Swal.fire({
+        const { value: file } = await Swal.fire({
             title: "Select new file",
             input: "file",
-            inputAttributes: {
-            "accept": "image/*",
-            "aria-label": "Upload your updated file"
-            }
-        });
+            showCancelButton: "true",
+
+        })
+      if(file){
         fileToSend.append(`${fileType}`, file)
-        fileToSend.append("currentId", currentId)
-        fileToSend.append("folderName", folderName)
-        fileToSend.append("cardID", currentEditingCard.card_id)
+        fileToSend.append("currentImageId", currentImageId)
+        fileToSend.append("folderId", folderId)
         dispatch({
             type: "SAGA/EDIT_CARD_FILE",
-            payload: fileToSend
-        })
+            payload: 
+            {fileToSend: fileToSend,
+            cardId: cardId}
+        })}
     }
 
   return (

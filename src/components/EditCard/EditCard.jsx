@@ -248,7 +248,7 @@ export default function EditCard() {
                 </div>
                 <img src={`${selectedCard.barcode.display}`} />
               </CardContent>
-              <EditFile fileType="barcode" currentId={selectedCard.barcode} folderId={folderId}/>
+              <EditFile cardId={params} fileType="barcode" currentId={selectedCard.barcode.raw} folderId={folderId}/>
             </Card>
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
