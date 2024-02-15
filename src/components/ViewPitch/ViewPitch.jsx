@@ -100,10 +100,10 @@ export default function ViewPitch() {
                   Variation Name
                 </TableCell>
                 <TableCell style={{ minWidth: "8vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"front_img"}>
-                  Front
+                  Web Front
                 </TableCell>
                 <TableCell style={{ minWidth: "8vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"inner_img"}>
-                  Inside Inscription
+                  Web Inscription
                 </TableCell>
                 <TableCell style={{ minWidth: "8vw", fontFamily: 'Open Sans Regular', fontSize: '18px' }} key={"insert_img"}>
                   Insert
@@ -123,21 +123,21 @@ export default function ViewPitch() {
 
                     <TableCell sx={fontStyle17}>{card.upc}</TableCell>
                     <TableCell>
-                      <img src={card.barcode.display} />
+                      <img src={card.barcode.display} onerror="this.style.display='none';" />
                     </TableCell>
                     <TableCell sx={fontStyle17}>{card.vendor_style}</TableCell>
                     <TableCell sx={fontStyle17}>{card.name}</TableCell>
                     <TableCell>
-                      <img src={card.front_img.display} />
+                      <img src={card.front_img.display} onerror="this.style.display='none';" />
                     </TableCell>
                     <TableCell>
-                      <img src={card.inner_img.display} />
+                      <img src={card.inner_img.display} onerror="this.style.display='none';" />
                     </TableCell>
                     <TableCell>
-                      <img src={card.insert_img.display} />
+                      <img src={card.insert_img.display} onerror="this.style.display='none';" />
                     </TableCell>
                     <TableCell>
-                      <img src={card.sticker_jpeg.display} />
+                      <img src={card.sticker_jpeg.display} onerror="this.style.display='none';" />
                     </TableCell>
                     <TableCell sx={fontStyle17}>
                       {card.categories_array.map((category) => {
