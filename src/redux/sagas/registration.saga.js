@@ -18,7 +18,15 @@ function* registerUser(action) {
     yield put({ type: 'SET_TO_LOGIN_MODE' });
   } catch (error) {
     console.log('Error with user registration:', error);
-    yield put({ type: 'REGISTRATION_FAILED' });
+    if (error.response.status === 403) {
+      // The 403 is the error status sent not having a valid
+      // register code, therefore send a specialized error.
+      yield put({ type: 'REGISTER_SECRET_INVALID' });
+    } else {
+      // Got an error that wasn't a 403
+      // Could be anything, but most common cause is the server is not started
+      yield put({ type: 'REGISTRATION_FAILED' });
+    }
   }
 }
 
