@@ -136,7 +136,7 @@ function* getCurrentFolders() {
     yield put({
       type: 'SET_FOLDERS',
       payload: folders.data
-    });
+    })
   } catch (error) {
     console.log('fetchCategories error:', error);
   }

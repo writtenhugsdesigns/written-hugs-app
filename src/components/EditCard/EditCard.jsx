@@ -37,8 +37,8 @@ export default function EditCard() {
   const folderName = (cardToEdit.vendor_style + " " + cardToEdit.name)
 
   for (let folder of folderList) {
-    if(folder.name === folderName && folderId != '') {
-    return setFolderId(folder.id)
+    if(folder.name === folderName && folderId === '') {
+    setFolderId(folder.id);
   }}
 
   // const populateCategoryArray = () =>
@@ -51,12 +51,8 @@ export default function EditCard() {
     });
     dispatch({
       type: "SAGA/GET_FOLDERS",
-    });
-    
+    })
   }, []);
-  // console.log("this is the folderName:", folderName);
-  // console.log("this is the list of folders", folderList);
-  // console.log("current folder Id:", folderId);
 
 
   const handleVariationNameChange = (newName) => {
@@ -252,7 +248,7 @@ export default function EditCard() {
                 </div>
                 <img src={`${selectedCard.barcode.display}`} />
               </CardContent>
-              <EditFile fileType="barcode" currentId={selectedCard.barcode} folderName={folderName}/>
+              <EditFile fileType="barcode" currentId={selectedCard.barcode} folderId={folderId}/>
             </Card>
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
