@@ -399,7 +399,8 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
 
 
 router.put("/file/:id", uploadHandler.any(), async (req,res) =>
-{ const jwtClient = new google.auth.JWT(
+{ const params = req.params.id
+  const jwtClient = new google.auth.JWT(
   process.env.CLIENT_EMAIL,
   null,
   process.env.PRIVATE_KEY,
@@ -410,7 +411,7 @@ router.put("/file/:id", uploadHandler.any(), async (req,res) =>
     // console.log("jwtClient after authorize", jwtClient);
   const drive = google.drive({ version: "v3", auth: jwtClient });
   const fileObject = req.files[0];
-  console.log("here is the response in router.put:", req.body, req.params.id);
+  console.log("here is the response in router.put:", req.body, params);
     const bufferStream = new stream.PassThrough();
     bufferStream.end(fileObject.buffer);
     const { data } = await drive.files.create({
@@ -424,17 +425,18 @@ router.put("/file/:id", uploadHandler.any(), async (req,res) =>
       },
     });
     console.log("this is the response from google create:", data);
+    console.log("here are the three query values:", req.body.fileType, data.id, params);
     const queryText = `
     UPDATE "cards" 
     SET
-    "$1" = "$2"
-    WHERE "id" = "$3";
+    ${req.body.fileType} = $1
+    WHERE "id" = $2;
     `;
     const queryValues = [
-      req.body.fileType, 
       data.id,
-      req.params.id
+      params
     ];
+    console.log("query", queryText);
     await pool.query(queryText, queryValues)
     .then((result) => {
       console.log(result);
