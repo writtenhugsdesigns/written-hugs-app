@@ -327,7 +327,7 @@ router.post("/", uploadHandler.any(), rejectUnauthenticated, async (req, res) =>
   }
 );
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", rejectUnauthenticated, async (req, res) => {
   let connection;
   try {
     const queryText = `
@@ -406,6 +406,7 @@ router.put("/file/:id", uploadHandler.any(), async (req,res) =>
 router.get("/:id", rejectUnauthenticated, (req, res) => {
 
   const queryText = `
+
       SELECT
       c.id,
       c.name,
