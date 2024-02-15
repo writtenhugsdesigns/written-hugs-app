@@ -21,10 +21,10 @@ router.post('/register', (req, res, next) => {
   const username = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
 
-  const queryText = `INSERT INTO "user" (username, password)
-    VALUES ($1, $2) RETURNING id`;
+  const queryText = `INSERT INTO "user" (username, password , user_role)
+    VALUES ($1, $2, $3) RETURNING id`;
   pool
-    .query(queryText, [username, password])
+    .query(queryText, [username, password, "ADMIN"])
     .then(() => res.sendStatus(201))
     .catch((err) => {
       console.log('User registration failed: ', err);
@@ -46,5 +46,18 @@ router.post('/logout', (req, res) => {
   req.logout();
   res.sendStatus(200);
 });
+
+router.get('/all', (req, res) => {
+  const queryText = `
+  SELECT * FROM "user";`;
+
+  pool.query(queryText).then((response) => {
+    console.log("testing")
+    res.send(response.rows);
+  }).catch((err) => {
+    console.log("Error in user get /all", err)
+    res.sendStatus(500);
+  })
+})
 
 module.exports = router;
