@@ -259,14 +259,7 @@ export default function EditCard() {
                 </div>
                 <img src={`${selectedCard.front_img.display}`} />
               </CardContent>
-              <CardActions>
-                <IconButton
-                  aria-label="Edit Photo"
-                  onClick={() => updateFileOnClick(event)}
-                >
-                  <EditIcon />
-                </IconButton>
-              </CardActions>
+              <EditFile cardId={params} fileType="front_img" currentId={selectedCard.front_img.raw} folderId={folderId}/>
             </Card>
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -277,14 +270,7 @@ export default function EditCard() {
                 </div>
                 <img src={`${selectedCard.inner_img.display}`} />
               </CardContent>
-              <CardActions>
-                <IconButton
-                  aria-label="Edit Photo"
-                  onClick={() => updateFileOnClick(event)}
-                >
-                  <EditIcon />
-                </IconButton>
-              </CardActions>
+              <EditFile cardId={params} fileType="inner_img" currentId={selectedCard.inner_img.raw} folderId={folderId}/>
             </Card>
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -295,14 +281,7 @@ export default function EditCard() {
                 </div>
                 <img src={`${selectedCard.insert_img.display}`} />
               </CardContent>
-              <CardActions>
-                <IconButton
-                  aria-label="Edit Photo"
-                  onClick={() => updateFileOnClick(event)}
-                >
-                  <EditIcon />
-                </IconButton>
-              </CardActions>
+              <EditFile cardId={params} fileType="insert_img" currentId={selectedCard.insert_img.raw} folderId={folderId}/>
             </Card>
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -313,14 +292,7 @@ export default function EditCard() {
                 </div>
                 <img src={`${selectedCard.sticker_jpeg.display}`} />
               </CardContent>
-              <CardActions>
-                <IconButton
-                  aria-label="Edit Photo"
-                  onClick={() => updateFileOnClick(event)}
-                >
-                  <EditIcon />
-                </IconButton>
-              </CardActions>
+              <EditFile cardId={params} fileType="sticker_jpeg" currentId={selectedCard.sticker_jpeg.raw} folderId={folderId}/>
             </Card>
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -333,14 +305,7 @@ export default function EditCard() {
                   <Link target="_blank" variant="h5" href={`${selectedCard.sticker_pdf.display}`}>Link to Current File</Link>
                 </div>
               </CardContent>
-              <CardActions>
-                <IconButton
-                  aria-label="Edit Photo"
-                  onClick={() => updateFileOnClick(event)}
-                >
-                  <EditIcon />
-                </IconButton>
-              </CardActions>
+              <EditFile cardId={params} fileType="sticker_pdf" currentId={selectedCard.sticker_pdf.raw} folderId={folderId}/>
             </Card>
           </Grid>
 
@@ -354,14 +319,7 @@ export default function EditCard() {
                 <Link target="_blank" variant="h5" href={`${selectedCard.front_tiff.display}`}>Link to Current File</Link>
                 </div>
               </CardContent>
-              <CardActions>
-                <IconButton
-                  aria-label="Edit Photo"
-                  onClick={() => updateFileOnClick(event)}
-                >
-                  <EditIcon />
-                </IconButton>
-              </CardActions>
+              <EditFile cardId={params} fileType="front_tiff" currentId={selectedCard.front_tiff.raw} folderId={folderId}/>
             </Card>
           </Grid>
 
@@ -375,14 +333,8 @@ export default function EditCard() {
                 <Link target="_blank" variant="h5" href={`${selectedCard.insert_ai.display}`}>Link to Current File</Link>
                 </div>
               </CardContent>
-              <CardActions>
-                <IconButton
-                  aria-label="Edit Photo"
-                  onClick={() => updateFileOnClick(event, fileid)}
-                >
-                  <EditIcon />
-                </IconButton>
-              </CardActions>
+              <EditFile cardId={params} fileType="insert_ai" currentId={selectedCard.insert_ai.raw} folderId={folderId}/>
+
             </Card>
           </Grid>
         </Grid>

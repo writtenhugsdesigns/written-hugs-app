@@ -96,13 +96,12 @@ function* editCard(action) {
 
 function* editCardFile(action) {
   try{
-    console.log("this is the data received in editCardFile", action.payload.cardId.id);
+    console.log("this is the data received in editCardFile", action.payload);
     const response = yield axios({
       method: 'PUT',
-      url: `/api/cards/${action.payload.cardId.id}`,
-      data: action.payload.data.fileToSend
+      url: `/api/cards/file/${action.payload.cardId.id}`,
+      data: action.payload.fileToSend
     })
-    yield fetchAllCards()
   }
   catch (error) {
     console.error('error updating file for card', error)

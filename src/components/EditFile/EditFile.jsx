@@ -18,7 +18,8 @@ export default function EditFile({cardId, fileType, currentImageId, folderId}) {
 
         })
       if(file){
-        fileToSend.append(`${fileType}`, file)
+        fileToSend.append("file", file)
+        fileToSend.append("fileType", fileType)
         fileToSend.append("currentImageId", currentImageId)
         fileToSend.append("folderId", folderId)
         dispatch({
