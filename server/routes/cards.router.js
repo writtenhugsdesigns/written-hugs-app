@@ -415,10 +415,10 @@ router.put("/file/:id", uploadHandler.any(), async (req,res) =>
   await jwtClient.authorize();
     // console.log("jwtClient after authorize", jwtClient);
     console.log("this is the currentImageId:", req.body);
-  const drive2 = google.drive({ version: "v2", auth: jwtClient });
-  const results = await drive2.files.delete({
-    fileId: req.body.currentId,
-  });
+  // const drive2 = google.drive({ version: "v2", auth: jwtClient });
+  // const results = await drive2.files.delete({
+  //   fileId: req.body.currentId,
+  // });
     const drive = google.drive({ version: "v3", auth: jwtClient });
   const fileObject = req.files[0];
   console.log("here is the response in router.put:", req.body, params);

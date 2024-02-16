@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
 export default function EditFile({cardId, fileType, currentId, folderId}) {
-  console.log("these are the variables coming in to editfile component:", cardId, fileType, currentId, folderId);  
   const dispatch = useDispatch();
   const currentEditingCard = useSelector((store) => (store.cardsReducer.editCurrentCard))
     

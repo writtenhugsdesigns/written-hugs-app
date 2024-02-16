@@ -102,6 +102,11 @@ function* editCardFile(action) {
       url: `/api/cards/file/${action.payload.cardId.id}`,
       data: action.payload.fileToSend
     })
+    yield 
+    put({
+      type: 'SAGA/FETCH_CARD',
+      payload: action.payload.cardId.id
+    })
   }
   catch (error) {
     console.error('error updating file for card', error)
