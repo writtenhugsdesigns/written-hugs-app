@@ -27,24 +27,11 @@ export default function EditCard() {
   const history = useHistory();
   const params = useParams();
   const dispatch = useDispatch();
-  const [newCategory, setNewCategory] = useState([]);
+  const [categoryInput, setCategoryInput] = useState([]);
   const [folderId, setFolderId] = useState('')
 
-  const databaseCategories = useSelector((store) => store.categoriesReducer.categories);
-  const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
-  const cardToEdit = useSelector((store) => store.cardsReducer.editCurrentCard);
-  const folderList = useSelector((store) => store.cardsReducer.currentFolders);
-  const folderName = (cardToEdit.vendor_style + " " + cardToEdit.name)
-
-  for (let folder of folderList) {
-    if(folder.name === folderName && folderId === '') {
-    setFolderId(folder.id);
-  }}
-
-  // const populateCategoryArray = () =>
-  //   cardToEdit.categories_array.map(setNewCategory());
-
   useEffect(() => {
+    console.log("this is the selected card:", selectedCard);
     dispatch({
       type: "SET_CURRENT_CARD_TO_EDIT",
       payload: selectedCard,
@@ -53,6 +40,25 @@ export default function EditCard() {
       type: "SAGA/GET_FOLDERS",
     })
   }, []);
+
+  const databaseCategories = useSelector((store) => store.categoriesReducer);
+  const selectedCard = useSelector((store) => store.cardsReducer.selectedCard);
+  const cardToEdit = useSelector((store) => store.cardsReducer.editCurrentCard);
+  const folderList = useSelector((store) => store.cardsReducer.currentFolders);
+  const folderName = (cardToEdit.vendor_style + " " + cardToEdit.name)
+  let currentCategories = []
+
+  for (let folder of folderList) {
+    if(folder.name === folderName && folderId === '') {
+    setFolderId(folder.id);
+  }}
+
+  for (let category of selectedCard.categories_array) {
+    currentCategories.push(category.id)
+  }
+
+
+
 
 
   const handleVariationNameChange = (newName) => {
@@ -156,6 +162,7 @@ export default function EditCard() {
       }
     });
   };
+  const barcodeId = selectedCard.barcode.raw;
 
   //This form is divided using MUI Grid elements inside of a form div
   return (
@@ -217,10 +224,10 @@ export default function EditCard() {
           </Grid>
           <Grid item sx={{ p: 2 }} lg={4}>
             {/* <MultipleSelect
-                // categories={databaseCategories.categories}
-                // categoriesValue={cardToEdit.categories_array.category_id}
-                // setCategories={setCategoriesInput}
-              // > */}
+                categories={databaseCategories.categories}
+                categoriesValue={categoryInput}
+                setCategories={setCategoryInput}
+              /> */}
             <Button onClick={createCategory}>
               <Typography variant="body2">New Category</Typography>
               <AddCircleIcon />
@@ -270,7 +277,7 @@ export default function EditCard() {
                 </div>
                 <img src={`${selectedCard.inner_img.display}`} />
               </CardContent>
-              <EditFile cardId={params} fileType="inner_img" currentId={selectedCard.inner_img.raw} folderId={folderId}/>
+              <EditFile cardId={params.id} fileType="inner_img" currentId={selectedCard.inner_img.raw} folderId={folderId}/>
             </Card>
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -281,7 +288,7 @@ export default function EditCard() {
                 </div>
                 <img src={`${selectedCard.insert_img.display}`} />
               </CardContent>
-              <EditFile cardId={params} fileType="insert_img" currentId={selectedCard.insert_img.raw} folderId={folderId}/>
+              <EditFile cardId={params.id} fileType="insert_img" currentId={selectedCard.insert_img.raw} folderId={folderId}/>
             </Card>
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -292,7 +299,7 @@ export default function EditCard() {
                 </div>
                 <img src={`${selectedCard.sticker_jpeg.display}`} />
               </CardContent>
-              <EditFile cardId={params} fileType="sticker_jpeg" currentId={selectedCard.sticker_jpeg.raw} folderId={folderId}/>
+              <EditFile cardId={params.id} fileType="sticker_jpeg" currentId={selectedCard.sticker_jpeg.raw} folderId={folderId}/>
             </Card>
           </Grid>
           <Grid item sx={{ p: 2 }} xs={12} md={6} lg={3}>
@@ -305,7 +312,7 @@ export default function EditCard() {
                   <Link target="_blank" variant="h5" href={`${selectedCard.sticker_pdf.display}`}>Link to Current File</Link>
                 </div>
               </CardContent>
-              <EditFile cardId={params} fileType="sticker_pdf" currentId={selectedCard.sticker_pdf.raw} folderId={folderId}/>
+              <EditFile cardId={params.id} fileType="sticker_pdf" currentId={selectedCard.sticker_pdf.raw} folderId={folderId}/>
             </Card>
           </Grid>
 
@@ -319,7 +326,7 @@ export default function EditCard() {
                 <Link target="_blank" variant="h5" href={`${selectedCard.front_tiff.display}`}>Link to Current File</Link>
                 </div>
               </CardContent>
-              <EditFile cardId={params} fileType="front_tiff" currentId={selectedCard.front_tiff.raw} folderId={folderId}/>
+              <EditFile cardId={params.id} fileType="front_tiff" currentId={selectedCard.front_tiff.raw} folderId={folderId}/>
             </Card>
           </Grid>
 
@@ -333,7 +340,7 @@ export default function EditCard() {
                 <Link target="_blank" variant="h5" href={`${selectedCard.insert_ai.display}`}>Link to Current File</Link>
                 </div>
               </CardContent>
-              <EditFile cardId={params} fileType="insert_ai" currentId={selectedCard.insert_ai.raw} folderId={folderId}/>
+              <EditFile cardId={params.id} fileType="insert_ai" currentId={selectedCard.insert_ai.raw} folderId={folderId}/>
 
             </Card>
           </Grid>

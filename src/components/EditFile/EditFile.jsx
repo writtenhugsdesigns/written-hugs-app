@@ -4,9 +4,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
-export default function EditFile({cardId, fileType, currentImageId, folderId}) {
-    const dispatch = useDispatch();
-    const currentEditingCard = useSelector((store) => (store.cardsReducer.editCurrentCard))
+export default function EditFile({cardId, fileType, currentId, folderId}) {
+  const dispatch = useDispatch();
+  const currentEditingCard = useSelector((store) => (store.cardsReducer.editCurrentCard))
     
     const updateFileOnClick = async (action) => {
         action.preventDefault();
@@ -20,7 +20,7 @@ export default function EditFile({cardId, fileType, currentImageId, folderId}) {
       if(file){
         fileToSend.append("file", file)
         fileToSend.append("fileType", fileType)
-        fileToSend.append("currentImageId", currentImageId)
+        fileToSend.append("currentId", currentId)
         fileToSend.append("folderId", folderId)
         dispatch({
             type: "SAGA/EDIT_CARD_FILE",
