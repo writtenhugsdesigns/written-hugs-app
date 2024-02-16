@@ -60,6 +60,10 @@ export default function CardList() {
       type: "SET_CARD",
       payload: card,
     });
+    dispatch({
+      type: "SET_CURRENT_CARD_TO_EDIT",
+      payload: card,
+    });
     history.push(`/editcard/${card.card_id}`)
   };
 

@@ -333,45 +333,22 @@ router.post(
 
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
   let connection;
+  console.log('stuff:', req.body.description, req.body.upc, req.params.id,);
   try {
     const queryText = `
     UPDATE "cards"
       SET 
-        "name"=$1, 
-        "vendor_style"=$2, 
-        "description"=$3,
-        "upc"=$4,
-        "sku"=$5,
-        "barcode"=$6,
-        "front_img"=$7,
-        "front_tiff"=$8,
-        "inner_img"=$9,
-        "insert_img"=$10,
-        "insert_ai"=$11,
-        "raw_art"=$12,
-        "sticker_jpeg"=$13,
-        "sticker_pdf"=$14
+        "description"=$1,
+        "upc"=$2
       WHERE
-        id=$15;`;
+        "id"=$3;`;
 
     console.log("req.body:", req.body);
 
     const queryValues = [
-      req.body.card.name,
-      req.body.card.vendor_style,
-      req.body.card.description,
-      req.body.card.upc,
-      req.body.card.sku,
-      req.body.card.barcode,
-      req.body.card.front_img,
-      req.body.card.front_tiff,
-      req.body.card.inner_img,
-      req.body.card.insert_img,
-      req.body.card.insert_ai,
-      req.body.card.raw_art,
-      req.body.card.sticker_jpeg,
-      req.body.card.sticker_pdf,
-      req.params.id,
+      req.body.description,
+      req.body.upc,
+      req.body.card_id
     ];
 
     connection = await pool.connect();
@@ -379,14 +356,16 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
     const updateCard = await connection.query(queryText, queryValues);
     const queryDeleteText = `
       DELETE FROM cards_categories
-        WHERE card_id=${req.params.id};`;
+        WHERE card_id=${req.body.card_id};`;
     // second QUERY removes categories FOR THAT card
+    console.log('delete query text', queryDeleteText);
     const deleteCategories = await connection.query(queryDeleteText);
-    const categoriesArray = req.body.categoriesArrayForQuery;
+    const categoriesArray = req.body.categoriesArray;
     const editCardsCategoriesQueryByID = editCardsCategoriesQuery(
       categoriesArray,
-      req.params.id
+      req.body.card_id
     );
+    console.log('editCardsCategoriesQueryByID', editCardsCategoriesQueryByID);
     // Third QUERY ADDS categories FOR THAT card
     const addCardCategories = await connection.query(
       editCardsCategoriesQueryByID
@@ -397,64 +376,61 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
     res.sendStatus(201);
   } catch (err) {
     console.log("Error in cards PUT by ID:", err);
-    connection.query("ROLLBACK;");
-    connection.release();
+    // connection.query("ROLLBACK;");
+    // connection.release();
     res.sendStatus(500);
   }
 });
 
-router.put("/file/:id", uploadHandler.any(), async (req,res) =>
-{ const params = req.params.id
+router.put("/file/:id", uploadHandler.any(), async (req, res) => {
+  const params = req.params.id;
   const jwtClient = new google.auth.JWT(
-  process.env.CLIENT_EMAIL,
-  null,
-  process.env.PRIVATE_KEY,
-  SCOPE
+    process.env.CLIENT_EMAIL,
+    null,
+    process.env.PRIVATE_KEY,
+    SCOPE
   );
-    // console.log("jwtClient before authorize", jwtClient);
   await jwtClient.authorize();
-    // console.log("jwtClient after authorize", jwtClient);
-    console.log("this is the currentImageId:", req.body);
-  // const drive2 = google.drive({ version: "v2", auth: jwtClient });
-  // const results = await drive2.files.delete({
-  //   fileId: req.body.currentId,
-  // });
-    const drive = google.drive({ version: "v3", auth: jwtClient });
+
+  const drive = google.drive({ version: "v3", auth: jwtClient });
   const fileObject = req.files[0];
   console.log("here is the response in router.put:", req.body, params);
-    const bufferStream = new stream.PassThrough();
-    bufferStream.end(fileObject.buffer);
-    const { data } = await drive.files.create({
-      media: {
-        name: fileObject.mimeType,
-        body: bufferStream,
-      },
-      requestBody: {
-        name: req.body.fileType,
-        parents: [req.body.folderId],
-      },
-    });
-    console.log("this is the response from google create:", data);
-    console.log("here are the three query values:", req.body.fileType, data.id, params);
-    const queryText = `
+  const bufferStream = new stream.PassThrough();
+  bufferStream.end(fileObject.buffer);
+  const { data } = await drive.files.create({
+    media: {
+      name: fileObject.mimeType,
+      body: bufferStream,
+    },
+    requestBody: {
+      name: req.body.fileType,
+      parents: [req.body.folderId],
+    },
+  });
+  console.log("this is the response from google create:", data);
+  console.log(
+    "here are the three query values:",
+    req.body.fileType,
+    data.id,
+    params
+  );
+  const queryText = `
     UPDATE "cards" 
     SET
     ${req.body.fileType} = $1
     WHERE "id" = $2;
     `;
-    const queryValues = [
-      data.id,
-      params
-    ];
-    console.log("query", queryText);
-    await pool.query(queryText, queryValues)
+  const queryValues = [data.id, params];
+  console.log("query", queryText);
+  await pool
+    .query(queryText, queryValues)
     .then((result) => {
       console.log(result);
     })
     .catch((err) => {
       console.log(err);
-  })
-})
+    });
+});
 
 router.get("/:id", rejectUnauthenticated, (req, res) => {
   const queryText = `
@@ -508,9 +484,9 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
 router.delete("/", rejectUnauthenticated, async (req, res) => {
   // Deleting on google drive api?
 
-  const card_id = req.query.card_id
-  const folder_id = req.query.folder_id
-  console.log('card id  and folder id:', card_id, folder_id);
+  const card_id = req.query.card_id;
+  const folder_id = req.query.folder_id;
+  console.log("card id  and folder id:", card_id, folder_id);
   // let fileMetaData = {
   //   name: folder_id,
   //   parents: ["1wG6GeFUgvvh-8GOHw1NhlfRPUUDfP2H_"],
@@ -529,8 +505,7 @@ router.delete("/", rejectUnauthenticated, async (req, res) => {
   const results = await drive.files.delete({
     fileId: folder_id,
   });
-  
-  
+
   const sqlText = `
   DELETE FROM "cards"
     WHERE "id" = $1;
@@ -687,12 +662,12 @@ function editCardsCategoriesQuery(categoriesArray, card_id) {
     // adds the appropriate ids
     if (i < categoriesArray.length - 1) {
       cardsCategoriesQuery += `
-        (${card_id}, ${categoriesArray[i].id}),
+        (${card_id}, ${categoriesArray[i]}),
       `;
       // adds the appropriate ids and a semi colon
     } else if (i === categoriesArray.length - 1) {
       cardsCategoriesQuery += `
-        (${card_id}, ${categoriesArray[i].id});
+        (${card_id}, ${categoriesArray[i]});
         `;
     }
   }
